@@ -1,0 +1,30 @@
+---
+
+mysql:
+  image: lucasgmartins/mysql
+  ports:
+    - "3307:3306"
+  environment:
+    MYSQL_ROOT_PASSWORD     : ZmxpY2UNCg==
+    MYSQL_CORE_DATABASE     : flice-core
+    MYSQL_SECURITY_DATABASE : flice-account
+
+core:
+  image: lucasgmartins/java8
+  ports:
+    - "8080:8080"
+  links:
+    - mysql
+  volumes:
+    - flice-projects/flice-core/server/target/flice-core.jar:/app/flice-core.jar
+  command: java -jar /app/flice-core.jar
+
+account:
+  image: lucasgmartins/java8
+  ports:
+    - "8081:8080"
+  links:
+    - mysql
+  volumes:
+    - flice-projects/flice-account/server/target/flice-account.jar:/app/flice-account.jar
+  command: java -jar /app/flice-account.jar
