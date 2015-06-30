@@ -128,7 +128,7 @@
 
 	<build>
 
-		<finalName>flice-security</finalName>
+		<finalName>flice-account</finalName>
 
 		<plugins>
 
