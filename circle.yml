@@ -3,6 +3,10 @@ machine:
   java:
     version: oraclejdk8
 
+dependencies:
+  cache_directories:
+    - ~/.m2    
+
 test:
   override:
     - cd flice-projects/flice-account/server ; mvn clean package ; cd ../../../ 
