@@ -6,7 +6,7 @@ machine:
 dependencies:
   cache_directories:
     - ~/.m2    
- override:
+  override:
     - mvn --fail-never dependency:go-offline || true
 
 test:
