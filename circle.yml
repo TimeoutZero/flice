@@ -11,8 +11,8 @@ dependencies:
 
 test:
   override:
-    - cd flice-projects/flice-account/server ; mvn install -f pom.xml ; cd ../../../ 
-    - cd flice-projects/flice-core/server		 ; mvn install -f pom.xml ; cd ../../../
+    - cd flice-projects/flice-account/server ; mvn -o install -f pom.xml ; cd ../../../ 
+    - cd flice-projects/flice-core/server		 ; mvn -o install -f pom.xml ; cd ../../../
     
     - mv flice-projects/flice-account/server/target/flice-account.jar $CIRCLE_ARTIFACTS/flice-account.jar
     - mv flice-projects/flice-core/server/target/flice-core.jar       $CIRCLE_ARTIFACTS/flice-core.jar
