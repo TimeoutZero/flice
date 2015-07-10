@@ -144,11 +144,14 @@
 				</configuration>
 			</plugin>
 
-			<!-- <plugin> <groupId>org.eluder.coveralls</groupId> <artifactId>coveralls-maven-plugin</artifactId> 
-				<version>3.1.0</version> </plugin> -->
-			<!-- <plugin> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId> 
-				<version>0.7.4.201502262128</version> <executions> <execution> <id>prepare-agent</id> 
-				<goals> <goal>prepare-agent</goal> </goals> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>DClick Geral</id>
+			<name>Dclick geral</name>
+			<url>http://office-sp.dclick.com.br/nexus/content/groups/dclick</url>
+		</repository>
+	</repositories>
 </project>
