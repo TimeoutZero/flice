@@ -33,3 +33,126 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
  */
 // injector
 // endinjector
+
+.community-thumb {
+  min-height: 1px;
+  position: relative;
+  margin    : 10px 0px 0px 20px;
+  height    : 300px; 
+  width     : 300px;
+  background-color : #000;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  overflow  : hidden;
+
+  .community-thumb-image:hover {
+    img {
+      opacity: 0.4;
+      filter: alpha(opacity=40);
+    }
+  }
+
+  .tags-wrapper {
+    min-height: 1px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: auto;
+    line-height: 25px;
+    
+  }
+
+  .community-thumb-tags {
+    margin-bottom    :  5px;
+    color            : #FFF;
+    display: block;
+    margin: 5px;
+    margin-left: 0;
+
+    span {
+      padding:  5px 8px;
+      background-color : #C32C4F;
+
+    }
+  }
+}
+
+.community-thumb-description {
+  margin    : 0px 0px 0px 20px;
+  
+  height      : 35px; 
+  line-height : 35px;
+  width       : 300px;
+  background-color: #251923;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius : 5px;
+
+  .community-thumb-title {
+    margin: 0px 5px 5px 5px;  
+    text-align: center;
+    vertical-align: text-top;
+    color: #FFF;
+    font-size : 16px;
+  }
+} 
+
+.community-navbar {
+  background-color: #C32C4F
+}
+
+.flice-commmuntiy-title {
+  h2 {
+    color: #FFF;
+    font-size: 42px;
+    margin-top: 5px;
+    margin-left: 75px;
+  }
+}
+
+.community-menu {
+
+  margin : 10px auto;
+  margin-left: 20px;
+
+  .community-menu-image {
+    border-bottom-left-radius  :  5px;
+  }
+
+  .community-menu-container-image {
+    width : 400px; 
+    height: 300px;
+    overflow : hidden;
+  }
+
+  .community-menu-title {
+    h4 {
+      text-align: center;
+    }
+    h5 {
+      text-align : center;
+      margin-top : -10px; 
+    } 
+  }
+
+  .community-menu-participate {
+    margin : 0 auto;
+    .button-participate {
+
+      width: 100%;
+    }
+  }
+}
+
+.community-content {
+  
+  margin-left: 20px;
+  // .community-content-topics {
+  //   ul {
+  //     padding:0; 
+  //     margin:0;
+  //     list-style-type: none;
+  //   }
+  // }  
+}

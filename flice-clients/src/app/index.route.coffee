@@ -2,31 +2,36 @@
 angular.module "web"
   .config ($stateProvider, $urlRouterProvider) ->
     $stateProvider
-
-      .state "home",
-        url: "/"
-        templateUrl : "app/community/community.html"
-        #controller  : "CommunityController"
-        #abstract    : yes
-
+     
       .state "community",
         url: "/community"
-        templateUrl : "app/community/community.html"
-        controller  : "CommunityController"
         abstract    : yes
-
-      .state('community.self'
-        url : '/x'
         views :
           '' :
+            templateUrl : 'app/community/main.html'
+            controller  : "CommunityController"
+          'community-header@community':
+            templateUrl : 'app/community/header.html'
+
+
+      .state('community.self'
+        url : '/self/:id'
+        views :
+          '' :
+            templateUrl : 'app/community/self/main.html'
             controller  : 'CommunitySelfController'
-            templateUrl : 'app/community/self.html'
           'community-menu@community.self' :
             controller  : 'CommunitySelfMenuController'
-            templateUrl : 'app/community/subview/menu.html'
+            templateUrl : 'app/community/self/subview/menu.html'
           'community-content@community.self' :
             controller  : 'CommunitySelfContentController'
-            templateUrl : 'app/community/subview/content.html'
+            templateUrl : 'app/community/self/subview/content.html'
+      )
+ 
+      .state('community.list'
+        url: "/list"
+        controller  : 'CommunityListController'
+        templateUrl : "app/community/list/main.html"
       )
 
-    $urlRouterProvider.otherwise '/'
+    $urlRouterProvider.otherwise '/community/list'

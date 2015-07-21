@@ -1,0 +1,31 @@
+
+
+<div class="col-md-12 row">
+
+  <div ng-repeat="community in communities">
+    <div class="col-md-3">
+      <div class="community-thumb">
+
+        <div class="community-thumb-image">
+          <a ui-sref="community.self({ id: community.id })">
+            <img class="img-rounded" src="{{community.image}}" alt="...">
+          </a>         
+
+        </div>
+
+        <div class="tags-wrapper">
+          <p ng-repeat="tag in community.tags" class="community-thumb-tags">
+            <span>
+              {{tag}}
+            </span>
+          </p>  
+        </div>
+      </div>
+
+      <div class="community-thumb-description">
+        <p class="community-thumb-title">{{community.name}}</p>
+      </div>
+    </div>
+  </div>
+
+</div>
