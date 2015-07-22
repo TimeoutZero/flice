@@ -1,54 +1,90 @@
-<div class="community-content col-md-9 row">
+<div 
+class="community-content col-md-3 row" 
+ng-class="{'col-md-9' : !attrs.isOnTopicPreview, 'col-md-3': attrs.isOnTopicPreview}">
+
+<div class="community-content-title col-md-12">
+  <h1>{{community.name}}</h1>
+</div>
+
+<div class="community-content-description col-md-12">
+  <p align="justify">
+    {{community.description}}
+  </p>
+</div>
+
+<div class="col-md-12 search">
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Search" name="q">
+    <div class="input-group-btn">
+      <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <hr>
+</div>
+
+<div class="community-content-topics col-md-12 row">
+
+  <ul class="list-unstyled">
+    <li ng-repeat="topic in attrs.topics" ng-click="methods.openTopicPreview(topic)" >
+
+      <div class="col-md-12">
+        <h4>{{topic.title}}</h4>
+      </div>  
+
+      <div class="col-md-12 row">
+        <div class="col-md-2">Por: {{topic.author}}</div>
+        <div class="col-md-9">{{topic.answers}} respostas</div>
+        <div class="col-md-1">{{topic.lastUpdate}}</div>
+      </div>
+
+      <div class="col-md-12">
+        <hr>
+      </div>
+
+    </li>
+  </ul>
+
+</div>
+
+<div class="col-md-12">
+  <hr>
+</div>
+
+</div>
+
+<div class="preview-topic" ng-class="{'col-md-8': attrs.isOnTopicPreview}"  ng-show="attrs.isOnTopicPreview">
   
-  <div class="community-content-title col-md-12">
-    <h1>{{community.name}}</h1>
-  </div>
+  <h2>{{attrs.actualTopicTitle}}</h2>
+  
+  <div ng-repeat="comment in attrs.comments">
+    <div class="col-md-12 community-topic-container row">
+      <div class="col-md-3 row">
 
-  <div class="community-content-description col-md-12">
-    <p align="justify">
-      {{community.description}}
-    </p>
-  </div>
+        <div class="col-md-12">
+          <img class="img-thumbnail" src="{{comment.user.photo}}" alt="">
+        </div>
 
-  <div class="col-md-12 search">
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search" name="q">
-      <div class="input-group-btn">
-        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+        <div class="col-md-12 community-user-name">
+          <h5>{{comment.user.name}}</h5>
+        </div>
+
+      </div>
+      <div class="col-md-9 row">
+        
+        <div class="class-md-12 community-topic-header">
+          10:41 - 18 de janeiro de 2011
+        </div>
+        
+        <div class="class-md-12">
+          <p align="justify">
+            {{comment.content}}
+          </p>
+        </div>
+       
       </div>
     </div>
   </div>
-
-  <div class="col-md-12">
-    <hr>
-  </div>
-
-  <div class="community-content-topics col-md-12 row">
-    
-    <ul class="list-unstyled">
-      <li ng-repeat="topic in topics">
-
-        <div class="col-md-12">
-          <h4>{{topic.title}}</h4>
-        </div>  
-
-        <div class="col-md-12 row">
-          <div class="col-md-2">Por: {{topic.author}}</div>
-          <div class="col-md-9">{{topic.answers}} respostas</div>
-          <div class="col-md-1">{{topic.lastUpdate}}</div>
-        </div>
-
-        <div class="col-md-12">
-          <hr>
-        </div>
-
-      </li>
-    </ul>
-    
-  </div>
-
-  <div class="col-md-12">
-    <hr>
-  </div>
-
 </div>

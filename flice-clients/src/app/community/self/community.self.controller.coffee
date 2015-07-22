@@ -4,7 +4,6 @@ angular.module "web"
     $scope.community = {}
 
     $scope.init = ->
-      console.log 'menu controller'
 
       promiseMenu    = CommunitySelfService.getById $stateParams.id
 

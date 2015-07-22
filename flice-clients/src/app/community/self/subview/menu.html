@@ -1,4 +1,6 @@
-<div class="col-md-3 row">
+<div 
+  class="col-md-3 row"
+  ng-class="{'community-hide-menu' : !attrs.isHideMenu, 'community-hide-menu' : attrs.isHideMenu}">
  
   <div class="community-menu row">
 
@@ -14,17 +16,6 @@
     <div class="community-menu-participate col-md-12 ">
       <button type="submit" class="btn btn-primary button-participate">Participar</button>
     </div>
-
-<!--     <div class="community-menu-info col-md-12 row">
-      <div class="col-md-12">
-        <div class="col-md-5">Criada em:</div>
-        <div class="col-md-7">{{community.created}}</div>
-      </div>
-      <div class="col-md-12">
-        <div class="col-md-5">Privacidade: </div>
-        <div class="col-md-7">{{community.privacity}}</div>
-      </div>
-    </div> -->
 
   </div>
  </div>

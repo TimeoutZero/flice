@@ -145,6 +145,10 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
   }
 }
 
+.community-hide-menu {
+  display : none;
+}
+
 .community-content {
   
   margin-left: 20px;
@@ -155,4 +159,29 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
   //     list-style-type: none;
   //   }
   // }  
+}
+
+
+.preview-topic {
+  //-webkit-transition: width 2s ease-out; /* Safari */
+  //transition: width 2s ease-out;
+
+  // .community-thumb-x {
+  //   max-height: 300px;
+  //   max-width: 200px;
+  // }
+
+  .community-topic-container {
+    background-color : #F7F2F3;
+    padding: 5px 5px;
+    margin-top: 10px;
+  }
+
+  .community-topic-header {
+    margin-bottom: 10px;
+  }
+
+  .community-user-name {
+    text-align: center;
+  }
 }
