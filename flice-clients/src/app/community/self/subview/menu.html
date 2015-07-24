@@ -1,21 +1,27 @@
-<div 
-  class="col-md-3 row"
-  ng-class="{'community-hide-menu' : !attrs.isHideMenu, 'community-hide-menu' : attrs.isHideMenu}">
- 
-  <div class="community-menu row">
+<!-- <div 
+class="col-md-3 row"
+ng-class="{'community-hide-menu' : !attrs.isHideMenu, 'community-hide-menu' : attrs.isHideMenu}">
 
-    <div class="col-md-12 community-menu-container-image">  
-       <img class="img-rounded community-menu-image" src="{{community.image}}" alt="">
-    </div>
-  
-    <div class="community-menu-title col-md-12">
-      <h4>{{community.name}}</h4>
-      <h5>{{community.members}} members</h5>
-    </div>
-   
-    <div class="community-menu-participate col-md-12 ">
-      <button type="submit" class="btn btn-primary button-participate">Participar</button>
+<div class="community-menu row">
+
+  <div class="community-thumb">
+
+    <div class="community-thumb-image">
+      <a ui-sref="community.self({ id: community.id })">
+        <img class="img-rounded" src="{{community.image}}" alt="...">
+      </a>         
+
     </div>
 
+    <div class="tags-wrapper">
+      <p ng-repeat="tag in community.tags" class="community-thumb-tags">
+        <span>
+          {{tag}}
+        </span>
+      </p>  
+    </div>
   </div>
- </div>
+
+
+</div>
+</div> -->

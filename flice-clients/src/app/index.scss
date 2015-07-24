@@ -149,7 +149,36 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
   display : none;
 }
 
+.community-content-header {
+
+  .community-content-title {
+    text-align : center;
+  }
+
+  .comunity-content-tags-container {
+    width: 50%;
+    margin: 0 auto;
+  }
+
+  .community-content-description {
+    width: 800px;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom : 10px;
+  }  
+
+  span {
+    color : #FFF;
+    padding : 5px;
+    margin-right: 5px;
+    background-color : #C32C4F;
+  }
+
+}
+
 .community-content {
+  
+
   
   margin-left: 20px;
   // .community-content-topics {
@@ -163,8 +192,8 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 
 
 .preview-topic {
-  //-webkit-transition: width 2s ease-out; /* Safari */
-  //transition: width 2s ease-out;
+  -webkit-transition: width 2s ease-out; /* Safari */
+  transition: width 2s ease-out;
 
   // .community-thumb-x {
   //   max-height: 300px;

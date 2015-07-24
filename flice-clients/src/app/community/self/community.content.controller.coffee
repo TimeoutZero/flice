@@ -1,7 +1,6 @@
 angular.module "web"
   .controller "CommunitySelfContentController", ($scope, $stateParams, CommunitySelfTopicService, CommunitySelfCommentService) ->
         
-  
     $scope.attrs =
       topics           : []
       actualTopicTitle : ''
@@ -27,18 +26,5 @@ angular.module "web"
         promise.success (data) ->
           $scope.attrs.comments = data.comments
         $scope.$emit 'hide-menu'
-        
-      # quem escuta
-      #$scope.$on 'askdnas', () ->
-
-      # => quem envia
-
-      # (pra cima)
-      # $scope.$emit 'event-name'
-
-      # (pra baixo)
-      # $scope.$broadcast 'event-name'
-
-
 
     $scope.methods.init()

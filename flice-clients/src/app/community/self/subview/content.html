@@ -1,62 +1,70 @@
-<div 
-class="community-content col-md-3 row" 
-ng-class="{'col-md-9' : !attrs.isOnTopicPreview, 'col-md-3': attrs.isOnTopicPreview}">
 
-<div class="community-content-title col-md-12">
-  <h1>{{community.name}}</h1>
-</div>
+<div class="community-content-header">
+  <div class="community-content-title col-md-12">
+    
+    <h1>{{community.name}}</h1>
+    <h4>{{community.members}} Members</h4>
 
-<div class="community-content-description col-md-12">
-  <p align="justify">
-    {{community.description}}
-  </p>
-</div>
+    <div class="col-md-12">
+      <span ng-repeat="tag in community.tags" class="community-content-tag">{{tag}}</span>
+    </div>
 
-<div class="col-md-12 search">
-  <div class="input-group">
-    <input type="text" class="form-control" placeholder="Search" name="q">
-    <div class="input-group-btn">
-      <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+    <div class="col-md-12">
+      <p class="community-content-description " align="justify">
+        {{community.description}}
+      </p>
     </div>
   </div>
-</div>
 
-<div class="col-md-12">
-  <hr>
-</div>
+  <div 
+  class="community-content col-md-3 row" 
+  ng-class="{'col-md-12 ' : !attrs.isOnTopicPreview, 'col-md-2': attrs.isOnTopicPreview}">
 
-<div class="community-content-topics col-md-12 row">
-
-  <ul class="list-unstyled">
-    <li ng-repeat="topic in attrs.topics" ng-click="methods.openTopicPreview(topic)" >
-
-      <div class="col-md-12">
-        <h4>{{topic.title}}</h4>
-      </div>  
-
-      <div class="col-md-12 row">
-        <div class="col-md-2">Por: {{topic.author}}</div>
-        <div class="col-md-9">{{topic.answers}} respostas</div>
-        <div class="col-md-1">{{topic.lastUpdate}}</div>
+<!--   <div class="col-md-12 search">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search" name="q">
+      <div class="input-group-btn">
+        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
       </div>
+    </div>
+  </div> -->
 
-      <div class="col-md-12">
-        <hr>
-      </div>
+  <div class="col-md-12">
+    <hr>
+  </div>
 
-    </li>
-  </ul>
+  <div class="community-content-topics col-md-12 row">
 
-</div>
+    <ul class="list-unstyled">
+      <li ng-repeat="topic in attrs.topics" ng-click="methods.openTopicPreview(topic)" >
 
-<div class="col-md-12">
-  <hr>
-</div>
+        <div class="col-md-12">
+          <h4>{{topic.title}}</h4>
+        </div>  
+
+        <div class="col-md-12 row">
+          <div class="col-md-2">Por: {{topic.author}}</div>
+          <div class="col-md-9">{{topic.answers}} respostas</div>
+          <div class="col-md-1">{{topic.lastUpdate}}</div>
+        </div>
+
+        <div class="col-md-12">
+          <hr>
+        </div>
+
+      </li>
+    </ul>
+
+  </div>
+
+  <div class="col-md-12">
+    <hr>
+  </div>
 
 </div>
 
 <div class="preview-topic" ng-class="{'col-md-8': attrs.isOnTopicPreview}"  ng-show="attrs.isOnTopicPreview">
-  
+
   <h2>{{attrs.actualTopicTitle}}</h2>
   
   <div ng-repeat="comment in attrs.comments">
@@ -73,7 +81,7 @@ ng-class="{'col-md-9' : !attrs.isOnTopicPreview, 'col-md-3': attrs.isOnTopicPrev
 
       </div>
       <div class="col-md-9 row">
-        
+
         <div class="class-md-12 community-topic-header">
           10:41 - 18 de janeiro de 2011
         </div>
@@ -81,9 +89,11 @@ ng-class="{'col-md-9' : !attrs.isOnTopicPreview, 'col-md-3': attrs.isOnTopicPrev
         <div class="class-md-12">
           <p align="justify">
             {{comment.content}}
+
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/f90lcJnq4gs" frameborder="0" allowfullscreen></iframe>
           </p>
         </div>
-       
+
       </div>
     </div>
   </div>
