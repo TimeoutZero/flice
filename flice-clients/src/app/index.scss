@@ -34,6 +34,56 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 // injector
 // endinjector
 
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body {
+  font-family : 'Open Sans', sans-serif; 
+
+}
+
+.not-login {
+  background-color : #FFF;
+}
+.login {
+  background: url('/assets/images/login.jpg')  no-repeat center center fixed ; 
+  background-size: 100% 100%;
+}
+
+.login-social {
+    padding: 20px;
+    line-height: 20px;
+    color: #FFF;
+    margin: 0px;
+}
+
+.login-social-facebook {
+    background-color: #3b5998;
+}
+.login-social-twitter {
+    background-color: #55acee;
+}
+.login-social-google {
+    background-color: #db4437;
+}
+
+.community-navbar {
+  background-color: #C32C4F;
+  border-color: #C32C4F;
+}
+
+.flice-commmuntiy-title {
+  h2 {
+    color: #FFF;
+    font-size: 42px;
+    margin-top: 5px;
+    margin-left: 75px;
+  }
+}
+
+.community {
+  margin-top: 70px;
+}
+
 .community-thumb {
   min-height: 1px;
   position: relative;
@@ -68,7 +118,7 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
     margin-bottom    :  5px;
     color            : #FFF;
     display: block;
-    margin: 5px;
+    margin: 7px;
     margin-left: 0;
 
     span {
@@ -98,116 +148,98 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
   }
 } 
 
-.community-navbar {
-  background-color: #C32C4F
-}
+.community-cover-container {
+  height: 200px;  
+  overflow: hidden; 
+  position : absolute;
 
-.flice-commmuntiy-title {
-  h2 {
-    color: #FFF;
-    font-size: 42px;
-    margin-top: 5px;
-    margin-left: 75px;
+  .community-cover-image {
+    width: 100%; 
+    margin: 0px;
+    border-radius: 5px;
   }
 }
 
-.community-menu {
+.community-content-cover {
 
-  margin : 10px auto;
-  margin-left: 20px;
+  height: 200px; 
+  color: #FFF; 
+  background-color: rgba(0, 0, 0, 0.7); 
+  margin-left: 16px; 
+  text-align: center;
+  border-top-left-radius : 5px;
+  border-bottom-left-radius : 5px;
 
-  .community-menu-image {
-    border-bottom-left-radius  :  5px;
-  }
+  .community-titles {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 
-  .community-menu-container-image {
-    width : 400px; 
-    height: 300px;
-    overflow : hidden;
-  }
-
-  .community-menu-title {
     h4 {
-      text-align: center;
-    }
-    h5 {
-      text-align : center;
-      margin-top : -10px; 
-    } 
-  }
-
-  .community-menu-participate {
-    margin : 0 auto;
-    .button-participate {
-
-      width: 100%;
+      margin-top: -5px;
     }
   }
 }
 
-.community-hide-menu {
-  display : none;
+.topic-preview-on-last-update {
+  text-align: left;
+}
+.topic-preview-off-last-update {
+  text-align: right;
 }
 
-.community-content-header {
 
-  .community-content-title {
-    text-align : center;
-  }
-
-  .comunity-content-tags-container {
-    width: 50%;
-    margin: 0 auto;
-  }
-
-  .community-content-description {
-    width: 800px;
-    margin: 0 auto;
-    margin-top: 10px;
-    margin-bottom : 10px;
-  }  
-
+.community-tags {
+  margin-top: 10px;
+  
   span {
-    color : #FFF;
-    padding : 5px;
-    margin-right: 5px;
-    background-color : #C32C4F;
+      color : #FFF;
+      padding : 4px;
+      margin-right: 5px;
+      background-color : #C32C4F;
   }
-
 }
 
-.community-content {
-  
-
-  
-  margin-left: 20px;
-  // .community-content-topics {
-  //   ul {
-  //     padding:0; 
-  //     margin:0;
-  //     list-style-type: none;
-  //   }
-  // }  
+.community-description {
+  p {
+    margin-top: 20px;
+  }
 }
 
+.community-thumb-author-none {
+  display: none;
+}
+
+.topic-active {
+  background-color: rgba(48, 175, 212, 0.2);
+}
 
 .preview-topic {
-  -webkit-transition: width 2s ease-out; /* Safari */
-  transition: width 2s ease-out;
 
-  // .community-thumb-x {
-  //   max-height: 300px;
-  //   max-width: 200px;
-  // }
+  .community-actual-title-topic {
+    padding: 5px;
+    margin-bottom: -18px;
+    z-index : 1;
+  }
 
   .community-topic-container {
-    background-color : #F7F2F3;
-    padding: 5px 5px;
+    background-color : rgba(132, 126, 127, 0.02);
+    padding: 25px 25px;
     margin-top: 10px;
+    z-index: -1;
+  }
+
+  .community-pages {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    text-align: right;
+    z-index: 1;
   }
 
   .community-topic-header {
-    margin-bottom: 10px;
+    margin: 20px 0px 10px 0px;
+    font-weight: bold;
+    text-align: right;
   }
 
   .community-user-name {

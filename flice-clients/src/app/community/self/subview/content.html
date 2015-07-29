@@ -1,51 +1,31 @@
-
-<div class="community-content-header">
-  <div class="community-content-title col-md-12">
-    
-    <h1>{{community.name}}</h1>
-    <h4>{{community.members}} Members</h4>
-
-    <div class="col-md-12">
-      <span ng-repeat="tag in community.tags" class="community-content-tag">{{tag}}</span>
-    </div>
-
-    <div class="col-md-12">
-      <p class="community-content-description " align="justify">
-        {{community.description}}
-      </p>
-    </div>
-  </div>
-
+<div>  
   <div 
-  class="community-content col-md-3 row" 
-  ng-class="{'col-md-12 ' : !attrs.isOnTopicPreview, 'col-md-2': attrs.isOnTopicPreview}">
-
-<!--   <div class="col-md-12 search">
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search" name="q">
-      <div class="input-group-btn">
-        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-      </div>
-    </div>
-  </div> -->
+  class="col-md-12" 
+  ng-class="{'col-md-12' : !attrs.isOnTopicPreview, 'col-md-3 community-menu-topics': attrs.isOnTopicPreview}">
 
   <div class="col-md-12">
-    <hr>
-  </div>
-
-  <div class="community-content-topics col-md-12 row">
 
     <ul class="list-unstyled">
       <li ng-repeat="topic in attrs.topics" ng-click="methods.openTopicPreview(topic)" >
+       
+        <div class="row" ng-class="{'topic-active' : methods.isActive({{topic.id}}) && attrs.isOnTopicPreview}" >
 
-        <div class="col-md-12">
-          <h4>{{topic.title}}</h4>
-        </div>  
+          <div class="col-md-1" ng-class="{'community-thumb-author-none' : attrs.isOnTopicPreview}">
+            <img class="img-rounded" style="heigth: 75px; width: 75px;" src="{{topic.authorPhoto}}" alt="">
+          </div>
+          <div class="col-md-11">
 
-        <div class="col-md-12 row">
-          <div class="col-md-2">Por: {{topic.author}}</div>
-          <div class="col-md-9">{{topic.answers}} respostas</div>
-          <div class="col-md-1">{{topic.lastUpdate}}</div>
+            <div class="col-md-12">
+              <h4 align="left">{{topic.title}}</h4>
+            </div>  
+
+            <div class="col-md-12 row">
+              <div class="col-xs-12 col-md-2" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">Por: {{topic.author}}</div>
+              <div class="col-xs-12 col-md-8" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">{{topic.answers}} respostas</div>
+              <div class="col-xs-12 col-md-2" ng-class="{'col-md-12 topic-preview-on-last-update' : attrs.isOnTopicPreview, 'col-md-12 topic-preview-off-last-update' : !attrs.isOnTopicPreview}">{{topic.lastUpdate}}</div>
+            </div>
+          </div>
+          
         </div>
 
         <div class="col-md-12">
@@ -63,10 +43,16 @@
 
 </div>
 
-<div class="preview-topic" ng-class="{'col-md-8': attrs.isOnTopicPreview}"  ng-show="attrs.isOnTopicPreview">
+<div class="preview-topic" ng-class="{'col-md-9 community-menu-topic-content transition-active-topic': attrs.isOnTopicPreview}"  ng-show="attrs.isOnTopicPreview">
 
-  <h2>{{attrs.actualTopicTitle}}</h2>
-  
+  <h2 class="community-actual-title-topic">{{attrs.topic.title}}</h2>
+
+  <div class="community-pages">
+    <a href="#" ng-click="$event.preventDefault(); methods.firstPage()">Primeira</a> | 
+    <a href="#" ng-click="$event.preventDefault(); methods.previousPage()">Anterior</a> |
+    <a href="#" ng-click="$event.preventDefault(); methods.nextPage()">Próxima</a>
+  </div>
+
   <div ng-repeat="comment in attrs.comments">
     <div class="col-md-12 community-topic-container row">
       <div class="col-md-3 row">
@@ -89,12 +75,12 @@
         <div class="class-md-12">
           <p align="justify">
             {{comment.content}}
-
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/f90lcJnq4gs" frameborder="0" allowfullscreen></iframe>
           </p>
         </div>
-
       </div>
     </div>
   </div>
+
+  <div class="community-pages">Primeira | Anterior | Próxima</div>
+
 </div>

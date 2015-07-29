@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
@@ -28,13 +28,13 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
-import aleph.TestPersistentContext;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonassert.JsonAssert;
 import com.jayway.jsonassert.JsonAsserter;
 import com.timeoutzero.flice.account.FliceAccountApplication;
 import com.timeoutzero.flice.account.security.JwtAccount;
+
+import aleph.TestPersistentContext;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -60,7 +60,7 @@ public abstract class BasicControllerTest {
 	@Autowired
 	protected JwtAccount jwtAccount;
 
-	@Before
+	@After
 	public void setupConfiguration() {
 		
 		template.execute("TRUNCATE SCHEMA public AND COMMIT");

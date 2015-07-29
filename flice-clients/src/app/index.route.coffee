@@ -13,6 +13,15 @@ angular.module "web"
           'community-header@community':
             templateUrl : 'app/community/header.html'
 
+      .state('community.login'
+        url   : '/login'
+        views :
+          '' :
+            templateUrl : 'app/community/login/main.html'
+            controller  : 'LoginController'
+          'community-header@community' : 
+            templateUrl : 'app/community/header.html'
+      )
 
       .state('community.self'
         url : '/self/:id'
@@ -34,4 +43,4 @@ angular.module "web"
         templateUrl : "app/community/list/main.html"
       )
 
-    $urlRouterProvider.otherwise '/community/list'
+    $urlRouterProvider.otherwise '/community/login'
