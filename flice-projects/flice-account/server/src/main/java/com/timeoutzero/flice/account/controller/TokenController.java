@@ -2,14 +2,13 @@ package com.timeoutzero.flice.account.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.AccessException;
@@ -28,6 +27,10 @@ import com.timeoutzero.flice.account.exception.AccountException;
 import com.timeoutzero.flice.account.repository.ProductRepository;
 import com.timeoutzero.flice.account.repository.UserRepository;
 import com.timeoutzero.flice.account.security.JwtAccount;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 
 @RestController
 @Controller("/auth/token")
@@ -53,7 +56,7 @@ public class TokenController {
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Map<String, String> postForToken(
+	public Cookie postForToken(
 			@RequestParam String username, 
 			@RequestParam String password, 
 			@RequestParam Long clientId, 
@@ -63,8 +66,11 @@ public class TokenController {
 		Product issuer = findIssuer(clientId);
 		
 		String token = jwtAccount.createToken(issuer, user);
+		
+		Cookie cookie = new Cookie("X-FLICE-TOKEN", token);
+		cookie.setHttpOnly(true);
 
-		return createDTO(token);
+		return cookie;
 	}
 
 	private Product findIssuer(Long clientId) throws AccessException {
@@ -80,7 +86,7 @@ public class TokenController {
 
 	private User findBy(String username, String password) {
 
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findByEmail(username);
 
 		if(user == null) {
 			throw new BadCredentialsException(EXCEPTION_BAD_CREDENTIALS);

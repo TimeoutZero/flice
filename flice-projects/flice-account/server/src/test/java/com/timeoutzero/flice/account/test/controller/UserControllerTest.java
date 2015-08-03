@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.timeoutzero.flice.account.enums.SocialMedia;
+import com.timeoutzero.flice.account.form.UserForm;
 import com.timeoutzero.flice.account.test.BasicControllerTest;
 import com.timeoutzero.flice.account.test.ControllerBase;
 
@@ -17,46 +18,28 @@ public class UserControllerTest extends BasicControllerTest {
 	@Test
 	public void shouldCreateUser() throws Exception {
 		
-		MockHttpServletRequestBuilder post = post();
-		post.param("email"	 , "lucas.gmmartins@gmail.com");
-		post.param("password", "12345");
+		UserForm form = new UserForm();
+		form.setEmail("lucas.gmmartins@gmail.com");
+		form.setPassword("12345");
 		
-		MvcResult result = perform(post, status().isCreated());
+		MvcResult result = perform(postJson(form), status().isCreated());
 		
 		jsonAssert(result)
-			.assertEquals("$.email", "lucas.gmmartins@gmail.com")
-			.assertNull("$.username");
-	}
-
-	@Test
-	public void shouldntCreateUserWithSameUsername() throws Exception {
-
-		user().username("lucasflice");
-
-		saveAll();
-
-		MockHttpServletRequestBuilder post = post();
-		post.param("username", "lucasflice");
-		post.param("password", "12345");
-
-		MvcResult result = perform(post, status().isPreconditionFailed());
-		
-		jsonError(result)
-			.contains("username.already.exist");
+			.assertEquals("$.email", "lucas.gmmartins@gmail.com");
 	}
 
 	@Test
 	public void shouldntCreateUserWithSameEmail() throws Exception {
 
-		user().email("lucas.gmmartins@gmail.com");
+		user("lucas.gmmartins@gmail.com");
 
 		saveAll();
 
-		MockHttpServletRequestBuilder post = post();
-		post.param("email", "lucas.gmmartins@gmail.com");
-		post.param("password", "12345");
-
-		MvcResult result = perform(post, status().isPreconditionFailed());
+		UserForm form = new UserForm();
+		form.setEmail("lucas.gmmartins@gmail.com");
+		form.setPassword("12345");
+		
+		MvcResult result = perform(postJson(form), status().isPreconditionFailed());
 
 		jsonError(result)
 			.contains("email.already.exist");
@@ -74,7 +57,6 @@ public class UserControllerTest extends BasicControllerTest {
 		jsonAssert(result)
 			.assertNotNull("$.email")
 			.assertNotNull("$.profile.name")
-			.assertNotNull("$.profile.photo")
-			.assertNull("$.username");
+			.assertNotNull("$.profile.photo");
 	}
 }

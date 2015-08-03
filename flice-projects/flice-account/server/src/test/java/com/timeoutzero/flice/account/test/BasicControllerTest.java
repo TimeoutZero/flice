@@ -7,11 +7,12 @@ import java.io.UnsupportedEncodingException;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -60,7 +61,7 @@ public abstract class BasicControllerTest {
 	@Autowired
 	protected JwtAccount jwtAccount;
 
-	@After
+	@Before
 	public void setupConfiguration() {
 		
 		template.execute("TRUNCATE SCHEMA public AND COMMIT");
@@ -110,6 +111,10 @@ public abstract class BasicControllerTest {
 	
 	protected MockHttpServletRequestBuilder post(Object... variables) {
 		return MockMvcRequestBuilders.post(getControllerBase(), variables);
+	}
+	
+	protected MockHttpServletRequestBuilder postJson(Object content) throws Exception {
+		return MockMvcRequestBuilders.post(getControllerBase()).content(mapper.writeValueAsString(content)).contentType(MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	protected MockHttpServletRequestBuilder post(String endpoint, Object... variables) {

@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,7 +27,6 @@ import com.timeoutzero.flice.account.service.UserSocialMediaService;
 @RequestMapping("/user")
 public class UserController {
 	
-	private static final String EXCEPTION_USERNAME_ALREADY_EXIST = "username.already.exist";
 	private static final String EXCEPTION_EMAIL_ALREADY_EXIST = "email.already.exist";
 
 	private final BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(5);
@@ -39,13 +39,12 @@ public class UserController {
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserDTO create(@Valid UserForm form) {
+	public UserDTO create(@RequestBody @Valid UserForm form) {
 		
 		isValidForm(form);
 
 		User user = new User();
 		user.setEmail(form.getEmail());
-		user.setUsername(form.getUsername());
 		user.setPassword(bcrypt.encode(form.getPassword()));
 		
 		user = repository.getUserRepository().save(user);
@@ -55,25 +54,13 @@ public class UserController {
 
 	private void isValidForm(UserForm form) {
 
-		if (isBlank(form.getEmail()) && isBlank(form.getUsername())) {
+		if (isBlank(form.getEmail())) {
 			throw new AccountException(HttpStatus.PRECONDITION_FAILED, UserForm.USER_AND_EMAIL_BLANK);
 		}
 
-		if (isNotBlank(form.getUsername()) && existUsername(form)) {
-			throw new AccountException(HttpStatus.PRECONDITION_FAILED, EXCEPTION_USERNAME_ALREADY_EXIST);
-		}
-
-		if (isNotBlank(form.getEmail()) && existEmail(form)) {
+		if (isNotBlank(form.getEmail()) && repository.getUserRepository().existByEmail(form.getEmail())) {
 			throw new AccountException(HttpStatus.PRECONDITION_FAILED, EXCEPTION_EMAIL_ALREADY_EXIST);
 		}
-	}
-
-	private boolean existEmail(UserForm form) {
-		return repository.getUserRepository().findByEmail(form.getEmail()) != null;
-	}
-
-	private boolean existUsername(UserForm form) {
-		return repository.getUserRepository().findByUsername(form.getUsername()) != null;
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)

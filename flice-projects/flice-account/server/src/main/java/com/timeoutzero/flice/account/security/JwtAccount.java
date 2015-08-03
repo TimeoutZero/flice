@@ -1,11 +1,5 @@
 package com.timeoutzero.flice.account.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
-
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -24,6 +18,12 @@ import com.timeoutzero.flice.account.entity.User;
 import com.timeoutzero.flice.account.exception.AccountException;
 import com.timeoutzero.flice.account.repository.UserRepository;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+
 @Component
 public class JwtAccount {
 	
@@ -38,7 +38,7 @@ public class JwtAccount {
 		String token = 
 				 Jwts.builder()
 				.setIssuer(issuer.getName())
-				.setSubject(user.getUsername())
+				.setSubject(user.getEmail())
 				.setExpiration(getConvertedExpirationDate())
 				.signWith(SignatureAlgorithm.HS512, getSecretKey())
 				.compact();
@@ -60,9 +60,7 @@ public class JwtAccount {
 		 
 		String subject = getSubject(token);
 	
-		User user = userRepository.findByUsername(subject);
-
-		if(user == null) {
+		if(!userRepository.existByEmail(subject)) {
 			throw new AccountException(HttpStatus.UNAUTHORIZED, "unautorized");
 		}
 	}
