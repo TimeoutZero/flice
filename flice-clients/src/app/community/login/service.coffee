@@ -3,7 +3,7 @@ angular.module 'web'
 
     register : (form)->
       $http
-        url    : ACCOUNT_API + "/user"
+        url    : ACCOUNT_API + "/account/user"
         method : 'POST'
         data   : 
           'email'    : form.email.$modelValue

@@ -3,9 +3,6 @@ package com.timeoutzero.flice.rest.operations.imp;
 import java.util.HashMap;
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,19 +10,22 @@ import com.timeoutzero.flice.rest.Credentials;
 import com.timeoutzero.flice.rest.enums.GrantType;
 import com.timeoutzero.flice.rest.operations.TokenOperations;
 
+import lombok.AllArgsConstructor;
+
 @AllArgsConstructor
 public class TokenOperationsImp implements TokenOperations {
-	
+	 
 	private Credentials credentials;
+	private RestTemplate template;
 	
 	@Override
 	public void authorize(String token) {
 		
-		ResponseEntity<Object> response = new RestTemplate().getForEntity(this.credentials.getUrl(), null);
+		ResponseEntity<Object> response = template.getForEntity(this.credentials.getUrl("/auth"), null);
 		
-		if(!response.getStatusCode().equals(HttpStatus.OK)) {
-			throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-		}
+//		if(!response.getStatusCode().equals(HttpStatus.OK)) {
+//			throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+//		}
 	}
 	
 	@Override
@@ -39,19 +39,20 @@ public class TokenOperationsImp implements TokenOperations {
 		
 		ResponseEntity<String> response = null;
 		
-		try {
-
-			response = new RestTemplate().postForEntity(this.credentials.getUrl(), request, String.class);
-			
-			if(!response.getStatusCode().equals(HttpStatus.CREATED)) {
-				throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-			}
-			
-		} catch (Exception e) {
-			throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-
-		}
+		response = template.postForEntity(this.credentials.getUrl("/token"), request, String.class);
+//		try {
+//
+//			
+//			if(!response.getStatusCode().equals(HttpStatus.CREATED)) {
+//				throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+//			}
+//			
+//		} catch (Exception e) {
+//			throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+//
+//		}
 		
 		return response.getBody();
 	}
+
 }

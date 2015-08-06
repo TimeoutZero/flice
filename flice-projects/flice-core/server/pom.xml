@@ -28,12 +28,6 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>com.timeoutzero</groupId>
-			<artifactId>flice-account-client</artifactId>
-			<version>${flice.account.client.version}</version>
-		</dependency>
-
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -99,10 +93,16 @@
 			<version>${orika-version}</version>
 		</dependency>
 
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<scope>test</scope>
+		</dependency>
+ -->
+		<dependency>
+			<groupId>com.timeoutzero</groupId>
+			<artifactId>flice-account-client</artifactId>
+			<version>${flice.account.client.version}</version>
 		</dependency>
 
 		<dependency>

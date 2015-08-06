@@ -11,15 +11,14 @@ import com.timeoutzero.flice.core.domain.Topic;
 import com.timeoutzero.flice.core.domain.Topic.TopicBuilder;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.domain.User.UserBuilder;
-import com.timeoutzero.flice.rest.dto.UserDTO;
+import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.operations.mock.AccountMockBuilders;
 
 public class Compose {
 	
-	
 	public static UserBuilder user(String username) {
 	
-		UserDTO user = AccountMockBuilders.createMockUser(username);
+		AccountUserDTO user = AccountMockBuilders.createMockUser(username);
 		return User.builder().accountId(user.getId()).email(username);
 	}
 

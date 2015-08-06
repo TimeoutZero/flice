@@ -7,16 +7,18 @@ import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter @Setter
+@ToString
 public class User extends AbstractEntity {
 
-	@Column(name = "email", unique = true)
+	@Column(unique = true)
 	private String email;
 	private String password;
 	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	private Profile profile;
+	private Profile profile = new Profile();
 
 }

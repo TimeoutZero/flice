@@ -100,6 +100,7 @@ public class RequestBuilder {
 
 		URI link = UriComponentsBuilder.fromHttpUrl(server).path(URI).queryParams(queryString).build().toUri();
 
+		System.out.println(link.toString());
 		ResponseEntity<T> response = rest.exchange(link, method, entity, responseType);
 
 		if (status != null) {

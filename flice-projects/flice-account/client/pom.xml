@@ -27,6 +27,7 @@
 		<!-- UTIL -->
 		<apache.commons.lang.version>3.3.2</apache.commons.lang.version>
 		<apache.commons.collections.version>4.0</apache.commons.collections.version>
+		<apache.commons.io.version>2.4</apache.commons.io.version>
 		<lombok.version>1.16.2</lombok.version>
 		<jsonpath.version>0.9.1</jsonpath.version>
 
@@ -59,10 +60,6 @@
 
 		<!-- UTIL -->
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -77,6 +74,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${apache.commons.io.version}</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
@@ -87,6 +91,11 @@
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path-assert</artifactId>
 			<version>${jsonpath.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
 		</dependency>
 
 	</dependencies>

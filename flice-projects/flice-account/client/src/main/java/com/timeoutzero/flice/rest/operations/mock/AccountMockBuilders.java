@@ -5,15 +5,15 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import com.timeoutzero.flice.rest.dto.UserDTO;
+import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 
 public class AccountMockBuilders {
 
-	public static Map<String, UserDTO> users = new HashMap<>();
+	public static Map<String, AccountUserDTO> users = new HashMap<>();
 
-	public static UserDTO createMockUser(String username) {
+	public static AccountUserDTO createMockUser(String username) {
 		
-		UserDTO user = new UserDTO();
+		AccountUserDTO user = new AccountUserDTO();
 		user.setId(Long.valueOf(RandomStringUtils.randomNumeric(3)));
 		user.setUsername(username);
 		

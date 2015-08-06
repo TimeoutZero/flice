@@ -6,7 +6,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
-import com.timeoutzero.flice.rest.dto.UserDTO;
+import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.enums.GrantType;
 import com.timeoutzero.flice.rest.operations.TokenOperations;
 
@@ -24,9 +24,9 @@ public class TokenOperationsMock implements TokenOperations {
 		
 		String mockToken = RandomStringUtils.randomAlphanumeric(10);
 		
-		 for (Entry<String, UserDTO> entry : AccountMockBuilders.users.entrySet()) {
+		 for (Entry<String, AccountUserDTO> entry : AccountMockBuilders.users.entrySet()) {
 			
-			UserDTO value = entry.getValue();
+			AccountUserDTO value = entry.getValue();
 			
 			boolean isSameEmail    = StringUtils.isNotBlank(value.getEmail()) && value.getEmail().equals(username);
 			boolean isSameUsername = StringUtils.isNotBlank(value.getUsername()) && value.getUsername().equals(username);

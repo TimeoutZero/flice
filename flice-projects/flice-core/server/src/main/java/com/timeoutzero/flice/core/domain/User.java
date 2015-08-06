@@ -29,9 +29,6 @@ public class User{
 	@Column(name = "account_id")
 	private Long accountId;
 	
-	@Column(name = "name")
-	private String name;
-
 	@Column(name = "email")
 	private String email;
 

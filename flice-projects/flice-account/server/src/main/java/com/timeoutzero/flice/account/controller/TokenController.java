@@ -5,8 +5,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
@@ -66,9 +64,10 @@ public class TokenController {
 		Product issuer = findIssuer(clientId);
 		
 		String token = jwtAccount.createToken(issuer, user);
-		
+
 		Cookie cookie = new Cookie("X-FLICE-TOKEN", token);
 		cookie.setHttpOnly(true);
+		//cookie.setSecure(true);
 
 		return cookie;
 	}
@@ -97,13 +96,5 @@ public class TokenController {
 		}
 		
 		return user;
-	}
-
-	private Map<String, String> createDTO(String token) {
-
-		Map<String, String> map = new HashMap<>();
-		map.put("token", token);
-		
-		return map;
 	}
 }

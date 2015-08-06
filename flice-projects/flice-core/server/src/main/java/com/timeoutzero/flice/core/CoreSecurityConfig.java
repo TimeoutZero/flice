@@ -2,11 +2,14 @@ package com.timeoutzero.flice.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -36,8 +39,12 @@ public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private TokenAuthenticatorProvider tokenAuthenticatorProvider;
 	
-	@Autowired
-	private TokenFilter tokenFilter;
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web
+			.ignoring()
+				.antMatchers(HttpMethod.POST, "/account/user");
+	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -47,25 +54,25 @@ public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.anyRequest().authenticated()
 				.and()
-			.formLogin()
-				.loginPage("/login")
-				.successHandler(customAuthenticationSuccessHandler)
-				.failureHandler(customAuthenticateFailureHandler)
-				.permitAll()
-				.and()
 			.exceptionHandling()
 				.authenticationEntryPoint(customAuthenticationEntryPoint)
 				.and()
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-			.addFilterBefore(tokenFilter, BasicAuthenticationFilter.class);
-		
+			.addFilterBefore(tokenSecurityFilter(), BasicAuthenticationFilter.class);
 		
 	}
+	
+	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(tokenAuthenticatorProvider);
+	}
+	
+	@Bean(name = "tokenSecurityFilter")
+	public TokenFilter tokenSecurityFilter() {
+		return new TokenFilter();
 	}
 }

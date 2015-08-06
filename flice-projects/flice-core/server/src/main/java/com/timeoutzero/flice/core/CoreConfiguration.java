@@ -28,7 +28,7 @@ public class CoreConfiguration {
 	public AccountOperations accountOperations() {
 		
 		Boolean test = env.getRequiredProperty(PROPERTY_ACCOUNT_TEST, Boolean.class);
-		AccountOperations operations = new AccountOperations("http://localhost:9090/account/api" , "1", "1", test);
+		AccountOperations operations = new AccountOperations("http://account:8080/account/api" , "1", "1", test);
 		
 		return operations;
 	}

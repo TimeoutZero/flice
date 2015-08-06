@@ -27,27 +27,32 @@ public class CommunityControllerTest extends ApplicationTest{
 	
 	@Test
 	public void testeListActives() throws Exception{
-		Community filmes = community("Filmes").build();
-		Community games = community("Games").build();
-		Community series = community("Series").active(false).build();
+		
+		Community filmes   = community("Filmes").build();
+		Community games    = community("Games").build();
+		Community series   = community("Series").active(false).build();
 		Community mulheres = community("Mulheres").build();
+
 		saveAll(filmes, games, series, mulheres);
 		
 		JsonNode json = get("/community").expectedStatus(HttpStatus.OK).getJson();
+		
 		jsonAsserter(json)
-		.assertThat("$", hasSize(3))
-		.assertThat("$.[*].name", contains("Filmes", "Games", "Mulheres"));
+			.assertThat("$", hasSize(3))
+			.assertThat("$.[*].name", contains("Filmes", "Games", "Mulheres"));
 	}
 	
 	@Test
 	public void testFindById() throws Exception{
+		
 		Community shows = community("Show").build();
 		saveAll(shows);
 		
 		JsonNode json = get("/community/%s", shows.getId()).expectedStatus(HttpStatus.OK).getJson();
+		
 		jsonAsserter(json)
-		.assertThat("$.name", equalTo("Show"))
-		.assertThat("$.description", equalTo("Show"));
+			.assertThat("$.name", equalTo("Show"))
+			.assertThat("$.description", equalTo("Show"));
 	}
 	
 	@Test
@@ -64,16 +69,18 @@ public class CommunityControllerTest extends ApplicationTest{
 		    .getJson();
 		
 		jsonAsserter(json)
-		.assertThat("$.name", equalTo("Games"))
-		.assertThat("$.description", equalTo("Comunidade de games"))
-		.assertThat("$.image", equalTo("imagem"));
+			.assertThat("$.name", equalTo("Games"))
+			.assertThat("$.description", equalTo("Comunidade de games"))
+			.assertThat("$.image", equalTo("imagem"));
 	}
 
 	@Test
 	public void testUpdate() throws Exception{
 		
 		Community games = community("Games")
-				.description("Comunidade de games").image("imagem").build();
+				.description("Comunidade de games")
+				.image("imagem").build();
+		
 		saveAll(games);
 		
 		CommunityForm form = new CommunityForm();
@@ -87,15 +94,18 @@ public class CommunityControllerTest extends ApplicationTest{
 				.getJson();
 		
 		jsonAsserter(json)
-		.assertThat("$.name", equalTo("Vídeo Games"))
-		.assertThat("$.description", equalTo("Comunidade de vídeo games"))
-		.assertThat("$.image", equalTo("novaimagem.png"));
+			.assertThat("$.name", equalTo("Vídeo Games"))
+			.assertThat("$.description", equalTo("Comunidade de vídeo games"))
+			.assertThat("$.image", equalTo("novaimagem.png"));
 	}
 	
 	@Test
 	public void testDelete() throws Exception{
+		
 		Community games = community("Games")
-				.description("Comunidade de games").image("imagem").build();
+				.description("Comunidade de games")
+				.image("imagem").build();
+		
 		saveAll(games);
 		
 		delete("/community/%s", games.getId()).expectedStatus(HttpStatus.OK);

@@ -10,7 +10,6 @@ public class CoreSecurityContext {
 	public static User getLoggedUser() {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		User principal = (User) authentication.getPrincipal();
-		return null;
+		return (User) authentication.getPrincipal();
 	}
 }

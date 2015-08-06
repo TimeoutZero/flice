@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.service.CoreService;
-import com.timeoutzero.flice.rest.dto.UserDTO;
+import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.operations.AccountOperations;
 
 @Component
@@ -34,19 +34,21 @@ public class TokenAuthenticatorProvider implements AuthenticationProvider {
 		
 		String token = getValidToken(authentication); 
 		
-		UserDTO result = accountOperations.getUserOperations().getUser(token);
+		AccountUserDTO result = accountOperations.getUserOperations().get(token);
 		User user = service.getUserRepository().findByAccountId(result.getId());
 		
 		return new PreAuthenticatedAuthenticationToken(user, token);
 	}
 
 	private String getValidToken(Authentication authentication) {
-		String token = authentication.getCredentials().toString();
 		
-		if(StringUtils.isBlank(token)) {
+		Object credentials = authentication.getCredentials();
+		
+		if(credentials == null || StringUtils.isBlank(credentials.toString())) {
 			throw new BadCredentialsException(EXCEPTION_INVALID_TOKEN);
 		}
-		return token;
+		
+		return credentials.toString();
 	}
 
 	@Override

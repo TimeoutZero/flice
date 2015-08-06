@@ -27,3 +27,14 @@ account:
   volumes:
     - flice-projects/flice-account/server/target/flice-account.jar:/app/flice-account.jar
   command: java -jar -Dspring.profiles.active=DEV /app/flice-account.jar 
+
+core: 
+  image: lucasgmartins/java8
+  ports:
+    - "8080:8080"
+  links:
+    - mysql
+    - account
+  volumes:
+    - flice-projects/flice-core/server/target/flice-core.jar:/app/flice-core.jar
+  command: java -jar -Dspring.profiles.active=DEV /app/flice-core.jar 

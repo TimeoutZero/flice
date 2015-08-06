@@ -81,7 +81,7 @@ public class TopicController {
 		return new TopicDTO(topic);
 	}
 
-	@RequestMapping(value="/{id}", method=DELETE)
+	@RequestMapping(value="/{id}", method = DELETE)
 	public TopicDTO delete(@PathVariable("id") Long id){
 
 		Topic topic = coreService.getTopicRepository().findOne(id);

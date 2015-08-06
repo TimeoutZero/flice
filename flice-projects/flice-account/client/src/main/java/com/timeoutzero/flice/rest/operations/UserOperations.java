@@ -1,8 +1,9 @@
 package com.timeoutzero.flice.rest.operations;
 
-import com.timeoutzero.flice.rest.dto.UserDTO;
+import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 
 public interface UserOperations {
 
-	UserDTO getUser(String token);
+	AccountUserDTO get(String token);
+	AccountUserDTO create(String email, String password);
 }

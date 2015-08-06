@@ -2,9 +2,7 @@ package com.timeoutzero.flice.core.security;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -16,13 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
-import com.timeoutzero.flice.core.service.CoreService;
 import com.timeoutzero.flice.rest.operations.AccountOperations;
 
-@Component
-public class TokenFilter implements Filter {
+public class TokenFilter extends GenericFilterBean {
 
 	private static final Logger log = LoggerFactory.getLogger(TokenFilter.class);
 	
@@ -30,12 +26,6 @@ public class TokenFilter implements Filter {
 	
 	@Autowired
 	private AccountOperations accountOperations;
-	
-	@Autowired
-	private CoreService service;
-
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {}
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
@@ -45,15 +35,8 @@ public class TokenFilter implements Filter {
 		
 		String token = request.getHeader(CUSTOM_HEADER_X_AUTH_TOKEN);
 		
-		if(authorize(token)) {
-			
-			SecurityContextHolder.getContext().setAuthentication(new TokenAuthentication(token));
-			
-			chain.doFilter(request, response);
-		
-		} else {
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-		}
+		SecurityContextHolder.getContext().setAuthentication(new TokenAuthentication(token));
+		chain.doFilter(request, response);
 	}
 
 	private boolean authorize(String token) throws IOException {
@@ -74,10 +57,4 @@ public class TokenFilter implements Filter {
 		
 		return true;
 	}
-
-
-
-	@Override
-	public void destroy() {}
-
 }

@@ -34,6 +34,7 @@ import com.timeoutzero.flice.rest.operations.AccountOperations;
 @IntegrationTest("server.port=10001")
 public abstract class ApplicationTest {
 
+	//private static Logger = LoggerFactory.getLogger(ApplicationTest.class);
 	private static List<Object> toPersist = new ArrayList<Object>();
 
 	private final String server;
@@ -50,7 +51,7 @@ public abstract class ApplicationTest {
 	private String token;
 
 	public ApplicationTest() {
-		this.server = "http://localhost:10001";
+		this.server = "http://localhost:10001/";
 	}
 
 	@Before
@@ -98,8 +99,8 @@ public abstract class ApplicationTest {
 
 	protected void login(User user) {
 		token = accountOperations.getTokenOperations().create(user.getEmail(), "1", 1l, GrantType.PASSWORD);
-
 	}
+	
 	protected RequestBuilder get(String uri) {
 		return new RequestBuilder(server, uri, token, HttpMethod.GET);
 	}

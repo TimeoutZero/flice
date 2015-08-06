@@ -3,11 +3,11 @@ package com.timeoutzero.flice.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Credentials {
@@ -20,14 +20,16 @@ public class Credentials {
 	private String clientId;
 	private String secretKey;
 	
-	public String getUrl() {
+	public String getUrl(String endpoint) {
 		
 		List<NameValuePair> parameters = new ArrayList<>();
+		
 		parameters.add(createQueryStringParam(CLIENT_ID, clientId));
 		parameters.add(createQueryStringParam(SECRET_KEY, secretKey));
 		
-		StringBuilder builderURL = new StringBuilder(url + "?");
-		builderURL.append(URLEncodedUtils.format(parameters , CHARSET_UTF_8));
+		StringBuilder builderURL = new StringBuilder(url);
+		builderURL.append(endpoint);
+		builderURL.append("?" + URLEncodedUtils.format(parameters , CHARSET_UTF_8));
 	
 		return builderURL.toString();
 	}
