@@ -16,8 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.timeoutzero.flice.core.security.CustomAuthenticationEntryPoint;
-import com.timeoutzero.flice.core.security.CustomAuthenticationFailureHandler;
-import com.timeoutzero.flice.core.security.CustomAuthenticationSuccessHandler;
 import com.timeoutzero.flice.core.security.TokenAuthenticatorProvider;
 import com.timeoutzero.flice.core.security.TokenFilter;
 
@@ -26,13 +24,7 @@ import com.timeoutzero.flice.core.security.TokenFilter;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	private CustomAuthenticationFailureHandler customAuthenticateFailureHandler;
-	
-	@Autowired
-	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-	
+
 	@Autowired 
 	private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
@@ -61,10 +53,7 @@ public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 			.addFilterBefore(tokenSecurityFilter(), BasicAuthenticationFilter.class);
-		
 	}
-	
-	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -1,9 +1,9 @@
 angular.module 'web'
-  .service 'LoginService', ($http, ACCOUNT_API) ->
+  .service 'LoginService', ($http, CORE_API) ->
 
     register : (form)->
       $http
-        url    : ACCOUNT_API + "/account/user"
+        url    : CORE_API + "/account/user"
         method : 'POST'
         data   : 
           'email'    : form.email.$modelValue

@@ -6,8 +6,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-import javax.servlet.http.Cookie;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
@@ -34,8 +32,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 @Controller("/auth/token")
 public class TokenController {
  
-	private static final String EXCEPTION_BAD_CREDENTIALS  = "bad.credentials"; 
-	private static final String EXCEPTION_ISSUER_NOT_FOUND = "issuer.not.found";
+	private static final String EXCEPTION_BAD_CREDENTIALS   = "bad.credentials"; 
+	private static final String EXCEPTION_ISSUER_NOT_FOUND  = "issuer.not.found";
 	
 	@Autowired
 	private UserRepository userRepository; 
@@ -54,7 +52,7 @@ public class TokenController {
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cookie postForToken(
+	public String postForToken(
 			@RequestParam String username, 
 			@RequestParam String password, 
 			@RequestParam Long clientId, 
@@ -63,13 +61,7 @@ public class TokenController {
 		User user = findBy(username, password);
 		Product issuer = findIssuer(clientId);
 		
-		String token = jwtAccount.createToken(issuer, user);
-
-		Cookie cookie = new Cookie("X-FLICE-TOKEN", token);
-		cookie.setHttpOnly(true);
-		//cookie.setSecure(true);
-
-		return cookie;
+		return jwtAccount.createToken(issuer, user);
 	}
 
 	private Product findIssuer(Long clientId) throws AccessException {

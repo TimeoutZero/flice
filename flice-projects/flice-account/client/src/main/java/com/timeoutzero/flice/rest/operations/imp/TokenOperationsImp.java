@@ -21,15 +21,11 @@ public class TokenOperationsImp implements TokenOperations {
 	@Override
 	public void authorize(String token) {
 		
-		ResponseEntity<Object> response = template.getForEntity(this.credentials.getUrl("/auth"), null);
-		
-//		if(!response.getStatusCode().equals(HttpStatus.OK)) {
-//			throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-//		}
+		template.getForEntity(this.credentials.getUrl("/auth"), null);
 	}
 	
 	@Override
-	public String create(String username, String password, Long clientId, GrantType grantType) {
+	public String create(String username, String password, String clientId, GrantType grantType) {
 		
 		Map<String, Object> request = new HashMap<>();
 		request.put("username", username);
@@ -37,20 +33,7 @@ public class TokenOperationsImp implements TokenOperations {
 		request.put("clientId", clientId);
 		request.put("grantType", grantType.toString()); 
 		
-		ResponseEntity<String> response = null;
-		
-		response = template.postForEntity(this.credentials.getUrl("/token"), request, String.class);
-//		try {
-//
-//			
-//			if(!response.getStatusCode().equals(HttpStatus.CREATED)) {
-//				throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-//			}
-//			
-//		} catch (Exception e) {
-//			throw new RuntimeException(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-//
-//		}
+		ResponseEntity<String> response = template.postForEntity(this.credentials.getUrl("/token"), request, String.class);
 		
 		return response.getBody();
 	}
