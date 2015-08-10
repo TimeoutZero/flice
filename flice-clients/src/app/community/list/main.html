@@ -1,15 +1,27 @@
 
+<div>
+  <button ng-click="methods.changeView()">Change View</button>
+  <div ng-show="isListView" ng-repeat="community in communities">
+    <div class="col-md-12 row community-list" ng-click="methods.goToCommunity({{community.id}})">
+      <div class="col-md-1">
+        <a ui-sref="community.self({ id: community.id })">
+          <img class="img-rounded" src="{{community.image}}" alt="...">
+        </a>
+      </div>
+      <div class="community-description col-md-11">
+        {{community.name}}
+      </div>
+    </div>
+  </div>
 
-<div class="col-md-12 row">
-
-  <div ng-repeat="community in communities">
+  <div ng-show="!isListView" ng-repeat="community in communities">
     <div class="col-md-3">
       <div class="community-thumb">
 
         <div class="community-thumb-image">
           <a ui-sref="community.self({ id: community.id })">
             <img class="img-rounded" src="{{community.image}}" alt="...">
-          </a>         
+          </a>
 
         </div>
 
@@ -18,7 +30,7 @@
             <span>
               {{tag}}
             </span>
-          </p>  
+          </p>
         </div>
       </div>
 
@@ -27,5 +39,4 @@
       </div>
     </div>
   </div>
-
 </div>

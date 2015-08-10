@@ -1,5 +1,14 @@
 angular.module "web"
-  .controller "CommunityListController", ($scope) ->
+  .controller "CommunityListController", ($scope, $state) ->
+
+    $scope.isListView = true
+
+    $scope.methods =
+      changeView : ->
+        $scope.isListView = !$scope.isListView
+
+      goToCommunity: (id) ->
+        $state.go 'community.self', {id: id}
 
     $scope.communities = [
       {

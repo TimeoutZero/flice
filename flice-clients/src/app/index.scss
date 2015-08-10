@@ -37,7 +37,7 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
 body {
-  font-family : 'Open Sans', sans-serif; 
+  font-family : 'Open Sans', sans-serif;
 
 }
 
@@ -45,7 +45,7 @@ body {
   background-color : #FFF;
 }
 .login {
-  background: url('/assets/images/login.jpg')  no-repeat center center fixed ; 
+  background: url('/assets/images/login.jpg')  no-repeat center center fixed ;
   background-size: 100% 100%;
 }
 
@@ -84,11 +84,31 @@ body {
   margin-top: 70px;
 }
 
+.community-list{
+  cursor: pointer;
+  min-height: 1px;
+  position: relative;
+  margin    : 5px 0px 0px 20px;
+  background-color: grey;
+
+  img{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    height    : 100px;
+    width     : 100px;
+  }
+
+  .community-description{
+    padding-top: 38px;
+
+  }
+}
+
 .community-thumb {
   min-height: 1px;
   position: relative;
   margin    : 10px 0px 0px 20px;
-  height    : 300px; 
+  height    : 300px;
   width     : 300px;
   background-color : #000;
   border-top-left-radius: 5px;
@@ -111,7 +131,7 @@ body {
     bottom: 0;
     width: auto;
     line-height: 25px;
-    
+
   }
 
   .community-thumb-tags {
@@ -131,8 +151,8 @@ body {
 
 .community-thumb-description {
   margin    : 0px 0px 0px 20px;
-  
-  height      : 35px; 
+
+  height      : 35px;
   line-height : 35px;
   width       : 300px;
   background-color: #251923;
@@ -140,21 +160,21 @@ body {
   border-bottom-right-radius : 5px;
 
   .community-thumb-title {
-    margin: 0px 5px 5px 5px;  
+    margin: 0px 5px 5px 5px;
     text-align: center;
     vertical-align: text-top;
     color: #FFF;
     font-size : 16px;
   }
-} 
+}
 
 .community-cover-container {
-  height: 200px;  
-  overflow: hidden; 
+  height: 200px;
+  overflow: hidden;
   position : absolute;
 
   .community-cover-image {
-    width: 100%; 
+    width: 100%;
     margin: 0px;
     border-radius: 5px;
   }
@@ -162,10 +182,10 @@ body {
 
 .community-content-cover {
 
-  height: 200px; 
-  color: #FFF; 
-  background-color: rgba(0, 0, 0, 0.7); 
-  margin-left: 16px; 
+  height: 200px;
+  color: #FFF;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin-left: 16px;
   text-align: center;
   border-top-left-radius : 5px;
   border-bottom-left-radius : 5px;
@@ -191,7 +211,7 @@ body {
 
 .community-tags {
   margin-top: 10px;
-  
+
   span {
       color : #FFF;
       padding : 4px;

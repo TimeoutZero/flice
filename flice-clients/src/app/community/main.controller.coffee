@@ -1,11 +1,11 @@
 angular.module "web"
   .controller "MainController", ($scope) ->
 
-    $scope.attrs = 
+    $scope.attrs =
       body : "{ 'background-color' : '#000' }"
-      login : true;
-    
-    $scope.methods = 
+      login : false;
+
+    $scope.methods =
       init : ()->
         console.log $scope.attrs.body
         console.log 'mainCtrl'
