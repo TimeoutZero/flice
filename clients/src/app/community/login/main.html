@@ -1,0 +1,126 @@
+<div class="col-md-12 backs">
+  <div class="col-md-7" style="padding: 25px; margin-top: 150px; color: #FFF; background-color: rgba(0, 0, 0, 0.5);">
+    <div class="col-md-12">
+      <h1>
+        Bem-vindo ao Flice.
+      </h1>
+    </div>
+    <div class="col-md-12">
+      <h3>
+        Conecte-se e discuta com pessoas do mesmo interesse que o seu, política, tecnologia, arte e muito mais nas maiores comunidades da internet.
+      </h3>
+    </div>
+  </div>
+  
+  <div class="col-md-5" style="background-color: #FFF; padding: 25px; margin-top: 150px;">
+
+    <div 
+      class="alert" 
+      ng-class="{ 'alert-success fade in' : attrs.feedback.isSuccess, 'alert-danger fade in' : attrs.feedback.isError }" 
+      ng-show="attrs.feedback.isSuccess || attrs.feedback.isError">
+        
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        
+        <p>  
+         {{attrs.feedback.message}}
+        </p>
+    </div>
+
+    <form ng-show="attrs.isSignIn" name="userForm" class="form-horizontal" novalidate>
+
+      <div class="col-md-12">
+        <h4><a href="#" ng-click="methods.changePages()">Sign up</a> or sign in with</h4>
+      </div>
+
+      <!--     <fb:login-button show-faces="true" max-rows="1" size="large"></fb:login-button>-->    
+
+      <div class="col-md-12 ">
+        <div class="col-md-4 login-social login-social-facebook">FACEBOOK</div>
+        <div class="col-md-4 login-social login-social-twitter">TWITTER</div>
+        <div class="col-md-4 login-social login-social-google">GOOGLE+</div>
+      </div>
+
+      <div class="col-md-12">
+        <hr />
+      </div>
+
+      <!-- FORM LOGIN-->
+      <div class="col-md-12">
+
+        <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+
+          <label class="control-label col-sm-2">Email:</label>
+
+          <div class="col-sm-10"> 
+            <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Enter e-mail"  required>
+            <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Enter a valid email.</p>
+          </div>
+
+        </div>
+
+        <div class="form-group" ng=class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine}">
+          <label class="control-label col-sm-2" for="pwd">Password:</label>
+          <div class="col-sm-10"> 
+            <input type="password" name="password" class="form-control"  ng-model="user.password" placeholder="Enter password" required>
+            <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">Enter a valid password</p>
+          </div>
+        </div>
+
+        <div class="form-group"> 
+          <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+              <label><input type="checkbox"> Remember me</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group"> 
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary" ng-click="methods.login()" ng-disabled="userForm.$invalid">Submit</button>
+          </div>
+        </div>   
+      </div>
+    </form>
+
+    <form ng-show="attrs.isSignUp" name="signupForm" class="form-horizontal" novalidate>
+
+      <div class="col-md-12">
+
+        <div class="col-md-12">
+          <h4>Sign up</h4>
+          <hr>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : signupForm.email.$invalid && !signupForm.email.$pristine }">
+          <label class="control-label col-md-3">Email:</label>
+          <div class="col-md-9"> 
+            <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Enter e-mail"  required>
+            <p ng-show="signupForm.email.$invalid && !signupForm.email.$pristine" class="help-block">Enter a valid email.</p>
+          </div> 
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : signupForm.password.$invalid && !signupForm.password.$pristine }">
+          <label class="control-label col-md-3">Password:</label>
+          <div class="col-md-9">
+            <input type="password" name="password" class="form-control" ng-model="user.password" placeholder="Enter a password" required>
+            <p ng-show="signupForm.password.$invalid && !signupForm.password.$pristine" class="help-block">Enter a valid password</p>
+          </div> 
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-9">
+            <input type="checkbox" name="licenseAgreement" ng-model="user.agreement"> I accept the terms in the license agreement
+          </div>
+        </div>
+        
+        <div class="form-group"> 
+          <div class="col-sm-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-primary" ng-click="methods.register()" ng-disabled="signupForm.$invalid">Sign up</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+</div>
