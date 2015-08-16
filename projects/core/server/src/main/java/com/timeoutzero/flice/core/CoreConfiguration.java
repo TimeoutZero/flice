@@ -12,16 +12,13 @@ import com.timeoutzero.flice.rest.operations.AccountOperations;
 public class CoreConfiguration {
 
 	private static final String PROPERTY_ACCOUNT_TEST = "account.test"; 
-//
-//	@Value("${account.url}")
-//	private String url;
-//	
-	@Value("${account.client.id}")
+
+	@Value("${account.url}")
+	private String url;
+
+	@Value("${account.token}")
 	private String clientId;
-//	
-//	@Value("${account.secret.key}")
-//	private String secretKey;
-	
+
 	@Autowired
 	private Environment env;
 	
@@ -29,7 +26,7 @@ public class CoreConfiguration {
 	public AccountOperations accountOperations() {
 		
 		Boolean test = env.getRequiredProperty(PROPERTY_ACCOUNT_TEST, Boolean.class);
-		AccountOperations operations = new AccountOperations("http://account:8080/account/api" , "1", "1", test);
+		AccountOperations operations = new AccountOperations("http://account:8080/account/api" , "1", test);
 		
 		return operations;
 	}

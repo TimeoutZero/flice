@@ -98,7 +98,7 @@ public abstract class ApplicationTest {
 	}
 
 	protected void login(User user) {
-		token = accountOperations.getTokenOperations().create(user.getEmail(), "1", "1", GrantType.PASSWORD);
+		token = accountOperations.getTokenOperations().create(user.getEmail(), "1", GrantType.PASSWORD);
 	}
 	
 	protected RequestBuilder get(String uri) {

@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +40,6 @@ public class AccountController {
 	@Autowired
 	private AccountOperations accountOperations;
 	
-	@Value("${account.client.id}")
-	private String clientId;
-	
 	@RequestMapping(value = "/user", method = POST)
 	public UserDTO create(@RequestBody @Valid UserForm form) {
 		
@@ -65,7 +61,7 @@ public class AccountController {
 		
 		try {
 
-			token = accountOperations.getTokenOperations().create(form.getEmail(), form.getPassword(), clientId, GrantType.PASSWORD);
+			token = accountOperations.getTokenOperations().create(form.getEmail(), form.getPassword(), GrantType.PASSWORD);
 			
 		} catch (AccountException e) {
 			log.error(e.getLocalizedMessage());

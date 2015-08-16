@@ -24,12 +24,12 @@ public class TokenOperationsImp implements TokenOperations {
 	}
 	
 	@Override
-	public String create(String username, String password, String clientId, GrantType grantType) {
+	public String create(String username, String password, GrantType grantType) {
 		
 		MultiValueMap<String, Object> request = new LinkedMultiValueMap<>();
 		request.add("username", username);
 		request.add("password", password);
-		request.add("clientId", clientId);
+		request.add("token", credentials.getToken());
 		request.add("grantType", grantType.toString()); 
 		
 		ResponseEntity<String> response = template.postForEntity(this.credentials.getUrl("/auth/token"), request, String.class);

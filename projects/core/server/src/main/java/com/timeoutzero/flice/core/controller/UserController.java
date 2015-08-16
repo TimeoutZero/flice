@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.core.controller;
 
 import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUser;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Topic;
+import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.domain.UserCommunity;
 import com.timeoutzero.flice.core.domain.UserTopic;
+import com.timeoutzero.flice.core.dto.UserDTO;
 import com.timeoutzero.flice.core.repository.CommunityRepository;
 import com.timeoutzero.flice.core.repository.TopicRepository;
 import com.timeoutzero.flice.core.repository.UserCommunityRepository;
@@ -34,6 +37,14 @@ public class UserController {
 	
 	@Autowired
 	private CommunityRepository communityRepository;
+	
+	
+	@RequestMapping(value = "/me", method = GET)
+	public UserDTO me() {
+		
+		User loggedUser = getLoggedUser();
+		return null;
+	}
 	
 	@RequestMapping(value="/topic", method=PUT)
 	public void followTopic(@RequestParam("topicId") Long topicId, @RequestParam("favorite") Boolean favorite){

@@ -20,7 +20,7 @@ public class TokenOperationsMock implements TokenOperations {
 	}
 
 	@Override
-	public String create(String username, String password, String clientId, GrantType grantType) {
+	public String create(String username, String password, GrantType grantType) {
 		
 		String mockToken = RandomStringUtils.randomAlphanumeric(10);
 		

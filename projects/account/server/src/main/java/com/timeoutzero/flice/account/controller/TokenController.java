@@ -55,18 +55,18 @@ public class TokenController {
 	public String postForToken(
 			@RequestParam String username, 
 			@RequestParam String password, 
-			@RequestParam Long clientId, 
+			@RequestParam String token, 
 			@RequestParam String grantType) throws AccessException, NoSuchAlgorithmException, InvalidKeyException {
 		
 		User user = findBy(username, password);
-		Product issuer = findIssuer(clientId);
+		Product issuer = findIssuer(token);
 		
 		return jwtAccount.createToken(issuer, user);
 	}
 
-	private Product findIssuer(Long clientId) throws AccessException {
+	private Product findIssuer(String token) throws AccessException {
 		
-		Product issuer = productRepository.findOne(clientId);
+		Product issuer = productRepository.findByToken(token);
 		
 		if(issuer == null) {
 			throw new AccountException(HttpStatus.UNAUTHORIZED, EXCEPTION_ISSUER_NOT_FOUND);

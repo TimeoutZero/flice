@@ -19,9 +19,9 @@ public class AccountOperations {
 	private UserOperations userOperations;
 	private RestTemplate template;
 	
-	public AccountOperations(String url, String clientId, String secretKey, boolean test) {
+	public AccountOperations(String url, String token, boolean test) {
 		
-		Credentials credentials = new Credentials(url, clientId, secretKey);
+		Credentials credentials = new Credentials(url, token);
 		
 		setupRestTemplate(); 
 		

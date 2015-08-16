@@ -16,12 +16,10 @@ public class CredentialsTest {
 	public void shouldGenerateUrlWithCredentials() {
 		
 		String url 		 = "http://www.flice.io/api";
-		String clientId  = UUID.randomUUID().toString();
-		String secretKey = UUID.randomUUID().toString();
-
-		Credentials credentials = new Credentials(url, clientId, secretKey);
+		String token 	 = UUID.randomUUID().toString();
+		Credentials credentials = new Credentials(url, token);
 		
-		String expected = String.format("http://www.flice.io/api?clientId=%s&secretKey=%s", clientId, secretKey);
+		String expected = String.format("http://www.flice.io/api?token=%s", token);
 		String actual   = credentials.getUrl("");
 		
 		Assert.assertEquals(expected, actual);
