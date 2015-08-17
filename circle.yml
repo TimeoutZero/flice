@@ -5,8 +5,8 @@ machine:
 
 test:
   override:
-    - cd projects/account/server ; mvn clean package ; cd ../../../ 
-    - cd projects/core/server		 ; mvn clean package ; cd ../../../
-    
+
+    - mvn clean package -f projects/account/server
+    - mvn clean package -f projects/core/server
     - mv projects/account/server/target/flice-account.jar $CIRCLE_ARTIFACTS/flice-account.jar
     - mv projects/core/server/target/flice-core.jar       $CIRCLE_ARTIFACTS/flice-core.jar
