@@ -1,14 +1,14 @@
 ---
 
-nginx:
-  image: library/nginx:latest
-  ports:
-    - "80:80"
-  volumes:
-    - flice-clients/httpd.conf:/etc/nginx/conf.d/default.conf
-    - flice-clients/.tmp/serve:/usr/share/nginx/html
-    - flice-clients/bower_components:/usr/share/nginx/html/bower_components
-
+# nginx:
+#   image: library/nginx:latest
+#   ports:
+#     - "80:80"
+#   volumes:
+#     - clients/httpd.conf:/etc/nginx/conf.d/default.conf
+#     - clients/.tmp/serve:/usr/share/nginx/html
+#     - clients/bower_components:/usr/share/nginx/html/bower_components
+ 
 mysql:
   image: lucasgmartins/mysql
   ports:
@@ -25,7 +25,7 @@ account:
   links:
     - mysql
   volumes:
-    - flice-projects/flice-account/server/target/flice-account.jar:/app/flice-account.jar
+    - projects/account/server/target/flice-account.jar:/app/flice-account.jar
   command: java -jar -Dspring.profiles.active=DEV /app/flice-account.jar 
 
 core: 
@@ -36,5 +36,5 @@ core:
     - mysql
     - account
   volumes:
-    - flice-projects/flice-core/server/target/flice-core.jar:/app/flice-core.jar
+    - projects/core/server/target/flice-core.jar:/app/flice-core.jar
   command: java -jar -Dspring.profiles.active=DEV /app/flice-core.jar 

@@ -6,7 +6,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FliceAccountConfiguration {
+public class AccountConfiguration {
 
 	private static final String FLICE_ACCOUNT_CLIENT_KEY = "flice.account.client.key";
 	

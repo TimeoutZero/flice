@@ -1,5 +1,8 @@
 package com.timeoutzero.flice.rest.operations.imp;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -14,13 +17,18 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class TokenOperationsImp implements TokenOperations {
 	 
+	private static final String ENDPOINT = "/auth/token";
+	
 	private Credentials credentials;
 	private RestTemplate template;
 	
 	@Override
 	public void authorize(String token) {
 		
-		template.getForEntity(this.credentials.getUrl("/auth"), null);
+		Map<String, Object> map = new HashMap<>();
+		map.put("token", token);
+		
+		template.getForEntity(this.credentials.getUrl(ENDPOINT), null, map);
 	}
 	
 	@Override
@@ -32,7 +40,7 @@ public class TokenOperationsImp implements TokenOperations {
 		request.add("token", credentials.getToken());
 		request.add("grantType", grantType.toString()); 
 		
-		ResponseEntity<String> response = template.postForEntity(this.credentials.getUrl("/auth/token"), request, String.class);
+		ResponseEntity<String> response = template.postForEntity(this.credentials.getUrl(ENDPOINT), request, String.class);
 		
 		return response.getBody();
 	}

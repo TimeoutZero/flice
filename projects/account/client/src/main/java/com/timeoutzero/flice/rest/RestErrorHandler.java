@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.rest;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,20 @@ public class RestErrorHandler implements ResponseErrorHandler {
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
 		
-		String string = IOUtils.toString(response.getBody());
-		ExceptionDTO dto = new ObjectMapper().readValue(string, ExceptionDTO.class);
+		String body = null; 
 		
-		HttpStatus statusCode = response.getStatusCode();
-		System.out.println();
-		System.out.println("deu ruim aqui status: " + statusCode.value());
-		System.out.println();
-		throw new AccountException(statusCode, dto.getMessage());
+		try { 
+			
+			InputStream stream = response.getBody();
+			body = IOUtils.toString(stream);
+			
+		} catch (Exception e) {
+			e.getLocalizedMessage();
+		}
+
+		ExceptionDTO dto = new ObjectMapper().readValue(body, ExceptionDTO.class);
+		
+		throw new AccountException(HttpStatus.valueOf(dto.getCode()), dto.getMessage());
 	}
 
 }

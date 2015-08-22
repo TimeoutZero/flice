@@ -6,8 +6,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +26,6 @@ import com.timeoutzero.flice.rest.operations.AccountOperations;
 @RequestMapping("/account")
 public class AccountController {
 	
-	private Logger log = LoggerFactory.getLogger(AccountController.class);
-
 	private static final String CUSTOM_HEADER_X_FLICE_TOKEN = "X-FLICE-TOKEN";
 	private static final int COOKIE_EXPIRE_SECONDS = 3600;
 	private static final int COOKIE_EXPIRE_DAYS = 15; 
@@ -64,7 +60,6 @@ public class AccountController {
 			token = accountOperations.getTokenOperations().create(form.getEmail(), form.getPassword(), GrantType.PASSWORD);
 			
 		} catch (AccountException e) {
-			log.error(e.getLocalizedMessage());
 			throw new WebException(HttpStatus.UNAUTHORIZED, "fail.create.token");
 		}
 		

@@ -3,9 +3,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
-public class FliceAccountApplication {
+public class AccountApplication {
 
 	public static void main(String[] args) { 
-		new SpringApplicationBuilder(FliceAccountApplication.class).run(args);
+		new SpringApplicationBuilder(AccountApplication.class).run(args);
 	}
 }

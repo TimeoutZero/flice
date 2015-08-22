@@ -65,7 +65,7 @@ public class JwtAccount {
 		}
 	}
 
-	private String getSubject(String token) throws NoSuchAlgorithmException, InvalidKeyException {
+	public String getSubject(String token) throws NoSuchAlgorithmException, InvalidKeyException {
 		String subject = null;
 
 		try {

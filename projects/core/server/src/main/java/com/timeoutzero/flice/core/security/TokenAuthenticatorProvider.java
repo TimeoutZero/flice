@@ -48,7 +48,11 @@ public class TokenAuthenticatorProvider implements AuthenticationProvider {
 			throw new BadCredentialsException(EXCEPTION_INVALID_TOKEN);
 		}
 		
-		return credentials.toString();
+		String token = credentials.toString();
+	
+		accountOperations.getTokenOperations().authorize(token);
+
+		return token;
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebMvcSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @EnableGlobalMethodSecurity(securedEnabled = true)
-public class FliceAccountSecurityConfig extends WebSecurityConfigurerAdapter {
+public class AccountSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

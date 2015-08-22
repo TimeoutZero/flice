@@ -27,8 +27,11 @@ public class UserOperationsImp implements UserOperations {
 
 	@Override
 	public AccountUserDTO get(String token) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("token", token);
+		
+		return template.getForEntity(this.credentials.getUrl(ENDPOINT), AccountUserDTO.class, map).getBody();
 	}
 
 	@Override

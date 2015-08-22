@@ -14,10 +14,10 @@ public class CoreConfiguration {
 	private static final String PROPERTY_ACCOUNT_TEST = "account.test"; 
 
 	@Value("${account.url}")
-	private String url;
-
+	private String accountUrl; 
+ 
 	@Value("${account.token}")
-	private String clientId;
+	private String accountClientId;
 
 	@Autowired
 	private Environment env;
@@ -26,7 +26,7 @@ public class CoreConfiguration {
 	public AccountOperations accountOperations() {
 		
 		Boolean test = env.getRequiredProperty(PROPERTY_ACCOUNT_TEST, Boolean.class);
-		AccountOperations operations = new AccountOperations("http://account:8080/account/api" , "1", test);
+		AccountOperations operations = new AccountOperations(accountUrl , "1", test);
 		
 		return operations;
 	}

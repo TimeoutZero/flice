@@ -19,7 +19,7 @@ angular.module "web"
           '' :
             templateUrl : 'app/community/login/main.html'
             controller  : 'LoginController'
-          'community-header@community' : 
+          'community-header@community' :
             templateUrl : 'app/community/header.html'
       )
 

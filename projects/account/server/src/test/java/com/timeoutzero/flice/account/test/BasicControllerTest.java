@@ -32,14 +32,14 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonassert.JsonAssert;
 import com.jayway.jsonassert.JsonAsserter;
-import com.timeoutzero.flice.account.FliceAccountApplication;
+import com.timeoutzero.flice.account.AccountApplication;
 import com.timeoutzero.flice.account.security.JwtAccount;
 
 import aleph.TestPersistentContext;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { FliceAccountApplication.class })
+@SpringApplicationConfiguration(classes = { AccountApplication.class })
 @IntegrationTest("server.port=10001")
 public abstract class BasicControllerTest {
 

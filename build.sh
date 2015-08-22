@@ -1,2 +1,2 @@
-cd projects/account/server && mvn clean package -DskipTests && cd ../../../;
-cd projects/core/server    && mvn clean package -DskipTests && cd ../../../;
+mvn clean package  -f projects/account/server/pom.xml
+mvn clean package  -f projects/core/server/pom.xml

@@ -1,13 +1,12 @@
 package com.timeoutzero.flice.account.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class ExceptionDTO {
-
-	@Getter
+	
+	private int code;
 	private String message;
-
-	public ExceptionDTO(String code) {
-		this.message = code;
-	}
 }

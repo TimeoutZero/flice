@@ -2,6 +2,7 @@ package com.timeoutzero.flice.account.controller;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.validation.Valid;
@@ -21,12 +22,14 @@ import com.timeoutzero.flice.account.enums.SocialMedia;
 import com.timeoutzero.flice.account.exception.AccountException;
 import com.timeoutzero.flice.account.form.UserForm;
 import com.timeoutzero.flice.account.repository.AccountRepository;
+import com.timeoutzero.flice.account.security.JwtAccount;
 import com.timeoutzero.flice.account.service.UserSocialMediaService;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 	
+	private static final String EXCEPTION_USER_NOT_FOUND	  = "user.not.found";
 	private static final String EXCEPTION_EMAIL_ALREADY_EXIST = "email.already.exist";
 
 	private final BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(5);
@@ -35,7 +38,27 @@ public class UserController {
 	private AccountRepository repository;
 	
 	@Autowired
+	private JwtAccount jwtAccount;
+	
+	@Autowired
 	private UserSocialMediaService userSocialMediaService;
+	
+	@RequestMapping(method = GET)
+	public UserDTO get(@RequestParam String token){
+		
+		User user = null;
+
+		try {
+			
+			String email = jwtAccount.getSubject(token);
+			user = repository.getUserRepository().findByEmail(email); 
+			
+		} catch (Exception e) {
+			throw new AccountException(HttpStatus.NOT_FOUND, EXCEPTION_USER_NOT_FOUND);
+		}
+		
+		return new UserDTO(user);
+	}
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(HttpStatus.CREATED)
