@@ -9,7 +9,6 @@ import java.security.NoSuchAlgorithmException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,11 +79,11 @@ public class TokenController {
 		User user = userRepository.findByEmail(username);
 
 		if(user == null) {
-			throw new BadCredentialsException(EXCEPTION_BAD_CREDENTIALS);
+			throw new AccountException(HttpStatus.FORBIDDEN, EXCEPTION_BAD_CREDENTIALS);
 		}
-
+		
 		if(!BCrypt.checkpw(password, user.getPassword())){
-			throw new BadCredentialsException(EXCEPTION_BAD_CREDENTIALS);
+			throw new AccountException(HttpStatus.FORBIDDEN, EXCEPTION_BAD_CREDENTIALS);
 		}
 		
 		return user;

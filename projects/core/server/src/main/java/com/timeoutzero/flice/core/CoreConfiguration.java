@@ -26,7 +26,7 @@ public class CoreConfiguration {
 	public AccountOperations accountOperations() {
 		
 		Boolean test = env.getRequiredProperty(PROPERTY_ACCOUNT_TEST, Boolean.class);
-		AccountOperations operations = new AccountOperations(accountUrl , "1", test);
+		AccountOperations operations = new AccountOperations(accountUrl , accountClientId, test);
 		
 		return operations;
 	}

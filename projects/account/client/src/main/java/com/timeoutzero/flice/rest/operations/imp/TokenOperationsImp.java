@@ -37,7 +37,6 @@ public class TokenOperationsImp implements TokenOperations {
 		MultiValueMap<String, Object> request = new LinkedMultiValueMap<>();
 		request.add("username", username);
 		request.add("password", password);
-		request.add("token", credentials.getToken());
 		request.add("grantType", grantType.toString()); 
 		
 		ResponseEntity<String> response = template.postForEntity(this.credentials.getUrl(ENDPOINT), request, String.class);

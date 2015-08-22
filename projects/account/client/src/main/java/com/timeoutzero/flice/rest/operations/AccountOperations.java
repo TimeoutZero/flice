@@ -1,9 +1,10 @@
 package com.timeoutzero.flice.rest.operations;
 
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.timeoutzero.flice.rest.Credentials;
-import com.timeoutzero.flice.rest.RestErrorHandler;
+import com.timeoutzero.flice.rest.CustomErrorHandler;
 import com.timeoutzero.flice.rest.operations.imp.TokenOperationsImp;
 import com.timeoutzero.flice.rest.operations.imp.UserOperationsImp;
 import com.timeoutzero.flice.rest.operations.mock.TokenOperationsMock;
@@ -36,7 +37,7 @@ public class AccountOperations {
 
 	private void setupRestTemplate() {
 		
-		template = new RestTemplate();
-		template.setErrorHandler(new RestErrorHandler());
+		template = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+		template.setErrorHandler(new CustomErrorHandler());
 	}
 }

@@ -7,17 +7,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.dto.UserDTO;
-import com.timeoutzero.flice.core.exception.WebException;
 import com.timeoutzero.flice.core.form.UserForm;
 import com.timeoutzero.flice.core.service.CoreService;
-import com.timeoutzero.flice.rest.AccountException;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.enums.GrantType;
 import com.timeoutzero.flice.rest.operations.AccountOperations;
@@ -53,15 +50,7 @@ public class AccountController {
 	@RequestMapping(value = "/token", method = POST)
 	public void createToken(@RequestBody @Valid UserForm form, HttpServletResponse response) {
 		
-		String token = null;
-		
-		try {
-
-			token = accountOperations.getTokenOperations().create(form.getEmail(), form.getPassword(), GrantType.PASSWORD);
-			
-		} catch (AccountException e) {
-			throw new WebException(HttpStatus.UNAUTHORIZED, "fail.create.token");
-		}
+		String token = accountOperations.getTokenOperations().create(form.getEmail(), form.getPassword(), GrantType.PASSWORD);
 		
 		Cookie cookie = new Cookie(CUSTOM_HEADER_X_FLICE_TOKEN, token);
 		cookie.setMaxAge(COOKIE_EXPIRE_SECONDS * COOKIE_EXPIRE_DAYS);

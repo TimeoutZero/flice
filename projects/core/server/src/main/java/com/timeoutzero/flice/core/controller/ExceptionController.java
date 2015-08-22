@@ -18,8 +18,10 @@ public class ExceptionController {
 	
 	@ExceptionHandler(AccountException.class)
 	public @ResponseBody ExceptionDTO resolve(AccountException e, HttpServletResponse response) {
-		
+
 		log.error(e.getLocalizedMessage());
+		
+		response.setStatus(e.getStatusCode());
 		
 		return new ExceptionDTO(e.getStatusCode(), e.getMessage());
 	}
