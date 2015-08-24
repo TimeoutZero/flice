@@ -11,7 +11,8 @@ angular.module "web"
             templateUrl : 'app/community/main.html'
             controller  : "CommunityController"
           'community-header@community':
-            templateUrl : 'app/community/header.html'
+            templateUrl : 'app/community/header/main.html'
+            controller  : 'HeaderController'
 
       .state('community.login'
         url   : '/login'
@@ -19,8 +20,6 @@ angular.module "web"
           '' :
             templateUrl : 'app/community/login/main.html'
             controller  : 'LoginController'
-          'community-header@community' :
-            templateUrl : 'app/community/header.html'
       )
 
       .state('community.self'

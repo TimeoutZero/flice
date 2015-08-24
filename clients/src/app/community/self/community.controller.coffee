@@ -6,3 +6,6 @@ angular.module "web"
   
     $scope.$on 'hide-menu', (event)->
       $scope.attrs.isHideMenu = yes
+
+    $scope.$on 'feedback', (event, data) ->
+      $scope.$broadcast 'feedback-content', data

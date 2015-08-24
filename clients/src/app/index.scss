@@ -97,25 +97,6 @@ html, body, .main-view {
   height: 1px;
 }
 
-.community-list{
-  cursor: pointer;
-  min-height: 1px;
-  position: relative;
-  margin    : 5px 0px 0px 20px;
-  background-color: grey;
-
-  img{
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    height    : 100px;
-    width     : 100px;
-  }
-
-  .community-description{
-    padding-top: 38px;
-
-  }
-}
 
 .community-thumb {
   min-height: 1px;

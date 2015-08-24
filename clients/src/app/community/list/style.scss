@@ -1,0 +1,27 @@
+
+.search {
+  margin-top  : 20px; 
+}
+
+.community-default-view {
+  min-height  : 16%;   
+  max-width   : 16%;  
+}
+
+.community-list{
+  min-height  : 10%;   
+  max-width   : 10%;
+  cursor      : pointer;
+  min-height  : 1px;
+  margin      : 5px 0px 0px 20px;
+
+  .box {
+    width: 200px;
+  }
+
+  img {
+    height    : 200px;
+    width     : 200px;
+  }
+
+}

@@ -5,11 +5,6 @@ angular.module "web"
       isSignIn : yes
       isSignUp : no
 
-      feedback :
-        isSuccess  : no
-        isError    : no
-        message    : ''
-
     $scope.methods =
 
       changePages : () ->
@@ -23,41 +18,24 @@ angular.module "web"
           promise = LoginService.createToken($scope.userForm)
 
           promise.success (data, headers) ->
-            
-            console.log headers
 
-            $scope.attrs.feedback.isSuccess = yes
-            $scope.methods.doFeedback headers
-            #$scope.$emit 'disable-login-background'
-            #$state.go 'community.list'
+            $scope.$emit 'feedback', { success: true, message: 'Welcome' }
+            $state.go 'community.list'
           
-          promise.error(data, status) ->
-            $scope.attrs.feedback.isError  = yes
-            $scope.methods.doFeedback 'deu ruim'
+          promise.error (data, status) ->
+            $scope.$emit 'feedback', { success: false, message: 'Houston, we have a problem! Try later :(' }
 
-          
-        else 
-          $scope.attrs.feedback.isError  = yes
-          $scope.methods.doFeedback "E-mail or password invalid"
+
+        else
+          $scope.$emit 'feedback', { success: false, message :'E-mail or password invalid'}
 
       register : ()->
         
         promise = LoginService.register($scope.signupForm)
 
         promise.success (data) ->
-          $scope.attrs.feedback.isSuccess = yes
-          $scope.methods.doFeedback "Welcome and enjoy Flice ;) "
+          $scope.$emit 'feedback', { success: true, message :'Welcome at flice community'}
           $scope.methods.changePages()
 
         promise.error (data, status) ->
-          $scope.attrs.feedback.isError  = yes
-          $scope.methods.doFeedback "Houston, we have a problem! Try later :("
-
-      doFeedback : (message) ->
-        $scope.attrs.feedback.message = message
-        $timeout($scope.methods.disableFeedback, 2000)
-
-      disableFeedback : () ->
-        $scope.attrs.feedback.isSuccess = no
-        $scope.attrs.feedback.isError   = no
-
+          $scope.$emit 'feedback', { success: false, message: 'Houston, we have a problem! Try later :(' }

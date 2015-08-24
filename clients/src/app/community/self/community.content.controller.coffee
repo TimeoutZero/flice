@@ -9,7 +9,7 @@ angular.module "web"
       page             : 0
       comments         : []
 
-    $scope.methods = 
+    $scope.methods =
       
       init : ->
         promiseContent = CommunitySelfTopicService.getById $stateParams.id
@@ -21,7 +21,7 @@ angular.module "web"
         if topic.id == $scope.attrs.topic.id
           $scope.attrs.isOnTopicPreview = false
           $scope.attrs.topic            = {}
-          return 
+          return
 
         $scope.attrs.isOnTopicPreview = yes
         $scope.attrs.topic            = topic

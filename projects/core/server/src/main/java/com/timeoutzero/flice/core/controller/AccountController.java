@@ -23,7 +23,7 @@ import com.timeoutzero.flice.rest.operations.AccountOperations;
 @RequestMapping("/account")
 public class AccountController {
 	
-	private static final String CUSTOM_HEADER_X_FLICE_TOKEN = "X-FLICE-TOKEN";
+	private static final String CUSTOM_HEADER_X_FLICE_TOKEN = "x-f-token";
 	private static final int COOKIE_EXPIRE_SECONDS = 3600;
 	private static final int COOKIE_EXPIRE_DAYS = 15; 
 	

@@ -9,3 +9,10 @@
     </div>
   </div>
 </div>
+
+<div class="feedback" ng-class="{ 'feedback-fade-in' : attrs.feedback.fadein, 'feedback-fade-out' : attrs.feedback.fadeout }">
+	<div class="feedback-content">
+		<h4>{{attrs.feedback.title}}</h4>
+		<p align="justify">{{attrs.feedback.message}}</p>
+	</div>
+</div>

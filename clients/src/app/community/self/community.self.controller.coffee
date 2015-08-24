@@ -22,5 +22,5 @@ angular.module "web"
       promiseMenu.error (data, status) ->
         console.log 'fail'
 
-    $scope.init();
+    $scope.init()
   

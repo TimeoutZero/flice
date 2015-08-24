@@ -5,7 +5,7 @@ angular.module 'web'
       $http
         url    : CORE_API + "/account/user"
         method : 'POST'
-        data   : 
+        data   :
           'email'    : form.email.$modelValue
           'password' : form.password.$modelValue
 
@@ -13,7 +13,7 @@ angular.module 'web'
       $http
         url    : CORE_API + "/account/token"
         method : 'POST'
-        data   : 
+        data   :
           'email'    : form.email.$modelValue
           'password' : form.password.$modelValue
       
