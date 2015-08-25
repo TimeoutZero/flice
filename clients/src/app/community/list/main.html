@@ -1,19 +1,19 @@
 
-<div>
+<div class="c-list">
 <!--   
   <div class="search">
     <button ng-click="methods.changeView()">Change View</button>
   </div> -->
   
-  <div ng-show="isListView" ng-repeat="community in communities">
-    <div class="col-md-2 community-list" ng-click="methods.goToCommunity({{community.id}})">
+  <div ng-show="isListView" class="community-item" ng-repeat="community in communities">
+    <div class="col-md-2" ng-click="methods.goToCommunity({{community.id}})">
       <div class="col-md-12"><img class="" src="{{community.image}}" alt="..."></div>
       <div class="col-md-12">{{community.name}}</div>
     </div>
   </div>
 </div>
 
-<div ng-show="!isListView" ng-repeat="community in communities">
+<div ng-show="!isListView" class="community-item"  ng-repeat="community in communities">
   <div class="col-md-3 community-default-view">
     <div class="community-thumb">
 

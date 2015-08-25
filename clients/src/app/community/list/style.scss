@@ -4,16 +4,23 @@
 }
 
 .community-default-view {
-  min-height  : 16%;   
-  max-width   : 16%;  
+  // min-height  : 16%;   
+  // max-width   : 16%;  
 }
 
-.community-list{
-  min-height  : 10%;   
-  max-width   : 10%;
+.c-list {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.community-item{
+  position    :relative;
+  float       : left;
   cursor      : pointer;
   min-height  : 1px;
-  margin      : 5px 0px 0px 20px;
+  // margin      : 5px 0px 0px 20px;
+  height    : 200px;
+  width     : 200px;
 
   .box {
     width: 200px;
