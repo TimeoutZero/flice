@@ -42,7 +42,6 @@ public class TokenController {
 	
 	@Autowired
 	private JwtAccount jwtAccount;
-	
 
 	@RequestMapping(method = GET)
 	public void checkToken(@RequestParam String token) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, InvalidKeyException, IllegalArgumentException, NoSuchAlgorithmException {

@@ -76,27 +76,12 @@ html, body, .main-view {
     background-color: #db4437;
 }
 
-.community-navbar {
-  background-color: #C32C4F;
-  border-color: #C32C4F;
-}
-
-.flice-commmuntiy-title {
-  h2 {
-    color: #FFF;
-    font-size: 42px;
-    margin-top: 5px;
-    margin-left: 75px;
-  }
-}
-
 .community {
   min-height: 100%;
   padding-top: 62px;
   margin: 0;
   height: 1px;
 }
-
 
 .community-thumb {
   min-height: 1px;
@@ -163,19 +148,20 @@ html, body, .main-view {
 }
 
 .community-cover-container {
-  height: 200px;
-  overflow: hidden;
-  position : absolute;
+  margin-top : 10px;
+  height     : 200px;
+  overflow   : hidden;
+  position   : absolute;
 
   .community-cover-image {
-    width: 100%;
-    margin: 0px;
+    width    : 100%;
+    margin-top : auto;
     border-radius: 5px;
   }
 }
 
 .community-content-cover {
-
+  margin-top : 10px;
   height: 200px;
   color: #FFF;
   background-color: rgba(0, 0, 0, 0.7);

@@ -1,1 +1,1 @@
-INSERT INTO product (id, name) VALUES (1, 'flice-community');
+INSERT INTO product (id, name, token) VALUES (1, 'flice-core', 'a7a928b6-6f84-4b7c-b91d-91326e0cb2b0');

@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +28,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 @Component
 public class JwtAccount {
 	
-	@Autowired
-	private String clientKey;
+	@Value("${flice.secret.key}")
+	private String secretKey; 
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -47,7 +48,7 @@ public class JwtAccount {
 	}
 
 	private Key getSecretKey() throws NoSuchAlgorithmException, InvalidKeyException {
-		return new SecretKeySpec(clientKey.getBytes(), SignatureAlgorithm.HS512.getJcaName());
+		return new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS512.getJcaName());
 	}
 
 	private Date getConvertedExpirationDate() {
