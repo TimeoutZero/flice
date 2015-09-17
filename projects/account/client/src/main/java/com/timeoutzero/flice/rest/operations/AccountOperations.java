@@ -7,12 +7,12 @@ import com.timeoutzero.flice.rest.Credentials;
 import com.timeoutzero.flice.rest.CustomErrorHandler;
 import com.timeoutzero.flice.rest.operations.imp.TokenOperationsImp;
 import com.timeoutzero.flice.rest.operations.imp.UserOperationsImp;
-import com.timeoutzero.flice.rest.operations.mock.TokenOperationsMock;
-import com.timeoutzero.flice.rest.operations.mock.UserOperationsMock;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class AccountOperations {
 
 	private boolean test;
@@ -20,19 +20,14 @@ public class AccountOperations {
 	private UserOperations userOperations;
 	private RestTemplate template;
 	
-	public AccountOperations(String url, String token, boolean test) {
+	public AccountOperations(String url, String token) {
 		
 		Credentials credentials = new Credentials(url, token);
 		
 		setupRestTemplate(); 
-		
-		if(test) {
-			this.tokenOperations = new TokenOperationsMock();
-			this.userOperations  = new UserOperationsMock();
-		} else {
-			this.tokenOperations = new TokenOperationsImp(credentials, template);
-			this.userOperations	 = new UserOperationsImp(credentials, template);
-		}
+	
+		this.tokenOperations = new TokenOperationsImp(credentials, template);
+		this.userOperations	 = new UserOperationsImp(credentials, template);
 	}
 
 	private void setupRestTemplate() {

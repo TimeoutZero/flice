@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +57,7 @@ public class TopicController {
 
 		Topic topic = form.toEntity();
 
-		topic.setCreated(LocalDateTime.now());
+		topic.setCreated(DateTime.now());
 		topic.setActive(true);
 		topic.setCommunity(coreService.getCommunityRepository().findOne(form.getCommunityId()));
 		//		topic.setOwner(user);

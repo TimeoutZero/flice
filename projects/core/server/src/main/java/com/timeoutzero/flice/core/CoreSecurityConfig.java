@@ -35,8 +35,7 @@ public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web
 			.ignoring()
-				.antMatchers(HttpMethod.POST, "/account/user", "/account/token")
-				.antMatchers(HttpMethod.OPTIONS, "/account/user", "/account/token");
+				.antMatchers(HttpMethod.POST, "/account/user", "/account/token");
 	}
 	
 	@Override

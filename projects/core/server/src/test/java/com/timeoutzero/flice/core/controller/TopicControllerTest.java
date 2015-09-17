@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
@@ -20,18 +19,14 @@ import com.timeoutzero.flice.core.form.TopicForm;
 
 public class TopicControllerTest extends ApplicationTest{
 
-	Community community;
-	
-	@Before
-	public void before(){
-		User marcos = user("marcos.fernandes").build();
-		community = Compose.community("Games").build();
-		saveAll(marcos, community);
-		login(marcos);
-	}
-	
 	@Test
 	public void testListActives() throws Exception{
+		
+		Community community = Compose.community("Games").build();
+		User marcos = user("marcos.fernandes").build();
+		
+		saveAll(marcos, community);
+		login(marcos);
 		
 		Topic topico1 = topic(community, "Topico 1").build();
 		Topic topico2 = topic(community, "Topico 2").active(false).build();
@@ -40,7 +35,8 @@ public class TopicControllerTest extends ApplicationTest{
 		
 		saveAll(topico1, topico2, topico3, topico4);
 		
-		JsonNode json = get("/topic").expectedStatus(HttpStatus.OK).getJson();
+		JsonNode json = get("/topic")
+				.expectedStatus(HttpStatus.OK).getJson();
 		
 		jsonAsserter(json)
 			.assertThat("$", hasSize(3))
@@ -50,10 +46,17 @@ public class TopicControllerTest extends ApplicationTest{
 	@Test
 	public void testFindById() throws Exception{
 		
+		Community community = Compose.community("Games").build();
+		User marcos = user("marcos.fernandes").build();
+		
+		saveAll(marcos, community);
+		login(marcos);
+		
 		Topic gta = topic(community, "GTA V").build();
 		saveAll(gta);
 		
-		JsonNode json = get("/topic/%s", gta.getId()).expectedStatus(HttpStatus.OK).getJson();
+		JsonNode json = get("/topic/%s", gta.getId())
+				.expectedStatus(HttpStatus.OK).getJson();
 		
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("GTA V"))
@@ -61,7 +64,13 @@ public class TopicControllerTest extends ApplicationTest{
 	}
 	
 	@Test
-	public void testCreate() throws Exception{
+	public void testCreate() throws Exception {
+		
+		Community community = Compose.community("Games").build();
+		User marcos = user("marcos.fernandes").build();
+		
+		saveAll(marcos, community);
+		login(marcos);
 		
 		TopicForm form = new TopicForm();
 		form.setCommunityId(community.getId());
@@ -75,7 +84,13 @@ public class TopicControllerTest extends ApplicationTest{
 	}
 
 	@Test
-	public void testUpdate() throws Exception{
+	public void testUpdate() throws Exception {
+		
+		Community community = Compose.community("Games").build();
+		User marcos = user("marcos.fernandes").build();
+		
+		saveAll(marcos, community);
+		login(marcos);
 		
 		Topic gta = topic(community, "GTA V").build();
 		saveAll(gta);
@@ -85,13 +100,20 @@ public class TopicControllerTest extends ApplicationTest{
 		form.setName("FIFA 15");
 		
 		JsonNode json = put("/topic/%s", gta.getId()).json(form).expectedStatus(HttpStatus.OK).getJson();
+		
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("FIFA 15"))
 			.assertThat("$.communityId", equalTo(community.getId().intValue()));
 	}
 	
 	@Test
-	public void testDelete() throws Exception{
+	public void testDelete() throws Exception {
+		
+		Community community = Compose.community("Games").build();
+		User marcos = user("marcos.fernandes").build();
+		
+		saveAll(marcos, community);
+		login(marcos);
 	
 		Topic gta = topic(community, "GTA V").build();
 		saveAll(gta);

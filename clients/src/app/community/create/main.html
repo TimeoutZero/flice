@@ -1,0 +1,66 @@
+<div class="container" >
+  <form class="form-horizontal" name="community.create" novalidate >
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="col-md-12">
+          <img src="{{community.images.thumb}}" alt="">
+        </div>
+        <div class="col-md-12">
+<!-- <input type="file" ng-model="fileUpload" onchange="uploadImage(this)"/>
+ -->
+ <input type="file" id="file" name='file' onchange="angular.element(this).scope().uploadImage()" />
+        </div>
+      </div>
+
+      <div class="col-md-9">
+
+       <div class="form-group">
+        <label class="control-label col-md-2">Name:</label>
+
+        <div class="col-md-10">
+          <input type="text" name="name" class="form-control" ng-model="community.name" placeholder="Name of community">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-2">Description:</label>
+        <div class="col-md-10">
+          <textarea class="form-control" cols="30" rows="5"></textarea>
+        </div>  
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-md-2">Tags:</label>
+        <div class="col-md-10">
+          <select2 style="width: 100%;" ng-model="obj.field" s2-options="val.id as val.name for val in values" multiple></select2>
+        </div>
+      </div>
+
+      <div class="form-group">
+
+        <label class="control-label col-md-2">Visibility:</label>
+        <div class="col-md-2">
+
+          <div class="radio">
+            <label>
+              <input type="radio" value="Public" checked>Public
+            </label>
+          </div>
+
+          <div class="radio">
+            <label>
+              <input type="radio" value="Private">Private
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-11 col-md-1">
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+
+    </div> 
+  </form>
+</div>

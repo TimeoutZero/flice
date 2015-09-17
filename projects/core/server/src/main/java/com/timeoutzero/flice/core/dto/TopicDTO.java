@@ -1,13 +1,13 @@
 package com.timeoutzero.flice.core.dto;
 
 
+import org.joda.time.DateTime;
+
+import com.timeoutzero.flice.core.domain.Topic;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import org.joda.time.LocalDateTime;
-
-import com.timeoutzero.flice.core.domain.Topic;
 
 @Data
 @NoArgsConstructor
@@ -15,12 +15,9 @@ import com.timeoutzero.flice.core.domain.Topic;
 public class TopicDTO {
 
 	private String name;
-
 	private Long communityId;
-
 	private String owner;
-
-	private LocalDateTime created;
+	private DateTime created;
 
 	public TopicDTO(Topic topic){
 		super();

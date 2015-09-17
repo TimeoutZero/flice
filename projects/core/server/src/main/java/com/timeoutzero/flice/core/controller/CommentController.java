@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +55,7 @@ public class CommentController {
 
 		Comment comment = form.toEntity();
 		comment.setActive(true);
-		comment.setCreated(LocalDateTime.now());
+		comment.setCreated(DateTime.now());
 		//		comment.setOwner(user);
 		comment.setTopic(coreService.getTopicRepository().findOne(form.getTopicId()));
 

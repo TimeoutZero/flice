@@ -45,7 +45,10 @@ html, body, .main-view {
   font-family : 'Open Sans', sans-serif;
 }
 
-
+a {
+  color           : #FFF;
+  text-decoration : none
+}
 
 .not-login {
   background-color : #FFF;
@@ -78,73 +81,9 @@ html, body, .main-view {
 
 .community {
   min-height: 100%;
-  padding-top: 62px;
+  padding-top: 82px;
   margin: 0;
   height: 1px;
-}
-
-.community-thumb {
-  min-height: 1px;
-  position: relative;
-  margin    : 10px 0px 0px 20px;
-  height    : 300px;
-  width     : 300px;
-  background-color : #000;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-
-  overflow  : hidden;
-
-  .community-thumb-image:hover {
-    img {
-      opacity: 0.4;
-      filter: alpha(opacity=40);
-    }
-  }
-
-  .tags-wrapper {
-    min-height: 1px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: auto;
-    line-height: 25px;
-
-  }
-
-  .community-thumb-tags {
-    margin-bottom    :  5px;
-    color            : #FFF;
-    display: block;
-    margin: 7px;
-    margin-left: 0;
-
-    span {
-      padding:  5px 8px;
-      background-color : #C32C4F;
-
-    }
-  }
-}
-
-.community-thumb-description {
-  margin    : 0px 0px 0px 20px;
-
-  height      : 35px;
-  line-height : 35px;
-  width       : 300px;
-  background-color: #251923;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius : 5px;
-
-  .community-thumb-title {
-    margin: 0px 5px 5px 5px;
-    text-align: center;
-    vertical-align: text-top;
-    color: #FFF;
-    font-size : 16px;
-  }
 }
 
 .community-cover-container {

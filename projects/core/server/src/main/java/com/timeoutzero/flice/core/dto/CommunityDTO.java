@@ -2,18 +2,14 @@ package com.timeoutzero.flice.core.dto;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
+import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.Tag;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import org.joda.time.LocalDateTime;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.timeoutzero.flice.core.domain.Community;
-import com.timeoutzero.flice.core.domain.Tag;
-import com.timeoutzero.flice.core.util.LocalDateTimeDeserializer;
-import com.timeoutzero.flice.core.util.LocalDateTimeJsonSerializer;
 
 @Data
 @NoArgsConstructor
@@ -21,19 +17,11 @@ import com.timeoutzero.flice.core.util.LocalDateTimeJsonSerializer;
 public class CommunityDTO {
 
 	private Long id;
-
 	private String name;
-	
 	private String description;
-	
 	private String owner;
-	
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
-	@JsonSerialize(using = LocalDateTimeJsonSerializer.class)
-	private LocalDateTime created;
-
 	private String image;
-	
+	private DateTime created;
 	private List<Tag> tags;
 	
 	public CommunityDTO(Community community){

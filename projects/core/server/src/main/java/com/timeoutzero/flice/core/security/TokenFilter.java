@@ -9,13 +9,19 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
+@Component
 public class TokenFilter extends GenericFilterBean {
+	public static final String CUSTOM_HEADER_X_AUTH_TOKEN = "X-AUTH-TOKEN";
 
-	public static final String CUSTOM_HEADER_X_AUTH_TOKEN = "X-Auth-Token"; 
-
+	@Autowired
+	private AuthenticatorService authenticatorService;
+	
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
 		
@@ -23,8 +29,9 @@ public class TokenFilter extends GenericFilterBean {
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		
 		String token = request.getHeader(CUSTOM_HEADER_X_AUTH_TOKEN);
-		
-		SecurityContextHolder.getContext().setAuthentication(new TokenAuthentication(token));
+		UsernamePasswordAuthenticationToken authentication = authenticatorService.createAuthentication(token);
+	
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		chain.doFilter(request, response);
 	}
 }

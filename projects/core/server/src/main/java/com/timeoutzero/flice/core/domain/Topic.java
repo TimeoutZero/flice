@@ -3,10 +3,18 @@ package com.timeoutzero.flice.core.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,34 +23,38 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import org.joda.time.LocalDateTime;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode()
-@ToString()
+@EqualsAndHashCode
+@ToString
 @Builder
-public class Topic{
+@Table(name = "topic")
+public class Topic {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "topic_id")
 	private Long id;
 
-	@Column(name="name")
+	@Column(name = "topic_name")
 	private String name;
-	 
-	@ManyToOne 
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "topic_created")
+	private DateTime created;
+	
+	@Column(name = "topic_active")
+	private Boolean active;
+	
+	@ManyToOne
+	@JoinColumn(name = "community_id", foreignKey = @ForeignKey(name = "FK_COMMUNITY_TOPIC"))
 	private Community community;
 	
 	@ManyToOne
+	@JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_COMMUNITY_TOPIC_USER_OWNER"))
 	private User owner;
-	
-	@Column(name="created")
-	private LocalDateTime created;
-	
-	@Column(name="active")
-	private Boolean active;
 	
 }

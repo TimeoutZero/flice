@@ -1,26 +1,23 @@
 package com.timeoutzero.flice.core.dto;
 
 
+import org.joda.time.DateTime;
+
+import com.timeoutzero.flice.core.domain.Comment;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import org.joda.time.LocalDateTime;
-
-import com.timeoutzero.flice.core.domain.Comment;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
 public class CommentDTO {
 
-	private String content;
-
 	private Long topicId;
-
+	private String content;
 	private String owner;
-
-	private LocalDateTime created;
+	private DateTime created;
 
 	public CommentDTO(Comment comment){
 		super();

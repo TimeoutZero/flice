@@ -19,6 +19,7 @@
 
 		<!-- FLICE -->
 		<flice.account.client.version>0.0.1-SNAPSHOT</flice.account.client.version>
+		<jadira-usertype-version>4.0.0.GA</jadira-usertype-version>
 
 		<!-- UTIL -->
 		<lombok-version>1.16.2</lombok-version>
@@ -93,12 +94,12 @@
 			<version>${orika-version}</version>
 		</dependency>
 
-<!-- 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<scope>test</scope>
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+			<version>${jadira-usertype-version}</version>
 		</dependency>
- -->
+
 		<dependency>
 			<groupId>com.timeoutzero</groupId>
 			<artifactId>flice-account-client</artifactId>

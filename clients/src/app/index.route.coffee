@@ -20,8 +20,14 @@ angular.module "web"
           '' :
             templateUrl : 'app/community/login/main.html'
             controller  : 'LoginController'
+      )      
+      .state('community.create'
+        url   : '/create'
+        views :
+          '' :
+            templateUrl : 'app/community/create/main.html'
+            controller  : 'CommunityCreateController'
       )
-
       .state('community.self'
         url : '/self/:id'
         views :

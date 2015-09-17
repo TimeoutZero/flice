@@ -12,10 +12,10 @@ public class TokenAuthentication implements Authentication {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String token;
+	private Object obj;
 
-	public TokenAuthentication(String token) {
-		this.token = token;
+	public TokenAuthentication(Object obj) {
+		this.obj = obj;
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class TokenAuthentication implements Authentication {
 
 	@Override
 	public Object getCredentials() {
-		return token;
+		return obj;
 	}
 
 	@Override
@@ -50,5 +50,9 @@ public class TokenAuthentication implements Authentication {
 	@Override
 	public String getName() {
 		return null;
+	}
+	
+	public void setObj(Object obj) {
+		this.obj = obj;
 	}
 }

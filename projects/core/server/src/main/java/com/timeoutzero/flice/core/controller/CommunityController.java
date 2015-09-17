@@ -1,17 +1,22 @@
 package com.timeoutzero.flice.core.controller;
 
+import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUser;
+import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUserAuthoritys;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.dto.CommunityDTO;
+import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.form.CommunityForm;
 import com.timeoutzero.flice.core.service.CoreService;
 
@@ -37,12 +43,22 @@ public class CommunityController {
 		return new CommunityDTO(community);
 	}
 
+	@Transactional(readOnly = true)
 	@RequestMapping(method = GET)
+	@Secured({ Role.USER, Role.ANONYMOUS })
 	public List<CommunityDTO> list() {
+		
+		List<Community> communitys = new ArrayList<>();
+		
+		if (getLoggedUserAuthoritys().contains(Role.ANONYMOUS)) { 
+			communitys = coreService.getCommunityRepository().findByActiveTrue();
+		} else {
+			communitys = coreService.getUserRepository().findAllCommunityByUser(getLoggedUser().getId());
+		}
 
-		List<Community> list = coreService.getCommunityRepository().findByActiveTrue();
-
-		return list.stream().map(CommunityDTO::new).collect(Collectors.toList());
+		return communitys.stream()
+				.map(CommunityDTO::new)
+				.collect(toList());
 	}
 
 	@RequestMapping(method = POST)
