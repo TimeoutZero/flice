@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller 'HeaderController', ($scope, $timeout) ->
+  .controller 'HeaderController', ($rootScope, $scope, $timeout) ->
 
     $scope.attrs =
         feedback :
@@ -15,6 +15,8 @@ angular.module "web"
         $scope.attrs.feedback.fadeout = yes
         $scope.attrs.feedback.enable  = no
 
+      isLogged : ()->
+        return $rootScope.isLogged
 
     $scope.$on 'feedback-content', (event, data) ->
 

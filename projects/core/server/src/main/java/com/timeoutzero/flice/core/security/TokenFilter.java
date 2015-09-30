@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.core.security;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,6 +28,13 @@ public class TokenFilter extends GenericFilterBean {
 		
 		HttpServletRequest request 	 = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
+		
+		if (request.getCookies() != null) {
+			Arrays.asList(request.getCookies()).stream().filter(c -> c.getName().equals("x-f-token")).forEach(c -> {
+				System.out.println(c.toString());
+			});
+		}
+
 		
 		String token = request.getHeader(CUSTOM_HEADER_X_AUTH_TOKEN);
 		UsernamePasswordAuthenticationToken authentication = authenticatorService.createAuthentication(token);

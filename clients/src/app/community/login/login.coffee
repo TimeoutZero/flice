@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller 'LoginController', ($scope, $state, $timeout, LoginService) ->
+  .controller 'LoginController', ($rootScope, $scope, $state, $timeout, LoginService) ->
 
     $scope.attrs =
       isSignIn : yes
@@ -19,6 +19,7 @@ angular.module "web"
 
           promise.success (data, headers) ->
 
+            $rootScope.isLogged = yes
             $scope.$emit 'feedback', { success: true, message: 'Welcome' }
             $state.go 'community.list'
           

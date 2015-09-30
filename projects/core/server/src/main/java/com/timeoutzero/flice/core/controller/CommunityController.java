@@ -63,10 +63,12 @@ public class CommunityController {
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
+	@Secured({ Role.USER, Role.ADMIN })
 	public CommunityDTO create(@Valid @RequestBody CommunityForm form) {
-
+		
+		
 		Community community = form.toEntity();
-		// community.setOwner(user);
+		community.setOwner(coreService.getUserRepository().findOne(getLoggedUser().getId()));
 		community = coreService.getCommunityRepository().save(community);
 
 		return new CommunityDTO(community);

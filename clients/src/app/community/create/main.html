@@ -1,32 +1,49 @@
 <div class="container" >
-  <form class="form-horizontal" name="community.create" novalidate >
+  <form class="form-horizontal" name="communityCreateForm" novalidate>
 
     <div class="row">
-      <div class="col-md-3">
+     <!--  <div class="col-md-3">
         <div class="col-md-12">
           <img src="{{community.images.thumb}}" alt="">
         </div>
         <div class="col-md-12">
-<!-- <input type="file" ng-model="fileUpload" onchange="uploadImage(this)"/>
- -->
- <input type="file" id="file" name='file' onchange="angular.element(this).scope().uploadImage()" />
+
+          <input type="file" id="file" name='file' onchange="angular.element(this).scope().uploadImage()" />
         </div>
-      </div>
+      </div> -->
 
       <div class="col-md-9">
 
-       <div class="form-group">
+        <div class="form-group" 
+          ng-class="{ 'has-error' : communityCreateForm.name.$invalid && !communityCreateForm.name.$pristine }">
         <label class="control-label col-md-2">Name:</label>
 
         <div class="col-md-10">
-          <input type="text" name="name" class="form-control" ng-model="community.name" placeholder="Name of community">
+          <input 
+            type="text" 
+            name="name" 
+            class="form-control" 
+            ng-model="community.name" 
+            placeholder="Community name.." 
+            required>
+
+          <p ng-show="communityCreateForm.name.$invalid && !communityCreateForm.name.$pristine">
+            Enter a valid name.
+          </p>
         </div>
+
       </div>
 
       <div class="form-group">
         <label class="control-label col-md-2">Description:</label>
         <div class="col-md-10">
-          <textarea class="form-control" cols="30" rows="5"></textarea>
+          <textarea
+            name="description"
+            class="form-control" 
+            cols="30" 
+            rows="5"
+            ng-model="community.description" 
+            ></textarea>
         </div>  
       </div>
 
@@ -44,20 +61,25 @@
 
           <div class="radio">
             <label>
-              <input type="radio" value="Public" checked>Public
+              <input type="radio" name="visibility" value="Public" checked>Public
             </label>
           </div>
 
           <div class="radio">
             <label>
-              <input type="radio" value="Private">Private
+              <input type="radio" name="visibility" value="Private">Private
             </label>
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <div class="col-md-offset-11 col-md-1">
-          <button type="button" class="btn btn-primary">Submit</button>
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            ng-click="methods.create()"
+            ng-disabled="communityCreateForm.$invalid">Submit</button>
         </div>
       </div>
 

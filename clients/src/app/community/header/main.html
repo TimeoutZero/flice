@@ -2,7 +2,7 @@
   <div class="col-md-12">
 
     <div class="col-md-4 flice-title">
-      <a ui-sref="community.list">Flice</a>
+      <a ui-sref="community.list">flice</a>
     </div>
 
     <div class="col-md-4">
@@ -17,11 +17,11 @@
   </div>
 
   <div class="col-md-4">
-    <div class="col-md-6">
+    <div class="col-md-6" ng-show="methods.isLogged()">
       <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
       <a ui-sref="community.create">Criar comunidade</a>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" ng-show="methods.isLogged()">
       <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
       <a ui-sref="community.list">Minhas comunidades</a>
     </div>

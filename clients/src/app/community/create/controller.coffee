@@ -1,5 +1,6 @@
 angular.module "web"
-  .controller "CommunityCreateController", ($scope, $state) ->
+  .controller "CommunityCreateController", ($scope, $state, CommunityService) ->
+    
     $scope.community = 
       images :
         cover : "/assets/images/community_cover.jpg",
@@ -10,13 +11,18 @@ angular.module "web"
         { id: "2", name: "teste2" }
       ]
 
-    $scope.uploadImage : () ->
-      console.log 'CHANGE PHOTO'
-
     $scope.methods = 
 
-      uploadThumb : () ->
-        console.log 'CHANGE PHOTO'
-    # $scope.queryOptions = 
-    #   query : (query)->
-    #     query.callback({results : $scope.values })
+      create : ()->
+        if $scope.communityCreateForm.$valid
+          alert 'certo'
+
+          promise = CommunityService.create($scope.communityCreateForm)
+
+          promise.success (data) ->
+            alert 'cadastrou krl'
+          promise.error(data, status) ->
+            alert 'deu merda ' + status
+            
+        else
+          alert 'errado'
