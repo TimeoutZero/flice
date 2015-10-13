@@ -9,6 +9,6 @@ import com.timeoutzero.flice.core.domain.Community;
 public interface CommunityRepository extends CrudRepository<Community, Long>{
 
 	Community findByIdAndActiveTrue(Long id);
-	List<Community> findByActiveTrue();
+	List<Community> findByActiveTrueAndVisibilityTrue();
 	
 }

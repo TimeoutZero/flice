@@ -26,6 +26,7 @@ public class CustomErrorHandler implements ResponseErrorHandler {
 		
 		String json = IOUtils.toString(response.getBody());
 		
+		
 		ExceptionDTO exception = mapper.readValue(json, ExceptionDTO.class);
 		HttpStatus status = HttpStatus.valueOf(exception.getCode());
 		

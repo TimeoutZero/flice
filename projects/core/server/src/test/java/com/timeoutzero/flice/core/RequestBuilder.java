@@ -44,7 +44,7 @@ public class RequestBuilder {
 		this.URI = URI;
 		this.method = method;
 		
-		this.header(TokenFilter.CUSTOM_HEADER_X_AUTH_TOKEN, token);
+	//	this.header(TokenFilter.CUSTOM_HEADER_X_AUTH_TOKEN, token);
 	}
 
 	public RequestBuilder formParam(String key, Object value) {

@@ -3,45 +3,41 @@ package com.timeoutzero.flice.rest.operations.imp;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.timeoutzero.flice.rest.Credentials;
-import com.timeoutzero.flice.rest.enums.GrantType;
+import com.timeoutzero.flice.rest.operations.FliceTemplate;
 import com.timeoutzero.flice.rest.operations.TokenOperations;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class TokenOperationsImp implements TokenOperations {
-	 
+
 	private static final String ENDPOINT = "/auth/token";
-	
-	private Credentials credentials;
-	private RestTemplate template;
+
+	private static final String PARAMETER_TOKEN    = "token";
+	private static final String PARAMETER_USERNAME = "username";
+	private static final String PARAMETER_PASSWORD = "password"; 
+
+	private FliceTemplate template;
 	
 	@Override
 	public void authorize(String token) {
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("token", token);
+		String uri = UriComponentsBuilder.fromUriString(ENDPOINT)
+			.queryParam(PARAMETER_TOKEN, token)
+			.build().toUriString();
 		
-		template.getForEntity(this.credentials.getUrl(ENDPOINT), null, map);
+		this.template.get(uri, String.class);
 	}
 	
 	@Override
-	public String create(String username, String password, GrantType grantType) {
+	public String create(String username, String password) {
 		
-		MultiValueMap<String, Object> request = new LinkedMultiValueMap<>();
-		request.add("username", username);
-		request.add("password", password);
-		request.add("grantType", grantType.toString()); 
-		
-		ResponseEntity<String> response = template.postForEntity(this.credentials.getUrl(ENDPOINT), request, String.class);
-		
-		return response.getBody();
+		Map<String, String> parameters = new HashMap<>();
+		parameters.put(PARAMETER_USERNAME, username);
+		parameters.put(PARAMETER_PASSWORD, password);
+		 
+		return this.template.post(ENDPOINT, parameters, String.class);
 	}
-
 }

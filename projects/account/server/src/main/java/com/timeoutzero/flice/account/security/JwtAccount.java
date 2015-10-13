@@ -11,12 +11,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
-import com.timeoutzero.flice.account.entity.Product;
 import com.timeoutzero.flice.account.entity.User;
-import com.timeoutzero.flice.account.exception.AccountException;
 import com.timeoutzero.flice.account.repository.UserRepository;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -27,18 +25,21 @@ import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtAccount {
-	
+
+	private static final String EXCEPTION_EXPIRED_TOKEN 	= "expired.token";
+	private static final String EXCEPTION_SUBJECT_NOT_EXIST = "subject.not.exist";
+	private static final String EXCEPTION_INVALID_TOKEN 	= "invalid.token"; 
+
 	@Value("${flice.secret.key}")
 	private String secretKey; 
 	
 	@Autowired
 	private UserRepository userRepository;
 
-	public String createToken(Product issuer, User user) throws NoSuchAlgorithmException, InvalidKeyException {
+	public String createToken(User user) throws NoSuchAlgorithmException, InvalidKeyException {
 		
 		String token = 
 				 Jwts.builder()
-				.setIssuer(issuer.getName())
 				.setSubject(user.getEmail())
 				.setExpiration(getConvertedExpirationDate())
 				.signWith(SignatureAlgorithm.HS512, getSecretKey())
@@ -62,11 +63,11 @@ public class JwtAccount {
 		String subject = getSubject(token);
 	
 		if(!userRepository.existByEmail(subject)) {
-			throw new AccountException(HttpStatus.UNAUTHORIZED, "unautorized");
+			throw new BadCredentialsException(EXCEPTION_SUBJECT_NOT_EXIST);
 		}
 	}
 
-	public String getSubject(String token) throws NoSuchAlgorithmException, InvalidKeyException {
+	public String getSubject(String token) {
 		String subject = null;
 
 		try {
@@ -76,8 +77,10 @@ public class JwtAccount {
 					.parseClaimsJws(token)
 					.getBody().getSubject();
 			
+		} catch (ExpiredJwtException e) {
+			throw new BadCredentialsException(EXCEPTION_EXPIRED_TOKEN);
 		} catch (Exception e) {
-			throw new AccountException(HttpStatus.UNAUTHORIZED, "invalid.token");
+			throw new BadCredentialsException(EXCEPTION_INVALID_TOKEN);
 		}
 		
 		return subject;

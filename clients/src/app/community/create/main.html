@@ -2,15 +2,6 @@
   <form class="form-horizontal" name="communityCreateForm" novalidate>
 
     <div class="row">
-     <!--  <div class="col-md-3">
-        <div class="col-md-12">
-          <img src="{{community.images.thumb}}" alt="">
-        </div>
-        <div class="col-md-12">
-
-          <input type="file" id="file" name='file' onchange="angular.element(this).scope().uploadImage()" />
-        </div>
-      </div> -->
 
       <div class="col-md-9">
 
@@ -43,6 +34,9 @@
             cols="30" 
             rows="5"
             ng-model="community.description" 
+
+            placeholder="Description.." 
+
             ></textarea>
         </div>  
       </div>
@@ -50,7 +44,7 @@
       <div class="form-group">
         <label class="control-label col-md-2">Tags:</label>
         <div class="col-md-10">
-          <select2 style="width: 100%;" ng-model="obj.field" s2-options="val.id as val.name for val in values" multiple></select2>
+          <select2 style="width: 100%;" ng-model="obj.field" s2-options="val.id as val.name for val in values" placeholder="Tags " multiple></select2>
         </div>
       </div>
 
@@ -61,13 +55,25 @@
 
           <div class="radio">
             <label>
-              <input type="radio" name="visibility" value="Public" checked>Public
+              <input 
+                type="radio" 
+                name="visibility"
+                value="true"
+                                checked
+
+                ng-model="community.visibility"
+              >Public
             </label>
           </div>
 
           <div class="radio">
             <label>
-              <input type="radio" name="visibility" value="Private">Private
+              <input 
+                type="radio" 
+                name="visibility"
+                value="false"
+                ng-model="community.visibility" 
+                >Private
             </label>
           </div>
         </div>

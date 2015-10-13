@@ -47,5 +47,5 @@ angular.module "web"
         controller  : 'CommunityListController'
         templateUrl : "app/community/list/main.html"
       )
-
+  
     $urlRouterProvider.otherwise '/community/login'

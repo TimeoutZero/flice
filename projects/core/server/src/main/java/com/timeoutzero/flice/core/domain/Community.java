@@ -65,6 +65,9 @@ public class Community{
 	@Column(name = "community_active")
 	private Boolean active;
 	
+	@Column(name = "community_visibility")
+	private Boolean visibility;
+	
 	@ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "community_tags", joinColumns={ @JoinColumn(name = "comunity_id") }, inverseJoinColumns={ @JoinColumn(name = "tag_id") })
 	private List<Tag> tags = new ArrayList<Tag>();

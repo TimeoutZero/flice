@@ -3,10 +3,12 @@ package com.timeoutzero.flice.account.test.controller;
 import static com.timeoutzero.flice.account.builder.UserBuilder.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import com.timeoutzero.flice.account.builder.ProductBuilder;
 import com.timeoutzero.flice.account.enums.SocialMedia;
 import com.timeoutzero.flice.account.form.UserForm;
 import com.timeoutzero.flice.account.test.BasicControllerTest;
@@ -14,6 +16,13 @@ import com.timeoutzero.flice.account.test.ControllerBase;
 
 @ControllerBase("/user")
 public class UserControllerTest extends BasicControllerTest {
+	
+	private ProductBuilder product;
+
+//	@Before
+//	public void name() {
+//	
+//	}
 
 	@Test
 	public void shouldCreateUser() throws Exception {

@@ -3,16 +3,10 @@ package com.timeoutzero.flice.rest.operations.imp;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.timeoutzero.flice.rest.Credentials;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
+import com.timeoutzero.flice.rest.operations.FliceTemplate;
 import com.timeoutzero.flice.rest.operations.UserOperations;
 
 import lombok.AllArgsConstructor;
@@ -22,41 +16,29 @@ public class UserOperationsImp implements UserOperations {
 	
 	private static final String ENDPOINT = "/user";
 	
-	private Credentials credentials;
-	private RestTemplate template;
+	private static final String PARAMETER_TOKEN 	= "token";
+	private static final String PARAMETER_EMAIL 	= "email";
+	private static final String PARAMETER_PASSWORD  = "password";
+	
+	private FliceTemplate template;
 
 	@Override
 	public AccountUserDTO get(String token) {
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("token", token);
+		String uri = UriComponentsBuilder.fromUriString(ENDPOINT)
+				.queryParam(PARAMETER_TOKEN, token)
+				.build().toUriString();
 		
-		return template.getForEntity(this.credentials.getUrl(ENDPOINT), AccountUserDTO.class, map).getBody();
+		return template.get(uri, AccountUserDTO.class);
 	}
 
 	@Override
 	public AccountUserDTO create(String email, String password) {
 		
-		Map<String, String> map = new HashMap<>();
-		map.put("email", email);
-		map.put("password", password);
+		Map<String, String> parameters = new HashMap<>();
+		parameters.put(PARAMETER_EMAIL, email);
+		parameters.put(PARAMETER_PASSWORD, password);
 		  
-		HttpEntity<String> httpEntity = factoryApplicationJSONHttpEntity(map);
-		
-		return template.exchange(this.credentials.getUrl(ENDPOINT), HttpMethod.POST, httpEntity, AccountUserDTO.class).getBody();
-	}
-
-	private HttpEntity<String> factoryApplicationJSONHttpEntity(Map<String, String> map) {
-		String content = null;
-		try {
-			content = new ObjectMapper().writeValueAsString(map);
-		} catch (JsonProcessingException e) {
-		}
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		HttpEntity<String> httpEntity = new HttpEntity<>(content, headers);
-		return httpEntity;
+		return template.post(ENDPOINT, parameters, AccountUserDTO.class);
 	}
 }

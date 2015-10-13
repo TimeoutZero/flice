@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,12 +45,12 @@ public class User{
 	@Column(name = "user_email")
 	private String email;
 	
-	@CollectionTable(name = "user_roles")
 	@ElementCollection(fetch = FetchType.LAZY)
+	@CollectionTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, foreignKey = @ForeignKey(name = "FK_USER_ROLES"))
 	private List<String> roles = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_communitys", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "community_id") })
-	private List<Community> communitys = new ArrayList<Community>();
+	@JoinTable(name = "user_communities", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "community_id") })
+	private List<Community> communitys = new ArrayList<>();
 
 }

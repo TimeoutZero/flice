@@ -2,11 +2,13 @@ package com.timeoutzero.flice.core.security;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +20,8 @@ import org.springframework.web.filter.GenericFilterBean;
 
 @Component
 public class TokenFilter extends GenericFilterBean {
-	public static final String CUSTOM_HEADER_X_AUTH_TOKEN = "X-AUTH-TOKEN";
+
+	public static final String CUSTOM_COOKIE_X_FLICE_TOKEN = "c-f-token";
 
 	@Autowired
 	private AuthenticatorService authenticatorService;
@@ -29,15 +32,20 @@ public class TokenFilter extends GenericFilterBean {
 		HttpServletRequest request 	 = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		
-		if (request.getCookies() != null) {
-			Arrays.asList(request.getCookies()).stream().filter(c -> c.getName().equals("x-f-token")).forEach(c -> {
-				System.out.println(c.toString());
-			});
-		}
+		String token = "";
 
+		if (request.getCookies() != null) {
+			
+			Optional<Cookie> cookie = Arrays.asList(request.getCookies()).stream()
+					.filter(c -> c.getName().equals(CUSTOM_COOKIE_X_FLICE_TOKEN))
+					.findFirst();
+			
+			if (cookie.isPresent()) {
+				token = cookie.get().getValue();
+			}
+		}
 		
-		String token = request.getHeader(CUSTOM_HEADER_X_AUTH_TOKEN);
-		UsernamePasswordAuthenticationToken authentication = authenticatorService.createAuthentication(token);
+ 		UsernamePasswordAuthenticationToken authentication = authenticatorService.createAuthentication(token);
 	
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		chain.doFilter(request, response);

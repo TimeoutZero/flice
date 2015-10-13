@@ -33,6 +33,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonassert.JsonAssert;
 import com.jayway.jsonassert.JsonAsserter;
 import com.timeoutzero.flice.account.AccountApplication;
+import com.timeoutzero.flice.account.builder.ProductBuilder;
+import com.timeoutzero.flice.account.security.ApplicationKeyFilter;
 import com.timeoutzero.flice.account.security.JwtAccount;
 
 import aleph.TestPersistentContext;
@@ -60,6 +62,8 @@ public abstract class BasicControllerTest {
 	
 	@Autowired
 	protected JwtAccount jwtAccount;
+	
+	private String token;
 
 	@Before
 	public void setupConfiguration() {
@@ -71,22 +75,12 @@ public abstract class BasicControllerTest {
 				.alwaysDo(print())
 				.addFilters(this.springSecurityFilterChain)
 				.build();
+		
+		ProductBuilder product = ProductBuilder.product("flice-core");
+		saveAll();
+		
+		this.token = product.get().getToken();
 	}
-	
-//	
-//	public BasicControllerTest signIn(UserBuilder builder) throws Exception {
-//
-//		User user = builder.get();
-//		
-//		MockHttpServletRequestBuilder post = MockMvcRequestBuilders.post("/login");
-//		post.param("username", user.getEmail());
-//		post.param("password", "");
-//
-//		session = (MockHttpSession) mock.perform(post).andExpect(status().isOk()).andReturn().getRequest().getSession();
-//
-//		return this;
-//	}
-	
 	
 	protected void saveAll() {
 		 
@@ -102,35 +96,41 @@ public abstract class BasicControllerTest {
 	// UTIL
 	
 	protected MockHttpServletRequestBuilder get(Object... variables) {
-		return MockMvcRequestBuilders.get(getControllerBase(), variables);
+		return MockMvcRequestBuilders.get(getControllerBase(), variables).header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token);
 	}
 
 	protected MockHttpServletRequestBuilder get(String uri, Object... variables) {
-		return MockMvcRequestBuilders.get(getControllerBase() + uri, variables);
+		return MockMvcRequestBuilders.get(getControllerBase() + uri, variables).header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token);
 	}
 	
 	protected MockHttpServletRequestBuilder post(Object... variables) {
-		return MockMvcRequestBuilders.post(getControllerBase(), variables);
+		return MockMvcRequestBuilders.post(getControllerBase(), variables).header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token);
 	}
 	
 	protected MockHttpServletRequestBuilder postJson(Object content) throws Exception {
-		return MockMvcRequestBuilders.post(getControllerBase()).content(mapper.writeValueAsString(content)).contentType(MediaType.APPLICATION_JSON_VALUE);
+		return MockMvcRequestBuilders.post(getControllerBase())
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token)
+				.content(mapper.writeValueAsString(content)).contentType(MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	protected MockHttpServletRequestBuilder post(String endpoint, Object... variables) {
-		return MockMvcRequestBuilders.post(getControllerBase() + endpoint, variables);
+		return MockMvcRequestBuilders.post(getControllerBase() + endpoint, variables)
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token);
 	}
 
 	protected MockHttpServletRequestBuilder put(Object... variables) {
-		return MockMvcRequestBuilders.put(getControllerBase(), variables);
+		return MockMvcRequestBuilders.put(getControllerBase(), variables)
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token);
 	}
 	
 	protected MockHttpServletRequestBuilder put(String endpoint, Object... variables) {
-		return MockMvcRequestBuilders.put(getControllerBase() + endpoint, variables);
+		return MockMvcRequestBuilders.put(getControllerBase() + endpoint, variables)
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token);
 	}
 
 	protected MockHttpServletRequestBuilder delete(String endpoint, Object... variables){
-		return MockMvcRequestBuilders.delete(getControllerBase() + endpoint, variables);
+		return MockMvcRequestBuilders.delete(getControllerBase() + endpoint, variables)
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, token);
 	}
 	
 	private String getControllerBase() {

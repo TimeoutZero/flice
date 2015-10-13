@@ -46,14 +46,11 @@ public class UserController {
 	@RequestMapping(method = GET)
 	public UserDTO get(@RequestParam String token){
 		
-		User user = null;
+		String email = jwtAccount.getSubject(token);
 
-		try {
-			
-			String email = jwtAccount.getSubject(token);
-			user = repository.getUserRepository().findByEmail(email); 
-			
-		} catch (Exception e) {
+		User user = repository.getUserRepository().findByEmail(email); 
+		
+		if (user == null) {
 			throw new AccountException(HttpStatus.NOT_FOUND, EXCEPTION_USER_NOT_FOUND);
 		}
 		

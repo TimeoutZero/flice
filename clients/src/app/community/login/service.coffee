@@ -3,7 +3,7 @@ angular.module 'web'
 
     register : (form) ->
       $http
-        url    : CORE_API + "/account/user"
+        url    : CORE_API + "/user"
         method : 'POST'
         data   :
           'email'    : form.email.$modelValue
@@ -11,7 +11,7 @@ angular.module 'web'
 
     createToken : (form) ->
       $http
-        url    : CORE_API + "/account/token"
+        url    : CORE_API + "/user/token"
         method : 'POST'
         data   :
           'email'    : form.email.$modelValue

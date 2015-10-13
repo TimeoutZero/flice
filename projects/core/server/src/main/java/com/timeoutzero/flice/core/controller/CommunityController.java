@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.dto.CommunityDTO;
 import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.form.CommunityForm;
@@ -36,6 +37,8 @@ public class CommunityController {
 	@Autowired
 	private CoreService coreService;
 
+	@Transactional(readOnly = true)
+	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(value = "/{id}", method = GET)
 	public CommunityDTO findById(@PathVariable("id") Long id) {
 		
@@ -45,15 +48,17 @@ public class CommunityController {
 
 	@Transactional(readOnly = true)
 	@RequestMapping(method = GET)
-	@Secured({ Role.USER, Role.ANONYMOUS })
+	@Secured({ Role.ANONYMOUS , Role.USER})
 	public List<CommunityDTO> list() {
 		
 		List<Community> communitys = new ArrayList<>();
 		
 		if (getLoggedUserAuthoritys().contains(Role.ANONYMOUS)) { 
-			communitys = coreService.getCommunityRepository().findByActiveTrue();
+			communitys = coreService.getCommunityRepository()
+					.findByActiveTrueAndVisibilityTrue();
 		} else {
-			communitys = coreService.getUserRepository().findAllCommunityByUser(getLoggedUser().getId());
+			communitys = coreService.getUserRepository()
+					.findAllCommunityByUser(getLoggedUser().getId());
 		}
 
 		return communitys.stream()
@@ -61,34 +66,41 @@ public class CommunityController {
 				.collect(toList());
 	}
 
+	@Transactional
+	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(method = POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	@Secured({ Role.USER, Role.ADMIN })
 	public CommunityDTO create(@Valid @RequestBody CommunityForm form) {
-		
+
+		User loggedUser = coreService.getLoggedUser();
 		
 		Community community = form.toEntity();
-		community.setOwner(coreService.getUserRepository().findOne(getLoggedUser().getId()));
+		community.setOwner(loggedUser);
 		community = coreService.getCommunityRepository().save(community);
 
+		loggedUser.getCommunitys().add(community);
+		coreService.getUserRepository().save(loggedUser);
+		
 		return new CommunityDTO(community);
 	}
 
+	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{id}", method = PUT)
 	public CommunityDTO update(@PathVariable("id") Long id, @Valid @RequestBody CommunityForm form) {
 
 		Community community = coreService.getCommunityRepository().findOne(id);
-		community.setDescription(form.getDescription());
-		community.setImage(form.getImage());
 		community.setName(form.getName());
+		community.setDescription(form.getDescription());
+		community.setVisibility(form.getVisibility());
+		community.setImage(form.getImage());
 		community.setTags(form.getTags());
-		// community.setOwner(user);
-
+		
 		coreService.getCommunityRepository().save(community);
 
 		return new CommunityDTO(community);
 	}
 
+	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{id}", method = DELETE)
 	public CommunityDTO delete(@PathVariable("id") Long id) {
 

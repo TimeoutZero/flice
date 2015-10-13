@@ -2,6 +2,8 @@ package com.timeoutzero.flice.core.form;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 
@@ -17,14 +19,16 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class CommunityForm {
 
-	@NotBlank
+	@NotBlank(message = "name.blank")
 	private String name;
 	
-	@NotBlank
+	@NotBlank(message = "description.blank")
 	private String description;
 
+	@NotNull(message = "visibility.null")
+	private Boolean visibility;
+
 	private String image;
-	
 	private List<Tag> tags;
 	
 	public Community toEntity(){
@@ -36,6 +40,7 @@ public class CommunityForm {
 		community.setCreated(DateTime.now());
 		community.setActive(true);
 		community.setTags(this.tags);
+		community.setVisibility(this.visibility);
 		
 		return community;
 	}
