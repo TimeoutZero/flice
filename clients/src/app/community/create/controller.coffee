@@ -1,6 +1,8 @@
 angular.module "web"
-  .controller "CommunityCreateController", ($scope, $state, CommunityService) ->
+  .controller "CommunityCreateController", ($scope, $state, CommunityService, FileUploader) ->
     
+    $scope.uploader = new FileUploader();
+
     $scope.community =
       visibility : true
       images :
@@ -12,7 +14,8 @@ angular.module "web"
         { id: "2", name: "teste2" }
       ]
 
-    $scope.communityCreateForm =
+
+    # $scope.communityCreateForm =
 
     $scope.methods = 
 
