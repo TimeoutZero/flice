@@ -40,6 +40,9 @@ angular.module "web"
           'community-content@community.self' :
             controller  : 'CommunitySelfContentController'
             templateUrl : 'app/community/self/subview/content.html'
+          'community-post@community.self' :
+            controller  : 'CommunitySelfContentController'
+            templateUrl : 'app/community/self/subview/post.html'
       )
  
       .state('community.list'

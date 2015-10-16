@@ -36,6 +36,14 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
+.ta-editor {
+    min-height: 300px;
+    height: auto;
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
+    margin:20px 0;
+}
 
 html, body, .main-view {
   height: 100%;

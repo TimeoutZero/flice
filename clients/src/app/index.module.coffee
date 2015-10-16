@@ -7,5 +7,6 @@ angular.module 'web', [
   'ui.router', 
   'ui.bootstrap', 
   'rt.select2',
-  'angularFileUpload'
+  'angularFileUpload',
+  'textAngular'
 ]

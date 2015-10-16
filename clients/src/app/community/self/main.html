@@ -15,13 +15,19 @@
   </div>
 
   <div class="col-md-12 community-description">
-   
+
     <div class="col-md-12">
       <p align="justify">{{community.description}}</p>
     </div>
-   
-   <div class="col-md-8 community-tags">
+
+    <div class="col-md-7 community-tags">
       Tags: <span ng-repeat="tag in community.tags" >{{tag}}</span>
+    </div>
+
+    <div class="col-md-1">
+      <a ui-sref="community.post">
+        <button type="button" class="btn btn-primary">+ Post</button>
+      </a>
     </div>
 
     <div class="col-md-4">
@@ -34,10 +40,10 @@
     </div>
   </div>
 
-
   <div class="col-md-12">
     <hr>
   </div>
 
   <div ui-view="community-content" style="margin: 0 auto;"></div>  
+  <div ui-view="community-post" style="margin: 0 auto;"></div>  
 </div>

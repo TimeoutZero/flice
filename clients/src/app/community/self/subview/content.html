@@ -7,7 +7,7 @@
 
     <ul class="list-unstyled">
       <li ng-repeat="topic in attrs.topics" ng-click="methods.openTopicPreview(topic)" >
-       
+
         <div class="row" ng-class="{'topic-active' : methods.isActive({{topic.id}}) && attrs.isOnTopicPreview}" >
 
           <div class="col-md-1" ng-class="{'community-thumb-author-none' : attrs.isOnTopicPreview}">
@@ -48,9 +48,28 @@
   <h2 class="community-actual-title-topic">{{attrs.topic.title}}</h2>
 
   <div class="community-pages">
-    <a href="#" ng-click="$event.preventDefault(); methods.firstPage()">Primeira</a> | 
+<!--     <a href="#" ng-click="$event.preventDefault(); methods.firstPage()">Primeira</a> | 
     <a href="#" ng-click="$event.preventDefault(); methods.previousPage()">Anterior</a> |
-    <a href="#" ng-click="$event.preventDefault(); methods.nextPage()">Próxima</a>
+    <a href="#" ng-click="$event.preventDefault(); methods.nextPage()">Próxima</a> -->
+    <nav>
+      <ul class="pagination">
+        <li>
+          <a href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li>
+          <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 
   <div ng-repeat="comment in attrs.comments">
@@ -81,6 +100,26 @@
     </div>
   </div>
 
-  <div class="community-pages">Primeira | Anterior | Próxima</div>
+  <div class="community-pages">
+    <nav>
+      <ul class="pagination">
+        <li>
+          <a href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li>
+          <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
 </div>
