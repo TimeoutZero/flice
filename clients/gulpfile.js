@@ -7,18 +7,6 @@
 'use strict';
 
 var gulp = require('gulp');
-var wrench = require('wrench');
-
-/**
- *  This will load all js or coffee files in the gulp directory
- *  in order to load all gulp tasks
- */
-wrench.readdirSyncRecursive('./gulp').filter(function(file) {
-  return (/\.(js|coffee)$/i).test(file);
-}).map(function(file) {
-  require('./gulp/' + file);
-});
-
 
 /**
  *  Default task clean temporaries directories and launch the
@@ -27,3 +15,22 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
+
+
+/*
+  Options
+ */
+var basebuildOptions = {
+  mainAngularModule: 'web'
+};
+
+basebuildOptions.modulesData = {
+  proxy: {
+    target: 'http://localhost:8080'
+  }
+};
+
+/*
+  Init basebuild-angular
+ */
+require('basebuild-angular')(basebuildOptions);
