@@ -8,15 +8,21 @@ import org.springframework.util.MultiValueMap;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public abstract class AbstractFliceTemplate {
 
-	private String url;
-	private String applicationSecretKey;
-
 	private static final String X_FLICE_TOKEN = "X-FLICE-TOKEN";
+
+	@NonNull
+	private String url;
+
+	@NonNull
+	private String applicationSecretKey;
+	
+	protected ObjectMapper mapper = new ObjectMapper();
 	
 	public String getUrl(String endpoint) {
 		

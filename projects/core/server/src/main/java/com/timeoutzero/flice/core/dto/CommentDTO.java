@@ -16,15 +16,15 @@ public class CommentDTO {
 
 	private Long topicId;
 	private String content;
-	private String owner;
+	private UserDTO author;
 	private DateTime created;
 
 	public CommentDTO(Comment comment){
 		super();
 		this.content = comment.getContent();
 		this.topicId = comment.getTopic().getId();
-//		this.owner = comment.getOwner().getName();
 		this.created = comment.getCreated();
+		this.author	 = new UserDTO(comment.getOwner());
 	}
 
 }

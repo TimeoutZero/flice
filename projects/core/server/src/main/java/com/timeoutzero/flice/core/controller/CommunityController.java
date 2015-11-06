@@ -37,6 +37,7 @@ public class CommunityController {
 	@Autowired
 	private CoreService coreService;
 
+	//https://api.myjson.com/bins/4gdhe
 	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(value = "/{id}", method = GET)

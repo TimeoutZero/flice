@@ -1,27 +1,46 @@
-<!-- <div 
-class="col-md-3 row"
-ng-class="{'community-hide-menu' : !attrs.isHideMenu, 'community-hide-menu' : attrs.isHideMenu}">
 
-<div class="community-menu row">
 
-  <div class="community-thumb">
-
-    <div class="community-thumb-image">
-      <a ui-sref="community.self({ id: community.id })">
-        <img class="img-rounded" src="{{community.image}}" alt="...">
-      </a>         
-
-    </div>
-
-    <div class="tags-wrapper">
-      <p ng-repeat="tag in community.tags" class="community-thumb-tags">
-        <span>
-          {{tag}}
-        </span>
-      </p>  
+<div class="col-md-12">
+  <div class="col-md-3 community-content-cover">
+    <div class="community-titles">
+      <h2>{{community.name}}</h2>
+      <h4>{{community.members}} Members</h4>
+      <div class="community-button-participate">
+        <button type="button" class="btn btn-info active">Participate</button>
+      </div>  
     </div>
   </div>
-
-
+  <div class="col-md-9 community-cover-container">
+    <img class="community-cover-image" src="{{community.cover}}" alt="a">
+  </div>
 </div>
-</div> -->
+
+
+
+<div class="col-md-12 community-description">
+
+  <div class="col-md-12">
+    <p align="justify">{{community.description}}</p>
+  </div>
+
+  <div class="col-md-7 community-tags">
+    Tags: <span ng-repeat="tag in community.tags" >{{tag.name}}</span>
+  </div>
+
+  <div class="col-md-1">
+    <button type="button" class="btn btn-primary" ng-click="methods.changeToCreateTopicView()">Post</button>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <hr>
+</div>

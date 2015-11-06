@@ -14,17 +14,20 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class TopicDTO {
 
+	private Long id;
 	private String name;
-	private Long communityId;
-	private String owner;
+	private UserDTO author;
 	private DateTime created;
+	private DateTime lastUpdated;
+	private int answers;
 
 	public TopicDTO(Topic topic){
 		super();
-		this.name = topic.getName();
-		this.communityId = topic.getCommunity().getId();
-//		this.owner = topic.getOwner().getName();
+		this.id		 = topic.getId();
+		this.name 	 = topic.getName();
 		this.created = topic.getCreated();
+		this.answers = topic.getComments().size();
+		this.author	 = new UserDTO(topic.getOwner());
 	}
 
 }

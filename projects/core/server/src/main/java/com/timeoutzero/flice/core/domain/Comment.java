@@ -46,10 +46,10 @@ public class Comment {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "comment_created")
-	private DateTime created;
+	private DateTime created = DateTime.now();
 	
 	@Column(name = "comment_active")
-	private Boolean active;
+	private Boolean active = true;
 	
 	@ManyToOne
 	@JoinColumn(name = "topic_id", foreignKey = @ForeignKey(name = "FK_TOPIC_COMMENT"))

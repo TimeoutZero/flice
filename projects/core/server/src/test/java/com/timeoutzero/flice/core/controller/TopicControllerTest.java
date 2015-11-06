@@ -73,10 +73,9 @@ public class TopicControllerTest extends ApplicationTest{
 		login(marcos);
 		
 		TopicForm form = new TopicForm();
-		form.setCommunityId(community.getId());
 		form.setName("FIFA 15");
 		
-		JsonNode json = post("/topic").json(form).expectedStatus(HttpStatus.CREATED).getJson();
+		JsonNode json = post("/community/%s/topic", community.getId()).json(form).expectedStatus(HttpStatus.CREATED).getJson();
 	
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("FIFA 15"))
@@ -96,10 +95,9 @@ public class TopicControllerTest extends ApplicationTest{
 		saveAll(gta);
 		
 		TopicForm form = new TopicForm();
-		form.setCommunityId(community.getId());
 		form.setName("FIFA 15");
 		
-		JsonNode json = put("/topic/%s", gta.getId()).json(form).expectedStatus(HttpStatus.OK).getJson();
+		JsonNode json = put("/community/%s/topic/%s", community.getId(), gta.getId()).json(form).expectedStatus(HttpStatus.OK).getJson();
 		
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("FIFA 15"))

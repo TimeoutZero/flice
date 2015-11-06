@@ -9,6 +9,6 @@ import com.timeoutzero.flice.core.domain.Topic;
 public interface TopicRepository extends CrudRepository<Topic, Long>{
 
 	Topic findByIdAndActiveTrue(Long id);
-	List<Topic> findByActiveTrue();
+	List<Topic> findByCommunityIdAndActiveTrue(Long communityId);
 	
 }

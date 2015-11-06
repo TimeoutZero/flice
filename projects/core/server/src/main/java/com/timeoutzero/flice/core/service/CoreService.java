@@ -9,12 +9,16 @@ import com.timeoutzero.flice.core.repository.CommunityRepository;
 import com.timeoutzero.flice.core.repository.TopicRepository;
 import com.timeoutzero.flice.core.repository.UserRepository;
 import com.timeoutzero.flice.core.security.CoreSecurityContext;
+import com.timeoutzero.flice.rest.operations.AccountOperations;
 
 import lombok.Getter;
 
 @Getter
 @Service
 public class CoreService {
+	
+	@Autowired
+	private AccountOperations accountOperations;
 	
 	@Autowired
 	private UserRepository userRepository;

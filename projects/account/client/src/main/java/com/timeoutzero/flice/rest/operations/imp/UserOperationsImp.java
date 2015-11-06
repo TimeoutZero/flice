@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.rest.operations.imp;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,6 +18,7 @@ public class UserOperationsImp implements UserOperations {
 	private static final String ENDPOINT = "/user";
 	
 	private static final String PARAMETER_TOKEN 	= "token";
+	private static final String PARAMETER_IDS 		= "ids";
 	private static final String PARAMETER_EMAIL 	= "email";
 	private static final String PARAMETER_PASSWORD  = "password";
 	
@@ -25,11 +27,29 @@ public class UserOperationsImp implements UserOperations {
 	@Override
 	public AccountUserDTO get(String token) {
 		
-		String uri = UriComponentsBuilder.fromUriString(ENDPOINT)
+		String uri = UriComponentsBuilder.fromUriString(ENDPOINT + "/token")
 				.queryParam(PARAMETER_TOKEN, token)
 				.build().toUriString();
 		
 		return template.get(uri, AccountUserDTO.class);
+	}
+	
+
+	@Override
+	public List<AccountUserDTO> list(List<Long> ids) {
+		
+		UriComponentsBuilder uri = UriComponentsBuilder.fromUriString(ENDPOINT);
+
+		for (Long id : ids) {
+			uri.queryParam(PARAMETER_IDS, id);
+		}
+		
+		try {
+			return template.list(uri.build().toUriString(), AccountUserDTO.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -41,4 +61,5 @@ public class UserOperationsImp implements UserOperations {
 		  
 		return template.post(ENDPOINT, parameters, AccountUserDTO.class);
 	}
+
 }

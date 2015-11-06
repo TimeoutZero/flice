@@ -5,6 +5,9 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,7 @@ public class UserController {
 	@Autowired
 	private UserSocialMediaService userSocialMediaService;
 	
-	@RequestMapping(method = GET)
+	@RequestMapping(value = "/token", method = GET)
 	public UserDTO get(@RequestParam String token){
 		
 		String email = jwtAccount.getSubject(token);
@@ -55,6 +58,16 @@ public class UserController {
 		}
 		
 		return new UserDTO(user);
+	}
+	
+	@RequestMapping(method = GET)
+	public List<UserDTO> listById(@RequestParam List<Long> ids){
+		
+		List<User> users = (List<User>) repository.getUserRepository().findAll(ids);		
+		
+		return users.stream()
+				.map(UserDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	@RequestMapping(method = POST)

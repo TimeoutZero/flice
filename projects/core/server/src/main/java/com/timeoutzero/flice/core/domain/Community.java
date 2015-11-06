@@ -37,7 +37,7 @@ import lombok.ToString;
 @ToString()
 @Builder
 @Table(name = "community")
-public class Community{
+public class Community {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +61,9 @@ public class Community{
 	
 	@Column(name = "community_image")
 	private String image;
+	
+	@Column(name = "community_cover")
+	private String cover;
 
 	@Column(name = "community_active")
 	private Boolean active;

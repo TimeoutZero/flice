@@ -3,6 +3,9 @@ angular.module "web"
     
     $scope.uploader = new FileUploader();
 
+    $scope.attrs =
+      percentage : 20
+
     $scope.community =
       visibility : true
       images :
@@ -14,8 +17,9 @@ angular.module "web"
         { id: "2", name: "teste2" }
       ]
 
+    $scope.$watch 'communityCreateForm', (x)->
+      console.log x
 
-    # $scope.communityCreateForm =
 
     $scope.methods = 
 

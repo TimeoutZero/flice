@@ -84,23 +84,20 @@ html, body, .main-view {
 
 .community-cover-container {
   margin-top : 10px;
-  height     : 200px;
+  height     : 250px;
   overflow   : hidden;
-  position   : absolute;
 
   .community-cover-image {
-    width    : 100%;
-    margin-top : auto;
-    border-radius: 5px;
+    //width       : 100%;
+    margin-left : -15px;
   }
 }
 
 .community-content-cover {
   margin-top : 10px;
-  height: 200px;
+  height: 250px;
   color: #FFF;
   background-color: rgba(0, 0, 0, 0.7);
-  margin-left: 16px;
   text-align: center;
   border-top-left-radius : 5px;
   border-bottom-left-radius : 5px;

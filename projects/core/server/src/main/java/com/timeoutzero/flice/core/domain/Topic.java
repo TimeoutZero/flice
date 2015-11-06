@@ -1,6 +1,9 @@
 package com.timeoutzero.flice.core.domain;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,14 +44,17 @@ public class Topic {
 
 	@Column(name = "topic_name")
 	private String name;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "topic_created")
-	private DateTime created;
+	private DateTime created = DateTime.now();
 	
 	@Column(name = "topic_active")
-	private Boolean active;
+	private Boolean active = true;
+	
+	@OneToMany(mappedBy = "topic")
+	private List<Comment> comments = new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "community_id", foreignKey = @ForeignKey(name = "FK_COMMUNITY_TOPIC"))

@@ -10,5 +10,6 @@ public interface CommentRepository extends CrudRepository<Comment, Long>{
 
 	Comment findByIdAndActiveTrue(Long id);
 	List<Comment> findByActiveTrue();
+	List<Comment> findByTopicIdAndActiveTrue(Long topicId);
 	
 }

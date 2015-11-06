@@ -32,16 +32,16 @@ angular.module "web"
         url : '/self/:id'
         views :
           '' :
-            templateUrl : 'app/community/self/main.html'
             controller  : 'CommunitySelfController'
-          'community-menu@community.self' :
+            templateUrl : 'app/community/self/main.html'
+          'community-self-menu@community.self' :
             controller  : 'CommunitySelfMenuController'
             templateUrl : 'app/community/self/subview/menu.html'
-          'community-content@community.self' :
+          'community-self-content@community.self' :
             controller  : 'CommunitySelfContentController'
             templateUrl : 'app/community/self/subview/content.html'
-          'community-post@community.self' :
-            controller  : 'CommunitySelfContentController'
+          'community-self-post@community.self' :
+            controller  : 'CommunityTopicController'
             templateUrl : 'app/community/self/subview/post.html'
       )
  

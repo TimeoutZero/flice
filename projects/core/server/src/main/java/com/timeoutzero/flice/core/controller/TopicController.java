@@ -5,84 +5,129 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.timeoutzero.flice.core.domain.Comment;
 import com.timeoutzero.flice.core.domain.Topic;
+import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.dto.TopicDTO;
+import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.form.TopicForm;
 import com.timeoutzero.flice.core.service.CoreService;
+import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 
 @RestController
-@RequestMapping("/topic")
+@RequestMapping("/community/{communityId}/topic")
 public class TopicController {
 
 	@Autowired
 	private CoreService coreService;
 
-	@RequestMapping(value="/{id}", method=GET)
+	@Secured({ Role.ANONYMOUS , Role.USER })
+	@RequestMapping(value = "/{topicId}", method = GET)
 	public TopicDTO findById(@PathVariable("id") Long id){
 
 		Topic topic = coreService.getTopicRepository().findByIdAndActiveTrue(id);
 		return new TopicDTO(topic);
 	}
 
-	@RequestMapping(method=GET)
-	public List<TopicDTO> list(){
+	@Transactional(readOnly = true)
+	@Secured({ Role.ANONYMOUS , Role.USER })
+	@RequestMapping(method = GET)
+	public List<TopicDTO> list(@PathVariable("communityId") Long communityId){
 
-		List<Topic> list = coreService.getTopicRepository().findByActiveTrue();
+		List<Topic> topics = coreService.getTopicRepository().findByCommunityIdAndActiveTrue(communityId);
+		List<AccountUserDTO> accounts = getAccountsByTopics(topics);
 
-		List<TopicDTO> dtos = new ArrayList<TopicDTO>();
-		for(Topic topic : list){
-			dtos.add(new TopicDTO(topic));
-		}
-
-		return dtos;
+		return topics.stream()
+				.map(TopicDTO::new)
+				.map(joinAccountProfileIntoTopic(accounts))
+				.collect(Collectors.toList());
 	}
 
-	@RequestMapping(method=POST)
-	@ResponseStatus(value=HttpStatus.CREATED)
-	public TopicDTO create(@Valid @RequestBody TopicForm form){
+	private Function<TopicDTO, TopicDTO> joinAccountProfileIntoTopic(List<AccountUserDTO> accounts) {
+		
+		Function<TopicDTO, TopicDTO> mapper = dto -> {
+		
+			Optional<AccountUserDTO> optional = accounts.stream()
+					.filter(account -> account.getId().equals(dto.getAuthor().getId()))
+					.findFirst();
+			
+			if (optional.isPresent()) {
+				dto.getAuthor().setProfile(optional.get().getProfile());
+			}
+			return dto;
+		};
+		
+		return mapper;
+	}
+
+	private List<AccountUserDTO> getAccountsByTopics(List<Topic> list) {
+		List<Long> ids = Arrays.asList(list.stream()
+				.map(t -> t.getOwner().getAccountId())
+				.toArray(Long[]::new)); 
+		 
+		return coreService.getAccountOperations().getUserOperations().list(ids);
+	}
+
+	@Transactional
+	@RequestMapping(method = POST)
+	@ResponseStatus(value = HttpStatus.CREATED)
+	@Secured({ Role.USER , Role.ADMIN })
+	public TopicDTO create(@PathVariable("communityId") Long communityId, @Valid @RequestBody TopicForm form){
+
+		User loggedUser = coreService.getLoggedUser();
 
 		Topic topic = form.toEntity();
+		topic.setCommunity(coreService.getCommunityRepository().findOne(communityId));
+		topic.setOwner(loggedUser);
+		
+		coreService.getTopicRepository().save(topic);
 
-		topic.setCreated(DateTime.now());
-		topic.setActive(true);
-		topic.setCommunity(coreService.getCommunityRepository().findOne(form.getCommunityId()));
-		//		topic.setOwner(user);
+		Comment comment = new Comment();
+		comment.setOwner(loggedUser);
+		comment.setTopic(topic);
+		comment.setContent(form.getContent());
+		
+		coreService.getCommentRepository().save(comment);
 
-		topic = coreService.getTopicRepository().save(topic);
-
-		TopicDTO topicDTO = new TopicDTO(topic);
-		return topicDTO;
+		return new TopicDTO(topic);
 	}
 
-	@RequestMapping(value="/{id}", method=PUT)
-	public TopicDTO update(@PathVariable("id") Long id, @Valid @RequestBody TopicForm form){
+	@Secured({ Role.USER , Role.ADMIN })
+	@RequestMapping(value = "/{topicId}", method = PUT)
+	public TopicDTO update(
+			@PathVariable("communityId") Long communityId, 
+			@PathVariable("topicId") Long id, @Valid @RequestBody TopicForm form){
 
 		Topic topic = coreService.getTopicRepository().findOne(id);
-		topic.setCommunity(coreService.getCommunityRepository().findOne(form.getCommunityId()));
+		topic.setCommunity(coreService.getCommunityRepository().findOne(communityId));
 		topic.setName(form.getName());
-		//		topic.setOwner(user);
 
 		topic = coreService.getTopicRepository().save(topic);
 
 		return new TopicDTO(topic);
 	}
 
-	@RequestMapping(value="/{id}", method = DELETE)
-	public TopicDTO delete(@PathVariable("id") Long id){
+	@Secured({ Role.USER , Role.ADMIN })
+	@RequestMapping(value = "/{topicId}", method = DELETE)
+	public TopicDTO delete(@PathVariable("topicId") Long id){
 
 		Topic topic = coreService.getTopicRepository().findOne(id);
 		topic.setActive(false);

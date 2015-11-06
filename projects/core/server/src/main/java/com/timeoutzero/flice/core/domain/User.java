@@ -16,6 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.timeoutzero.flice.rest.dto.ProfileDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +47,9 @@ public class User{
 	
 	@Column(name = "user_email")
 	private String email;
+	
+	@Transient
+	private ProfileDTO profile = new ProfileDTO();
 	
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, foreignKey = @ForeignKey(name = "FK_USER_ROLES"))

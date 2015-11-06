@@ -10,16 +10,13 @@ angular.module "web"
       comments         : []
 
     $scope.methods =
-      
-      init : ->
-        promiseContent = CommunitySelfTopicService.getById $stateParams.id
-        promiseContent.success (data) ->
-          $scope.attrs.topics = data.topics
+     
+      openCreateTopic : ()->
+        $scope.attrs.isOnTopicPreview = no
 
-      openTopicPreview: (topic) ->
-
+      openTopicPreview : (topic) ->
         if topic.id == $scope.attrs.topic.id
-          $scope.attrs.isOnTopicPreview = false
+          $scope.attrs.isOnTopicPreview = no
           $scope.attrs.topic            = {}
           return
 
@@ -48,6 +45,11 @@ angular.module "web"
         promise = CommunitySelfCommentService.getById $scope.attrs.topic.id, $scope.attrs.page, 10
 
         promise.success (data) ->
-          $scope.attrs.comments = data.comments
+          console.log data
+          $scope.attrs.comments = data
+ 
+    do ->
 
-    $scope.methods.init()
+      promise = CommunitySelfTopicService.getById $stateParams.id
+      promise.success (data) ->
+        $scope.attrs.topics = data

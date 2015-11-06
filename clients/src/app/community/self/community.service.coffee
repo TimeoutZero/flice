@@ -1,8 +1,8 @@
 angular.module "web"
-  .service "CommunitySelfService", ($http) ->
+  .service "CommunitySelfService", (CORE_API, $http) ->
 
     getById: (id) ->
 
       $http
-        url    : "https://api.myjson.com/bins/4gdhe"
+        url    : CORE_API + "/community/#{id}"
         method : 'GET'

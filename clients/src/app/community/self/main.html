@@ -1,49 +1,5 @@
-
 <div>
-  <div class="col-md-12 community-cover-container">
-    <img class="community-cover-image" src="http://cmster.com/media/UUYvyJ45kCFFQSKLe95fvChLrB7lAGxDTKDvYrZhvEe8rX4iuyiYyPMRwNEwLS5e.jpg" alt="">
-  </div>
-
-  <div class="col-md-3 community-content-cover">
-    <div class="community-titles">
-      <h2>{{community.name}}</h2>
-      <h4>{{community.members}} Members</h4>
-      <div class="community-button-participate">
-        <button type="button" class="btn btn-info active">Participate</button>
-      </div>  
-    </div>
-  </div>
-
-  <div class="col-md-12 community-description">
-
-    <div class="col-md-12">
-      <p align="justify">{{community.description}}</p>
-    </div>
-
-    <div class="col-md-7 community-tags">
-      Tags: <span ng-repeat="tag in community.tags" >{{tag}}</span>
-    </div>
-
-    <div class="col-md-1">
-      <a ui-sref="community.post">
-        <button type="button" class="btn btn-primary">+ Post</button>
-      </a>
-    </div>
-
-    <div class="col-md-4">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for...">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button">Go!</button>
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-12">
-    <hr>
-  </div>
-
-  <div ui-view="community-content" style="margin: 0 auto;"></div>  
-  <div ui-view="community-post" style="margin: 0 auto;"></div>  
+  <div ui-view="community-self-menu"></div>
+  <div ui-view="community-self-content" ng-show="isOnContent"></div>  
+  <div ui-view="community-self-post"    ng-show="!isOnContent"></div>  
 </div>

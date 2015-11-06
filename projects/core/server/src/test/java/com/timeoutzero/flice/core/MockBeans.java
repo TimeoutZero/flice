@@ -1,5 +1,7 @@
 package com.timeoutzero.flice.core;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,12 @@ public class MockBeans {
 			
 			@Override
 			public AccountUserDTO create(String email, String password) {
+				return null;
+			}
+
+			@Override
+			public List<AccountUserDTO> list(List<Long> ids) {
+				// TODO Auto-generated method stub
 				return null;
 			}
 		});

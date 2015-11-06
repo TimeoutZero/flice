@@ -38,6 +38,7 @@ public class AuthenticatorService {
 		if (result != null) {
 
 			user = service.getUserRepository().findByAccountId(result.getId());
+			user.setProfile(result.getProfile());
 			authorities = user.getRoles().stream()
 					.map(SimpleGrantedAuthority::new)
 					.collect(Collectors.toList());

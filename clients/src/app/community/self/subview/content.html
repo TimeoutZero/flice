@@ -11,16 +11,16 @@
         <div class="row" ng-class="{'topic-active' : methods.isActive({{topic.id}}) && attrs.isOnTopicPreview}" >
 
           <div class="col-md-1" ng-class="{'community-thumb-author-none' : attrs.isOnTopicPreview}">
-            <img class="img-rounded" style="heigth: 75px; width: 75px;" src="{{topic.authorPhoto}}" alt="">
+            <img class="img-rounded" style="heigth: 75px; width: 75px;" src="{{topic.author.profile.photo}}" alt="">
           </div>
           <div class="col-md-11">
 
             <div class="col-md-12">
-              <h4 align="left">{{topic.title}}</h4>
+              <h4 align="left">{{topic.name}}</h4>
             </div>  
 
             <div class="col-md-12 row">
-              <div class="col-xs-12 col-md-2" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">Por: {{topic.author}}</div>
+              <div class="col-xs-12 col-md-2" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">Por: {{topic.author.profile.name}}</div>
               <div class="col-xs-12 col-md-8" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">{{topic.answers}} respostas</div>
               <div class="col-xs-12 col-md-2" ng-class="{'col-md-12 topic-preview-on-last-update' : attrs.isOnTopicPreview, 'col-md-12 topic-preview-off-last-update' : !attrs.isOnTopicPreview}">{{topic.lastUpdate}}</div>
             </div>
@@ -48,9 +48,6 @@
   <h2 class="community-actual-title-topic">{{attrs.topic.title}}</h2>
 
   <div class="community-pages">
-<!--     <a href="#" ng-click="$event.preventDefault(); methods.firstPage()">Primeira</a> | 
-    <a href="#" ng-click="$event.preventDefault(); methods.previousPage()">Anterior</a> |
-    <a href="#" ng-click="$event.preventDefault(); methods.nextPage()">Próxima</a> -->
     <nav>
       <ul class="pagination">
         <li>
@@ -77,11 +74,11 @@
       <div class="col-md-3 row">
 
         <div class="col-md-12">
-          <img class="img-thumbnail" src="{{comment.user.photo}}" alt="">
+          <img class="img-thumbnail" src="{{comment.author.profile.photo}}" alt="">
         </div>
 
         <div class="col-md-12 community-user-name">
-          <h5>{{comment.user.name}}</h5>
+          <h5>{{comment.author.profile.name}}</h5>
         </div>
 
       </div>
@@ -121,5 +118,13 @@
       </ul>
     </nav>
   </div>
+</div>
 
+<div ng-show="attrs.isOnCreatePost">
+  <div text-angular ng-model="htmlVariable"></div>
+  <div class="form-group">
+    <div class="col-md-offset-11 col-md-1">
+      <button type="button" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
 </div>
