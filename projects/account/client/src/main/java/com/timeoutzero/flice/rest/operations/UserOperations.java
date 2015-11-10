@@ -7,6 +7,9 @@ import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 public interface UserOperations {
 
 	AccountUserDTO get(String token);
-	List<AccountUserDTO> list(List<Long> ids);
+
 	AccountUserDTO create(String email, String password);
+	
+	List<AccountUserDTO> list(List<Long> ids);
+	
 }
