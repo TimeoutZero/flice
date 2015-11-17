@@ -1,7 +1,12 @@
 angular.module "web"
-  .run ($rootScope, $window, $http, CORE_API) ->
+  .run ($rootScope, $state, $window, $http, CORE_API) ->
 
-    $rootScope.$on '$stateChangeStart', ()->
+    $rootScope.$on '$stateChangeStart', (evt, to, params)->
+
+      if to.redirectTo
+        evt.preventDefault();
+        $state.go(to.redirectTo, params)
+
       
       promise = $http (url : CORE_API + '/user/me', method : 'GET')
 
@@ -16,6 +21,7 @@ angular.module "web"
         xfbml   : true,
         version : 'v2.3'
       )
+
 
     do (d = document, s = 'script', id = 'facebook-jssdk') ->
       fjs = d.getElementsByTagName(s)[0]

@@ -6,7 +6,7 @@ angular.module "web"
       $http
         url    : CORE_API + "/community/#{communityId}/topic"
         method : 'GET'
-
+ 
     create : (communityId, data) ->
 
       $http
@@ -15,4 +15,3 @@ angular.module "web"
         data   :
           'name'        : data.name
           'content'     : data.content
-

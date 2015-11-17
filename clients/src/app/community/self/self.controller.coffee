@@ -2,15 +2,10 @@ angular.module "web"
   .controller "CommunitySelfController", ($scope, $stateParams, CommunitySelfService) ->
 
     $scope.community = {}
-    $scope.isOnContent = yes
 
     $scope.methods =
-      
-      changeToCreateTopicView : ()->
-        $scope.isOnContent = no
 
-      init : ()->
-        console.log 'ae'
+      init : () ->
         promise = CommunitySelfService.getById $stateParams.id
 
         promise.success (data) ->
@@ -28,10 +23,6 @@ angular.module "web"
 
         promise.error (data, status) ->
           console.log 'fail'
-
-    $scope.$on 'changeToContentView', (event)->
-      $scope.isOnContent = yes
-      $scope.methods.init()
     
     do ->
       $scope.methods.init()

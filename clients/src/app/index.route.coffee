@@ -29,7 +29,8 @@ angular.module "web"
             controller  : 'CommunityCreateController'
       )
       .state('community.self'
-        url : '/self/:id'
+        url        : '/self/:id'
+        redirectTo : 'community.self.content'
         views :
           '' :
             controller  : 'CommunitySelfController'
@@ -37,14 +38,21 @@ angular.module "web"
           'community-self-menu@community.self' :
             controller  : 'CommunitySelfMenuController'
             templateUrl : 'app/community/self/subview/menu.html'
-          'community-self-content@community.self' :
+      )
+      .state('community.self.content'
+        url : ''
+        views :
+          'container@community.self' :
             controller  : 'CommunitySelfContentController'
             templateUrl : 'app/community/self/subview/content.html'
-          'community-self-post@community.self' :
+      )
+      .state('community.self.post'
+        url : '/post'
+        views :
+          'container@community.self' :
             controller  : 'CommunityTopicController'
             templateUrl : 'app/community/self/subview/post.html'
       )
- 
       .state('community.list'
         url: "/list"
         controller  : 'CommunityListController'

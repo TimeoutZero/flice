@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller "CommunitySelfContentController", ($scope, $stateParams, CommunitySelfTopicService, CommunitySelfCommentService) ->
+  .controller "CommunitySelfContentController", ($scope, $state, $stateParams, CommunitySelfTopicService, CommunitySelfCommentService) ->
         
     $scope.attrs =
       isOnTopicPreview : no
@@ -10,6 +10,9 @@ angular.module "web"
       comments         : []
 
     $scope.methods =
+
+      create : () ->
+        console.log 'create comment'
      
       openCreateTopic : ()->
         $scope.attrs.isOnTopicPreview = no
