@@ -18,23 +18,23 @@ mysql:
     MYSQL_CORE_DATABASE     : flice-core
     MYSQL_SECURITY_DATABASE : flice-account
 
-# account:
-#   image: lucasgmartins/java8
-#   ports:
-#     - "8081:8080"
-#   links:
-#     - mysql
-#   volumes:
-#     - projects/account/server/target/flice-account.jar:/app/flice-account.jar
-#   command: java -jar -Dspring.profiles.active=DEV /app/flice-account.jar 
+account:
+  image: lucasgmartins/java8
+  ports:
+    - "8081:8080"
+  links:
+    - mysql
+  volumes:
+    - projects/account/server/target/flice-account.jar:/app/flice-account.jar
+  command: java -jar -Dspring.profiles.active=DEV /app/flice-account.jar 
 
-# core: 
-#   image: lucasgmartins/java8
-#   ports:
-#     - "8080:8080"
-#   links:
-#     - mysql
-#     - account
-#   volumes:
-#     - projects/core/server/target/flice-core.jar:/app/flice-core.jar
-#   command: java -jar -Dspring.profiles.active=DEV /app/flice-core.jar 
+core: 
+  image: lucasgmartins/java8
+  ports:
+    - "8080:8080"
+  links:
+    - mysql
+    - account
+  volumes:
+    - projects/core/server/target/flice-core.jar:/app/flice-core.jar
+  command: java -jar -Dspring.profiles.active=DEV /app/flice-core.jar 
