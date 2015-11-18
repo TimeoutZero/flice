@@ -22,7 +22,7 @@ import com.timeoutzero.flice.core.form.CommentForm;
 
 public class CommentControllerTest extends ApplicationTest{
 
-	Topic topic;
+	private Topic topic;
 	
 	@Before
 	public void before(){
@@ -36,21 +36,25 @@ public class CommentControllerTest extends ApplicationTest{
 	
 	@Test
 	public void testFindActives() throws Exception{
+		
 		Comment comentario1 = comment(topic, "comentario 1").build();
 		Comment comentario2 = comment(topic, "comentario 2").active(false).build();
 		Comment comentario3 = comment(topic, "comentario 3").build();
 		Comment comentario4 = comment(topic, "comentario 4").build();
 		Comment comentario5 = comment(topic, "comentario 5").build();
+		
 		saveAll(comentario1, comentario2, comentario3, comentario4, comentario5);
 		
 		JsonNode json = get("/comment").expectedStatus(HttpStatus.OK).getJson();
+		
 		jsonAsserter(json)
-		.assertThat("$", hasSize(4))
-		.assertThat("$.[*].content", contains("comentario 1", "comentario 3", "comentario 4", "comentario 5"));
+			.assertThat("$", hasSize(4))
+			.assertThat("$.[*].content", contains("comentario 1", "comentario 3", "comentario 4", "comentario 5"));
 	}
 	
 	@Test
 	public void testFindById() throws Exception{
+		
 		Comment comentario = comment(topic, "comentario").build();
 		saveAll(comentario);
 		

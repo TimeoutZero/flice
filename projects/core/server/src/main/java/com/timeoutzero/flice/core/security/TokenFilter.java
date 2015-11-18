@@ -45,7 +45,6 @@ public class TokenFilter extends GenericFilterBean {
 				token = cookie.get().getValue();
 			}
 		}
-
 		
 		try {
 

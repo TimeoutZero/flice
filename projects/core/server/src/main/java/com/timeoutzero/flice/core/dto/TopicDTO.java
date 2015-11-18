@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class TopicDTO {
 
 	private Long id;
+	private Long communityId;
 	private String name;
 	private UserDTO author;
 	private DateTime created;
@@ -23,11 +24,12 @@ public class TopicDTO {
 
 	public TopicDTO(Topic topic){
 		super();
-		this.id		 = topic.getId();
-		this.name 	 = topic.getName();
-		this.created = topic.getCreated();
-		this.answers = topic.getComments().size();
-		this.author	 = new UserDTO(topic.getOwner());
+		this.id		 	 = topic.getId();
+		this.communityId = topic.getCommunity().getId();
+		this.name 	 	 = topic.getName();
+		this.created 	 = topic.getCreated();
+		this.answers 	 = topic.getComments().size();
+		this.author	 	 = new UserDTO(topic.getOwner());
 	}
 
 }

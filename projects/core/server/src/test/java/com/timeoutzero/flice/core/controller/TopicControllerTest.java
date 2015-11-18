@@ -6,7 +6,14 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
+import java.util.Arrays;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,11 +23,23 @@ import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Topic;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.form.TopicForm;
+import com.timeoutzero.flice.core.service.CoreService;
+import com.timeoutzero.flice.rest.dto.AccountUserDTO;
+import com.timeoutzero.flice.rest.operations.AccountOperations;
+import com.timeoutzero.flice.rest.operations.UserOperations;
 
-public class TopicControllerTest extends ApplicationTest{
+public class TopicControllerTest extends ApplicationTest {
 
+	@Mock
+	private AccountOperations accountOperations;
+	
+	@Autowired
+	@InjectMocks
+	private CoreService coreService;
+	
 	@Test
 	public void testListActives() throws Exception{
+		
 		
 		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
@@ -28,14 +47,20 @@ public class TopicControllerTest extends ApplicationTest{
 		saveAll(marcos, community);
 		login(marcos);
 		
-		Topic topico1 = topic(community, "Topico 1").build();
-		Topic topico2 = topic(community, "Topico 2").active(false).build();
-		Topic topico3 = topic(community, "Topico 3").build();
-		Topic topico4 = topic(community, "Topico 4").build();
+		Topic topico1 = topic(community, "Topico 1").owner(marcos).build();
+		Topic topico2 = topic(community, "Topico 2").owner(marcos).active(false).build();
+		Topic topico3 = topic(community, "Topico 3").owner(marcos).build();
+		Topic topico4 = topic(community, "Topico 4").owner(marcos).build();
 		
 		saveAll(topico1, topico2, topico3, topico4);
+
+		AccountUserDTO dto = new AccountUserDTO();
+		dto.setId(marcos.getId());
 		
-		JsonNode json = get("/topic")
+		Mockito.when(this.accountOperations.getUserOperations()).thenReturn(Mockito.mock(UserOperations.class));
+		Mockito.when(this.accountOperations.getUserOperations().list(Mockito.any())).thenReturn(Arrays.asList(dto));
+		
+		JsonNode json = get("/community/%s/topic", community.getId())
 				.expectedStatus(HttpStatus.OK).getJson();
 		
 		jsonAsserter(json)
@@ -46,16 +71,17 @@ public class TopicControllerTest extends ApplicationTest{
 	@Test
 	public void testFindById() throws Exception{
 		
-		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
-		
-		saveAll(marcos, community);
+		saveAll(marcos);
 		login(marcos);
+
+		Community community = Compose.community("Games").owner(marcos).build();
+		saveAll(community);
 		
-		Topic gta = topic(community, "GTA V").build();
+		Topic gta = topic(community, "GTA V").owner(marcos).build();
 		saveAll(gta);
 		
-		JsonNode json = get("/topic/%s", gta.getId())
+		JsonNode json = get("community/%s/topic/%s", community.getId(), gta.getId())
 				.expectedStatus(HttpStatus.OK).getJson();
 		
 		jsonAsserter(json)
@@ -74,8 +100,10 @@ public class TopicControllerTest extends ApplicationTest{
 		
 		TopicForm form = new TopicForm();
 		form.setName("FIFA 15");
+		form.setContent(RandomStringUtils.randomAlphabetic(10));
 		
-		JsonNode json = post("/community/%s/topic", community.getId()).json(form).expectedStatus(HttpStatus.CREATED).getJson();
+		JsonNode json = post("/community/%s/topic", community.getId()).
+				json(form).expectedStatus(HttpStatus.CREATED).getJson();
 	
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("FIFA 15"))
@@ -116,7 +144,7 @@ public class TopicControllerTest extends ApplicationTest{
 		Topic gta = topic(community, "GTA V").build();
 		saveAll(gta);
 		
-		delete("/topic/%s", gta.getId()).expectedStatus(HttpStatus.OK);
+		delete("community/%s/topic/%s", community.getId(), gta.getId()).expectedStatus(HttpStatus.OK);
 	}
 	
 }

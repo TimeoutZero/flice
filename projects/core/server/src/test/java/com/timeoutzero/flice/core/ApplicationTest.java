@@ -48,6 +48,9 @@ public abstract class ApplicationTest {
 
 	@Before
 	public void setUp() {
+		
+		MockitoAnnotations.initMocks(this);
+
 		toPersist.clear();
 		template.execute("TRUNCATE SCHEMA public AND COMMIT");
 	}
@@ -77,8 +80,6 @@ public abstract class ApplicationTest {
 	}
 
 	protected void login(User user) {
-
-		MockitoAnnotations.initMocks(this);
 		this.token = "teste";
 	}
 

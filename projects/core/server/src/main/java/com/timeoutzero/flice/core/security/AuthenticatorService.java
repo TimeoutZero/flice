@@ -48,7 +48,7 @@ public class AuthenticatorService {
 			authorities.add(new SimpleGrantedAuthority(Role.ANONYMOUS));
 		}
 
-		return new UsernamePasswordAuthenticationToken(user, token, authorities);
+ 		return new UsernamePasswordAuthenticationToken(user, token, authorities);
 	}
 
 	private AccountUserDTO getAccountByToken(String token) {

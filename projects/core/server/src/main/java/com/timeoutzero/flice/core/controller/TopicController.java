@@ -39,9 +39,10 @@ public class TopicController {
 	@Autowired
 	private CoreService coreService;
 
+	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER })
 	@RequestMapping(value = "/{topicId}", method = GET)
-	public TopicDTO findById(@PathVariable("id") Long id){
+	public TopicDTO findById(@PathVariable("topicId") Long id){
 
 		Topic topic = coreService.getTopicRepository().findByIdAndActiveTrue(id);
 		return new TopicDTO(topic);

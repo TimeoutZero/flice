@@ -17,11 +17,13 @@ angular.module "web"
 
       createComment : () ->
         
-        console.log 
         promise = CommentService.create $scope.attrs.topic.id, $scope.newcoment
 
         promise.success (data)->
+          $scope.methods.getComments()
           alert 'comment created'
+
+
         promise.error (data)->
           alert 'fail to create comment'
 

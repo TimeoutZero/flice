@@ -107,10 +107,16 @@ public class CommunityControllerTest extends ApplicationTest {
 
 	@Test
 	public void testUpdate() throws Exception{
+
+		User lucas = user("lucas.martins").build(); 
+		saveAll(lucas);
+		login(lucas);
 		
 		Community games = community("Games")
 				.description("Comunidade de games")
-				.image("imagem").build();
+				.image("imagem")
+				.owner(lucas)
+				.build();
 		
 		saveAll(games);
 		
@@ -118,10 +124,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		form.setName("Vídeo Games");
 		form.setDescription("Comunidade de vídeo games");
 		form.setImage("novaimagem.png");
-		
-		User marcos = user("marcos.fernandes").build();
-		saveAll(marcos);
-		login(marcos);
+		form.setVisibility(false);
 		
 		JsonNode json = post("/community")
 				.json(form)

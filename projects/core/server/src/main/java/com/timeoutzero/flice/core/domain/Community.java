@@ -66,10 +66,10 @@ public class Community {
 	private String cover;
 
 	@Column(name = "community_active")
-	private Boolean active;
+	private Boolean active = true;
 	
-	@Column(name = "community_visibility")
-	private Boolean visibility;
+	@Column(name = "community_privacity")
+	private Boolean visibility = true;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "community_tags", joinColumns={ @JoinColumn(name = "comunity_id") }, inverseJoinColumns={ @JoinColumn(name = "tag_id") })
