@@ -44,7 +44,7 @@ public class RequestBuilder {
 		this.URI = URI;
 		this.method = method;
 		
-	//	this.header(TokenFilter.CUSTOM_HEADER_X_AUTH_TOKEN, token);
+		this.header("Cookie", String.format("%s=%s", TokenFilter.CUSTOM_COOKIE_X_FLICE_TOKEN, token));
 	}
 
 	public RequestBuilder formParam(String key, Object value) {
@@ -100,7 +100,6 @@ public class RequestBuilder {
 
 		URI link = UriComponentsBuilder.fromHttpUrl(server).path(URI).queryParams(queryString).build().toUri();
 
-		System.out.println(link.toString());
 		ResponseEntity<T> response = rest.exchange(link, method, entity, responseType);
 
 		if (status != null) {

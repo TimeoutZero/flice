@@ -4,7 +4,6 @@ package com.timeoutzero.flice.core.compose;
 import java.util.Arrays;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 
 import com.timeoutzero.flice.core.domain.Comment;
 import com.timeoutzero.flice.core.domain.Comment.CommentBuilder;

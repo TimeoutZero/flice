@@ -88,6 +88,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		form.setName("Games");
 		form.setDescription("Comunidade de games");
 		form.setImage("imagem");
+		form.setVisibility(false);
 		
 		User marcos = user("marcos.fernandes").build();
 		saveAll(marcos);
