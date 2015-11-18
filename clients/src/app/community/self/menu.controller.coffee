@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller "CommunitySelfMenuController", ($scope, $state) ->
+  .controller "MenuController", ($scope, $state) ->
 
     $scope.methods.changeToCreateTopicView = () ->
       $state.go 'community.self.post'

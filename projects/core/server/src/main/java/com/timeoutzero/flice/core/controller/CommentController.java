@@ -1,5 +1,6 @@
 package com.timeoutzero.flice.core.controller;
 
+import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUser;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.core.domain.Comment;
 import com.timeoutzero.flice.core.dto.CommentDTO;
+import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.form.CommentForm;
 import com.timeoutzero.flice.core.service.CoreService;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
@@ -37,12 +40,14 @@ public class CommentController {
 	@Autowired
 	private CoreService coreService;
 
+	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(value = "/{commentId}", method = GET)
 	public CommentDTO findById(@PathVariable("commentId") Long id){
 		Comment comment = coreService.getCommentRepository().findByIdAndActiveTrue(id);
 		return new CommentDTO(comment);
 	}
 
+	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(method = GET)
 	public List<CommentDTO> list(@PathVariable("topicId") Long topicId){
 
@@ -81,36 +86,36 @@ public class CommentController {
 		return mapper;
 	}
 
-	@RequestMapping(method=POST)
-	@ResponseStatus(value=HttpStatus.CREATED)
-	public CommentDTO create(@Valid @RequestBody CommentForm form){
+	@Secured({ Role.USER, Role.ADMIN })
+	@ResponseStatus(value = HttpStatus.CREATED)
+	@RequestMapping(method = POST)
+	public CommentDTO create(@PathVariable("topicId") Long topicId, @Valid @RequestBody CommentForm form){
 
 		Comment comment = form.toEntity();
 		comment.setActive(true);
 		comment.setCreated(DateTime.now());
-		//		comment.setOwner(user);
-		comment.setTopic(coreService.getTopicRepository().findOne(form.getTopicId()));
-
-		comment = coreService.getCommentRepository().save(comment);
-
-		CommentDTO dto = new CommentDTO(comment);
-
-		return dto;
-	}
-
-	@RequestMapping(value="/{id}", method=PUT)
-	public CommentDTO update(@PathVariable("id") Long id, @Valid @RequestBody CommentForm form){
-
-		Comment comment = coreService.getCommentRepository().findOne(id);
-		comment.setContent(form.getContent());
-		//		comment.setOwner(user);
-		comment.setTopic(coreService.getTopicRepository().findOne(form.getTopicId()));
+		comment.setOwner(getLoggedUser());
+		comment.setTopic(coreService.getTopicRepository().findOne(topicId));
 
 		comment = coreService.getCommentRepository().save(comment);
 
 		return new CommentDTO(comment);
 	}
 
+	@Secured({ Role.USER, Role.ADMIN })
+	@RequestMapping(value = "/{commentId}", method=PUT)
+	public CommentDTO update(@PathVariable("topicId") Long topicId, @PathVariable("commentId") Long commendId, @Valid @RequestBody CommentForm form){
+
+		Comment comment = coreService.getCommentRepository().findOne(commendId);
+		comment.setContent(form.getContent());
+		comment.setTopic(coreService.getTopicRepository().findOne(topicId));
+
+		comment = coreService.getCommentRepository().save(comment);
+
+		return new CommentDTO(comment);
+	}
+
+	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value="/{id}", method=DELETE)
 	public CommentDTO delete(@PathVariable("id") Long id){
 

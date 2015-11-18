@@ -52,7 +52,7 @@ public class TokenFilter extends GenericFilterBean {
 			UsernamePasswordAuthenticationToken authentication = authenticatorService.createAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			
-		} catch (Exception e) {
+ 		} catch (Exception e) {
 			log.error("Error from authentication service: {}", e.getLocalizedMessage());
 			removeInvalidCookie(request, response);
 		}

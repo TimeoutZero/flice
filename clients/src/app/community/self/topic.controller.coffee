@@ -1,11 +1,11 @@
 angular.module 'web'
-  .controller 'CommunityTopicController', ($scope, $state, $stateParams, CommunitySelfTopicService) ->
-
+  .controller 'TopicController', ($scope, $state, $stateParams, TopicService) ->
+ 
     $scope.methods =
       create : () ->
-        promise = CommunitySelfTopicService.create($stateParams.id, $scope.topic)
+        promise = TopicService.create $stateParams.id, $scope.topic
         promise.success (data) ->
           alert 'certo'
           $state.go 'community.self.content', { "id" : $stateParams.id }
-        promise.error
+        promise.error (data) ->
           alert 'error'

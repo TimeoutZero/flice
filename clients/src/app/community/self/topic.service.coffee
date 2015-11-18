@@ -1,5 +1,5 @@
 angular.module "web"
-  .service "CommunitySelfTopicService", (CORE_API, $http) ->
+  .service "TopicService", (CORE_API, $http) ->
 
     getById: (communityId) ->
 

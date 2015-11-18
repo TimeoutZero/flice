@@ -64,9 +64,8 @@ public class CommentControllerTest extends ApplicationTest{
 	public void testCreate() throws Exception {
 		CommentForm form = new CommentForm();
 		form.setContent("comentario");
-		form.setTopicId(topic.getId());
 		
-		JsonNode json = post("/comment").json(form).expectedStatus(HttpStatus.CREATED).getJson();
+		JsonNode json = post("/topic/%s/comment", topic.getId()).json(form).expectedStatus(HttpStatus.CREATED).getJson();
 		jsonAsserter(json)
 		.assertThat("$.content", equalTo("comentario"))
 		.assertThat("$.topicId", equalTo(topic.getId().intValue()));
@@ -79,9 +78,8 @@ public class CommentControllerTest extends ApplicationTest{
 		
 		CommentForm form = new CommentForm();
 		form.setContent("comentario editado");
-		form.setTopicId(topic.getId());
 		
-		JsonNode json = put("/comment/%s", comentario.getId()).json(form).expectedStatus(HttpStatus.OK).getJson();
+		JsonNode json = put("topic/%s/comment/%s", topic.getId(), comentario.getId()).json(form).expectedStatus(HttpStatus.OK).getJson();
 		jsonAsserter(json)
 		.assertThat("$.content", equalTo("comentario editado"))
 		.assertThat("$.topicId", equalTo(topic.getId().intValue()));

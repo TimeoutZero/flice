@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller "CommunitySelfContentController", ($scope, $state, $stateParams, CommunitySelfTopicService, CommunitySelfCommentService) ->
+  .controller "ContentController", ($scope, $state, $stateParams, TopicService, CommentService) ->
         
     $scope.attrs =
       isOnTopicPreview : no
@@ -9,13 +9,21 @@ angular.module "web"
       page             : 0
       comments         : []
 
+      #create
+      newcoment        : {}
+
+
     $scope.methods =
 
-      create : () ->
-        console.log 'create comment'
-     
-      openCreateTopic : ()->
-        $scope.attrs.isOnTopicPreview = no
+      createComment : () ->
+        
+        console.log 
+        promise = CommentService.create $scope.attrs.topic.id, $scope.newcoment
+
+        promise.success (data)->
+          alert 'comment created'
+        promise.error (data)->
+          alert 'fail to create comment'
 
       openTopicPreview : (topic) ->
         if topic.id == $scope.attrs.topic.id
@@ -45,14 +53,13 @@ angular.module "web"
         $scope.methods.getComments()
 
       getComments : () ->
-        promise = CommunitySelfCommentService.getById $scope.attrs.topic.id, $scope.attrs.page, 10
+        promise = CommentService.getById $scope.attrs.topic.id, $scope.attrs.page, 10
 
         promise.success (data) ->
-          console.log data
           $scope.attrs.comments = data
  
     do ->
 
-      promise = CommunitySelfTopicService.getById $stateParams.id
+      promise = TopicService.getById $stateParams.id
       promise.success (data) ->
         $scope.attrs.topics = data
