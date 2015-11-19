@@ -17,13 +17,6 @@ import com.timeoutzero.flice.account.test.ControllerBase;
 @ControllerBase("/user")
 public class UserControllerTest extends BasicControllerTest {
 	
-	private ProductBuilder product;
-
-//	@Before
-//	public void name() {
-//	
-//	}
-
 	@Test
 	public void shouldCreateUser() throws Exception {
 		

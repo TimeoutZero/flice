@@ -1,7 +1,7 @@
 INSERT INTO `user` (`user_id`, `user_account_id`, `user_email`) VALUES (1, 1 , 'lucas.gmmartins@gmail.com');
 INSERT INTO `user_roles` (`user_id`, `roles`) VALUES (1, 'ROLE_USER');
 
-INSERT INTO `community` (`community_id`, `community_active`, `community_cover`, `community_created`, `community_description`, `community_image`, `community_name`, `community_visibility`, `user_id`)
+INSERT INTO `community` (`community_id`, `community_active`, `community_cover`, `community_created`, `community_description`, `community_image`, `community_name`, `community_privacity`, `user_id`)
 VALUES
 	(1, 00000001, 'http://cmster.com/media/UUYvyJ45kCFFQSKLe95fvChLrB7lAGxDTKDvYrZhvEe8rX4iuyiYyPMRwNEwLS5e.jpg', NULL, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquam, elit nec dignissim pulvinar, tortor purus molestie sem, quis aliquam lectus justo quis purus. Donec purus augue, scelerisque a dui eget, semper dictum augue. Cras vehicula odio ph', 'http://s2.glbimg.com/rYHPUCUursE3coAA6D0eUhKuYmw=/s.glbimg.com/jo/g1/f/original/2014/05/22/cartaz-batman-v-superman.jpg', 'Batman V Superman: Dawn of Justice', 00000001, NULL),
 	(2, 00000001, 'http://s16.postimg.org/g1lucm86t/game.jpg', NULL, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquam, elit nec dignissim pulvinar, tortor purus molestie sem, quis aliquam lectus justo quis purus. Donec purus augue, scelerisque a dui eget, semper dictum augue. Cras vehicula odio ph', 'http://br.web.img2.acsta.net/medias/nmedia/18/75/09/69/19692840.jpg', 'Game of Thrones', 00000001, NULL),

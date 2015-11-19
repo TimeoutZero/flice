@@ -48,9 +48,6 @@ public class Comment {
 	@Column(name = "comment_created")
 	private DateTime created = DateTime.now();
 	
-	@Column(name = "comment_active")
-	private Boolean active = true;
-	
 	@ManyToOne
 	@JoinColumn(name = "topic_id", foreignKey = @ForeignKey(name = "FK_TOPIC_COMMENT"))
 	private Topic topic;

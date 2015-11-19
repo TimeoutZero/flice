@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.hasSize;
 
 import java.util.Arrays;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -56,28 +57,30 @@ public class CommentControllerTest extends ApplicationTest{
 	}
 	
 	@Test
-	public void testFindActives() throws Exception{
-		
-		Comment comentario1 = comment("comentario 1", topic, marcos).build();
-		Comment comentario2 = comment("comentario 2", topic, marcos).active(false).build();
-		Comment comentario3 = comment("comentario 3", topic, marcos).build();
+	public void testListPageable() throws Exception{ 
+		 
+		Comment comentario1 = comment("comentario 1", topic, marcos).created(DateTime.now().minusSeconds(3)).build();
+		Comment comentario2 = comment("comentario 2", topic, marcos).created(DateTime.now().minusSeconds(2)).build();
+		Comment comentario3 = comment("comentario 3", topic, marcos).created(DateTime.now().minusSeconds(1)).build();
 		Comment comentario4 = comment("comentario 4", topic, marcos).build();
-		Comment comentario5 = comment("comentario 5", topic, marcos).build();
 		
-		saveAll(comentario1, comentario2, comentario3, comentario4, comentario5);
+		saveAll(comentario1, comentario2, comentario3, comentario4);
 		
 		AccountUserDTO dto = new AccountUserDTO();
 		dto.setId(marcos.getId());
 		
 		Mockito.when(this.accountOperations.getUserOperations()).thenReturn(Mockito.mock(UserOperations.class));
 		Mockito.when(this.accountOperations.getUserOperations().list(Mockito.any())).thenReturn(Arrays.asList(dto));
-		
-		
-		JsonNode json = get("/topic/%s/comment", topic.getId()).expectedStatus(HttpStatus.OK).getJson();
+
+		JsonNode json = get("/topic/%s/comment", topic.getId())
+				.queryParam("page", "0") 
+				.queryParam("size", "10")
+				.expectedStatus(HttpStatus.OK)
+				.getJson();
 		
 		jsonAsserter(json)
 			.assertThat("$", hasSize(4))
-			.assertThat("$.[*].content", contains("comentario 1", "comentario 3", "comentario 4", "comentario 5"));
+			.assertThat("$.[*].content", contains("comentario 4", "comentario 3", "comentario 2", "comentario 1"));
 	}
 	
 	@Test

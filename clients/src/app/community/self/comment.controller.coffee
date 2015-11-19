@@ -9,20 +9,18 @@ angular.module "web"
       page             : 0
       comments         : []
 
-      #create
-      newcoment        : {}
-
 
     $scope.methods =
 
       createComment : () ->
         
-        promise = CommentService.create $scope.attrs.topic.id, $scope.newcoment
+        promise = CommentService.create $scope.attrs.topic.id, $scope.attrs.newcoment
 
         promise.success (data)->
+          $scope.attrs.newcoment = ""
           $scope.methods.getComments()
+         
           alert 'comment created'
-
 
         promise.error (data)->
           alert 'fail to create comment'

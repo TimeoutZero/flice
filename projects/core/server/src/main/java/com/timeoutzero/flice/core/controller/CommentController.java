@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,15 +45,17 @@ public class CommentController {
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(value = "/{commentId}", method = GET)
 	public CommentDTO findById(@PathVariable("commentId") Long id){
-		Comment comment = coreService.getCommentRepository().findByIdAndActiveTrue(id);
+		Comment comment = coreService.getCommentRepository().findById(id);
 		return new CommentDTO(comment);
 	}
 
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(method = GET)
-	public List<CommentDTO> list(@PathVariable("topicId") Long topicId){
+	public List<CommentDTO> list(
+			@PathVariable("topicId") Long topicId, 
+			@PageableDefault(direction = Sort.Direction.DESC, sort = { "created" }) Pageable pageable){
 
-		List<Comment> list = coreService.getCommentRepository().findByTopicIdAndActiveTrue(topicId);
+		List<Comment> list = coreService.getCommentRepository().findByTopicId(topicId, pageable);
 		List<AccountUserDTO> accounts = getAccountsByComments(list);
 
 		return list.stream()
@@ -92,8 +96,6 @@ public class CommentController {
 	public CommentDTO create(@PathVariable("topicId") Long topicId, @Valid @RequestBody CommentForm form){
 
 		Comment comment = form.toEntity();
-		comment.setActive(true);
-		comment.setCreated(DateTime.now());
 		comment.setOwner(getLoggedUser());
 		comment.setTopic(coreService.getTopicRepository().findOne(topicId));
 
@@ -116,12 +118,11 @@ public class CommentController {
 	}
 
 	@Secured({ Role.USER, Role.ADMIN })
-	@RequestMapping(value="/{id}", method=DELETE)
+	@RequestMapping(value = "/{id}", method = DELETE)
 	public CommentDTO delete(@PathVariable("id") Long id){
 
 		Comment comment = coreService.getCommentRepository().findOne(id);
-		comment.setActive(false);
-		comment = coreService.getCommentRepository().save(comment);
+		coreService.getCommentRepository().delete(comment);
 
 		return new CommentDTO(comment);
 	}

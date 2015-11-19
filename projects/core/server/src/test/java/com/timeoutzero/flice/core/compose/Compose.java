@@ -30,6 +30,6 @@ public class Compose {
 	}
 	
 	public static CommentBuilder comment(String content, Topic topic, User user) {
-		return Comment.builder().content(content).active(true).created(DateTime.now()).topic(topic).owner(user);
+		return Comment.builder().content(content).created(DateTime.now()).topic(topic).owner(user);
 	}
 }
