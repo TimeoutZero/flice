@@ -16,13 +16,6 @@ public class ExceptionController {
 
 	private static Logger log = LoggerFactory.getLogger(ExceptionController.class);
 	
-	@ExceptionHandler(RuntimeException.class)
-	public void name(AccountException e, HttpServletResponse response) {
-		
-		log.error(e.getLocalizedMessage());
-		response.setStatus(e.getStatusCode());
-	}
-	
 	@ExceptionHandler(AccountException.class)
 	public @ResponseBody ExceptionDTO resolve(AccountException e, HttpServletResponse response) {
 

@@ -47,10 +47,10 @@ public class TopicControllerTest extends ApplicationTest {
 		saveAll(marcos, community);
 		login(marcos);
 		
-		Topic topico1 = topic(community, "Topico 1").owner(marcos).build();
-		Topic topico2 = topic(community, "Topico 2").owner(marcos).active(false).build();
-		Topic topico3 = topic(community, "Topico 3").owner(marcos).build();
-		Topic topico4 = topic(community, "Topico 4").owner(marcos).build();
+		Topic topico1 = topic("Topico 1", community, marcos).build();
+		Topic topico2 = topic("Topico 2", community, marcos).active(false).build();
+		Topic topico3 = topic("Topico 3", community, marcos).build();
+		Topic topico4 = topic("Topico 4", community, marcos).build();
 		
 		saveAll(topico1, topico2, topico3, topico4);
 
@@ -78,7 +78,7 @@ public class TopicControllerTest extends ApplicationTest {
 		Community community = Compose.community("Games").owner(marcos).build();
 		saveAll(community);
 		
-		Topic gta = topic(community, "GTA V").owner(marcos).build();
+		Topic gta = topic("GTA V", community, marcos).build();
 		saveAll(gta);
 		
 		JsonNode json = get("community/%s/topic/%s", community.getId(), gta.getId())
@@ -119,11 +119,12 @@ public class TopicControllerTest extends ApplicationTest {
 		saveAll(marcos, community);
 		login(marcos);
 		
-		Topic gta = topic(community, "GTA V").build();
+		Topic gta = topic("GTA V", community, marcos).build();
 		saveAll(gta);
 		
 		TopicForm form = new TopicForm();
 		form.setName("FIFA 15");
+		form.setContent("Content");
 		
 		JsonNode json = put("/community/%s/topic/%s", community.getId(), gta.getId()).json(form).expectedStatus(HttpStatus.OK).getJson();
 		
@@ -141,7 +142,7 @@ public class TopicControllerTest extends ApplicationTest {
 		saveAll(marcos, community);
 		login(marcos);
 	
-		Topic gta = topic(community, "GTA V").build();
+		Topic gta = topic("GTA V", community, marcos).build();
 		saveAll(gta);
 		
 		delete("community/%s/topic/%s", community.getId(), gta.getId()).expectedStatus(HttpStatus.OK);
