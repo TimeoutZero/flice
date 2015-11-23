@@ -26,7 +26,7 @@ var basebuildOptions = {
 
 basebuildOptions.modulesData = {
   proxy: {
-    target: 'http://docker:8081'
+    target: 'http://localhost:8080'
   }
 };
 

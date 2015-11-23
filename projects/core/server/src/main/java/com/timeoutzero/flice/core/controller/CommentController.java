@@ -16,7 +16,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -51,9 +50,7 @@ public class CommentController {
 
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(method = GET)
-	public List<CommentDTO> list(
-			@PathVariable("topicId") Long topicId, 
-			@PageableDefault(direction = Sort.Direction.DESC, sort = { "created" }) Pageable pageable){
+	public List<CommentDTO> list(@PathVariable("topicId") Long topicId, @PageableDefault Pageable pageable){
 
 		List<Comment> list = coreService.getCommentRepository().findByTopicId(topicId, pageable);
 		List<AccountUserDTO> accounts = getAccountsByComments(list);

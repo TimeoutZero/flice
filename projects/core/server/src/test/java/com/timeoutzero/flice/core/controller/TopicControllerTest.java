@@ -40,7 +40,6 @@ public class TopicControllerTest extends ApplicationTest {
 	@Test
 	public void testListActives() throws Exception{
 		
-		
 		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
 		
@@ -85,7 +84,7 @@ public class TopicControllerTest extends ApplicationTest {
 				.expectedStatus(HttpStatus.OK).getJson();
 		
 		jsonAsserter(json)
-			.assertThat("$.name", equalTo("GTA V"))
+			.assertEquals("$.name", "GTA V")
 			.assertThat("$.communityId", equalTo(community.getId().intValue()));
 	}
 	

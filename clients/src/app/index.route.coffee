@@ -37,21 +37,21 @@ angular.module "web"
             templateUrl : 'app/community/self/main.html'
           'community-self-menu@community.self' :
             controller  : 'MenuController'
-            templateUrl : 'app/community/self/subview/menu.html'
+            templateUrl : 'app/community/self/menu/view/main.html'
       )
       .state('community.self.content'
         url : ''
         views :
           'container@community.self' :
             controller  : 'ContentController'
-            templateUrl : 'app/community/self/subview/content.html'
+            templateUrl : 'app/community/self/content/view/main.html'
       )
       .state('community.self.post'
         url : '/post'
         views :
           'container@community.self' :
             controller  : 'TopicController'
-            templateUrl : 'app/community/self/subview/post.html'
+            templateUrl : 'app/community/self/post/view/main.html'
       )
       .state('community.list'
         url: "/list"

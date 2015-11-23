@@ -80,7 +80,7 @@ public class CommentControllerTest extends ApplicationTest{
 		
 		jsonAsserter(json)
 			.assertThat("$", hasSize(4))
-			.assertThat("$.[*].content", contains("comentario 4", "comentario 3", "comentario 2", "comentario 1"));
+			.assertThat("$.[*].content", contains("comentario 1", "comentario 2", "comentario 3", "comentario 4"));
 	}
 	
 	@Test

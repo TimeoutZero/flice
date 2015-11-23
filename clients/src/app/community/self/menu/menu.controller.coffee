@@ -1,7 +1,5 @@
 angular.module "web"
-  .controller "CommunitySelfController", ($scope, $stateParams, CommunitySelfService) ->
-
-    $scope.community = {}
+  .controller "MenuController", ($scope, $state, $stateParams, CommunitySelfService) ->
 
     $scope.methods =
 
@@ -23,6 +21,9 @@ angular.module "web"
 
         promise.error (data, status) ->
           console.log 'fail'
+
+      changeToCreateTopicView : () ->
+        $state.go 'community.self.post'
     
     do ->
       $scope.methods.init()
