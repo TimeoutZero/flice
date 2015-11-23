@@ -11,7 +11,7 @@
         <div class="row" ng-class="{'topic-active' : methods.isActive({{topic.id}}) && attrs.isOnTopicPreview}" >
 
           <div class="col-md-1" ng-class="{'community-thumb-author-none' : attrs.isOnTopicPreview}">
-            <img class="img-rounded" style="heigth: 75px; width: 75px;" src="{{topic.author.profile.photo}}" alt="">
+            <img class="img-rounded topic-photo" src="{{topic.author.profile.photo}}" alt="">
           </div>
           <div class="col-md-11">
 
@@ -20,8 +20,8 @@
             </div>  
 
             <div class="col-md-12 row">
-              <div class="col-xs-12 col-md-2" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">Por: {{topic.author.profile.name}}</div>
-              <div class="col-xs-12 col-md-8" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">{{topic.answers}} respostas</div>
+              <div class="col-xs-12 col-md-2" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">By: {{topic.author.profile.name}}</div>
+              <div class="col-xs-12 col-md-8" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">{{topic.answers}} answers</div>
               <div class="col-xs-12 col-md-2" ng-class="{'col-md-12 topic-preview-on-last-update' : attrs.isOnTopicPreview, 'col-md-12 topic-preview-off-last-update' : !attrs.isOnTopicPreview}">{{topic.lastUpdate}}</div>
             </div>
           </div>
@@ -74,17 +74,19 @@
 
   <div ng-repeat="comment in attrs.comments">
     <div class="col-md-12 community-topic-container row">
+      
       <div class="col-md-3 row">
 
         <div class="col-md-12">
-          <img class="img-thumbnail"  src="{{comment.author.profile.photo}}" alt="">
+          <img align="center" class="img-thumbnail comment-photo"  src="{{comment.author.profile.photo}}" alt="">
         </div>
 
-        <div class="col-md-12 community-user-name">
+        <div class="col-md-12">
           <h5>{{comment.author.profile.name}}</h5>
         </div>
 
       </div>
+      
       <div class="col-md-9 row">
 
         <div class="class-md-12 community-topic-header">
