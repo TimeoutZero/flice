@@ -5,7 +5,12 @@ angular.module "web"
 
       #CONSTANT
       pageSize         : 10
+
       #ATTRIBUTES
+
+      comment  :
+        start  : 0
+        end    : 0
 
       commentActive    : no
       isOnTopicPreview : no
@@ -43,6 +48,12 @@ angular.module "web"
         $scope.attrs.topic            = topic
 
         $scope.methods.getComments()
+
+        $scope.attrs.comment.start = $scope.attrs.page + 1;
+        $scope.attrs.comment.end = if $scope.attrs.topic.qtyPages > 5 then 5 else $scope.attrs.topic.qtyPages; 
+
+        $scope.attrs.pages = (result for result in [$scope.attrs.comment.start..$scope.attrs.comment.end])
+
         $scope.$emit 'hide-menu'
 
       isActive : (id) ->
@@ -52,13 +63,51 @@ angular.module "web"
       isActivePage : (pageNumber) ->
         $scope.attrs.page + 1 == pageNumber
 
+
       nextPage : () ->
-        $scope.attrs.page += 1
-        $scope.methods.getComments()
+
+        limit = $scope.attrs.comment.start + 4
+        
+        if limit < $scope.attrs.topic.qtyPages 
+          
+          $scope.attrs.page += 1
+          
+          if $scope.attrs.page >= limit
+            for page, index in $scope.attrs.pages 
+
+              newIndice = page += 1
+
+              if index is 0
+                $scope.attrs.comment.start = newIndice
+              if index is $scope.attrs.pages.length - 1
+                $scope.attrs.comment.end = newIndice
+  
+              $scope.attrs.pages[index] = newIndice
+  
+          $scope.methods.getComments()
+  
 
       previousPage : () ->
-        $scope.attrs.page -= $scope.attrs.page
-        $scope.methods.getComments()
+        
+        console.log 'a ' + $scope.attrs.page
+        console.log 'a ' + $scope.attrs.comment.start
+
+        if $scope.attrs.page >= 1
+          $scope.attrs.page -= 1
+
+          for page, index in $scope.attrs.pages 
+
+            newIndice = page -= 1
+
+            if newIndice > 0
+              if index is 0
+                $scope.attrs.comment.start = newIndice
+              if index is $scope.attrs.pages.length - 1
+                $scope.attrs.comment.end = newIndice
+
+              $scope.attrs.pages[index] = newIndice
+
+         $scope.methods.getComments()
 
       getPage : (pageNumber) ->
         $scope.attrs.page = pageNumber;
@@ -69,9 +118,6 @@ angular.module "web"
 
         promise.success (data) ->
           $scope.attrs.comments = data
-
-          actualPage = $scope.attrs.page + 1;
-          $scope.attrs.pages = (result for result in [actualPage..$scope.attrs.topic.qtyPages])
 
       setCommentActive : (active) ->
         $scope.attrs.commentActive = active
