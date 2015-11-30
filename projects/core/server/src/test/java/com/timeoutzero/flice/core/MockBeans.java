@@ -53,6 +53,12 @@ public class MockBeans {
 				// TODO Auto-generated method stub
 				return null;
 			}
+
+			@Override
+			public AccountUserDTO get(Long id) {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		});
 	}
 }

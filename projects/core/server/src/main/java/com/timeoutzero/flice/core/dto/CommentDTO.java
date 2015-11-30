@@ -14,13 +14,18 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class CommentDTO {
 
+	private Long id;
 	private Long topicId;
 	private String content;
 	private UserDTO author;
 	private DateTime created;
-
-	public CommentDTO(Comment comment){
+	
+	private boolean deletable;
+	private boolean editable;
+	
+	public CommentDTO(final Comment comment){
 		super();
+		this.id 	 = comment.getId();
 		this.content = comment.getContent();
 		this.topicId = comment.getTopic().getId();
 		this.created = comment.getCreated();

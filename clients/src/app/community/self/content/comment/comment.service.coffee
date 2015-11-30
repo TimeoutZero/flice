@@ -16,3 +16,15 @@ angular.module "web"
         method  : "POST"
         data    :
           'content' : data
+
+    update : (topicId, commentId, data) ->
+      $http
+        url     : CORE_API + "/topic/#{topicId}/comment/#{commentId}"
+        method  : "PUT"
+        data    :
+          'content' : data
+
+    delete : (topicId, commentId) ->
+      $http
+        url    : CORE_API + "/topic/#{topicId}/comment/#{commentId}"
+        method : "DELETE"

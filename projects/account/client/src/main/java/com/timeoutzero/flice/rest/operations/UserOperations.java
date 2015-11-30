@@ -10,6 +10,8 @@ public interface UserOperations {
 
 	AccountUserDTO create(String email, String password);
 	
+	AccountUserDTO get(Long id);
+	
 	List<AccountUserDTO> list(List<Long> ids);
 	
 }

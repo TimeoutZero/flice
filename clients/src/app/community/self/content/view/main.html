@@ -89,14 +89,33 @@
       
       <div class="col-md-9 row">
 
-        <div class="class-md-12 community-topic-header">
-          10:41 - 18 de janeiro de 2011
-        </div>
+        <div class="col-md-12 community-topic-header">
+            
+            <div ng-class="{'col-md-offset-7 col-md-3' : comment.editable && comment.deletable, 'col-md-offset-7 col-md-5' : !comment.editable && !comment.deletable}">
+              10:41 - 18/09/2011
+            </div>
+            <div ng-show="comment.editable" ng-class="{'col-md-1' : comment.editable}" >
+              <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="methods.setEditActive({{comment}})"></span>
+            </div>
+            
+            <div ng-show="comment.deletable" ng-class="{'col-md-1' : comment.deletable}">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="methods.delete({{comment}})"></span>
+            </div>
+          </div>
         
-        <div class="class-md-12">
-          <p align="justify">
-            {{comment.content}}
-          </p>
+        <div ng-show="!methods.isEditActive({{comment.id}})" class="class-md-12">
+          <p align="justify" ng-bind-html="comment.content"></p>
+        </div>
+
+        <div ng-show="methods.isEditActive({{comment.id}})">
+          <div class="form-group col-md-12">
+            <div text-angular ng-model="attrs.comment.content"></div>
+          </div>
+
+          <div class="col-md-offset-10 col-md-2">
+            <button class="btn btn-default" ng-click="methods.setEditActive({{comment.id}})">Cancel</button>
+            <button class="btn btn-primary" ng-click="methods.sendComment({{comment.id}})">Save</button>
+          </div>
         </div>
       </div>
     </div>
@@ -105,32 +124,17 @@
 
   <div ng-show="attrs.commentActive">
     <div class="form-group col-md-12">
-      <div text-angular ng-model="attrs.newcoment"></div>
+      <div text-angular ng-model="attrs.comment.content"></div>
     </div>
 
-    <div class="col-md-offset-9 col-md-3">
-
-      <button 
-        type="button" 
-        class="btn btn-default" 
-        ng-click="methods.setCommentActive(false)">
-        Cancel
-      </button>
-        
-      <button 
-        class="btn btn-primary"
-        ng-click="methods.createComment()">
-        Comment
-      </button>
+    <div class="col-md-offset-10 col-md-2">
+      <button class="btn btn-default" ng-click="methods.setCommentActive(false)">Cancel</button>
+      <button class="btn btn-primary" ng-click="methods.sendComment()">Save</button>
     </div>
   </div>
 
-  <div ng-show="!attrs.commentActive" class="col-md-offset-10 col-md-2">
-    <button 
-      class="btn btn-primary"
-      ng-click="methods.setCommentActive(true)">
-      Comment
-    </button>
+  <div ng-show="!attrs.commentActive" class="col-md-offset-11 col-md-1">
+    <button class="btn btn-primary" ng-click="methods.setCommentActive(true)">Comment</button>
   </div>
 
   <div class="community-pages">

@@ -155,17 +155,16 @@ html, body, .main-view {
   }
 
   .community-topic-container {
-    background-color : rgba(132, 126, 127, 0.02);
-    padding: 25px 25px;
-    margin-top: 10px;
-    z-index: -1;
+    background-color : rgb(232, 236, 236);
+    padding          : 25px 25px;
+    margin-top       : 10px;
+    margin-bottom    : 10px;
   }
 
   .community-pages {
-    margin-top: 20px;
-    margin-bottom: 5px;
-    text-align: right;
-    z-index: 1;
+    margin-top    : 20px;
+    margin-bottom : 5px;
+    text-align    : right;
   }
 
   .community-topic-header {

@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.core.controller;
 
 import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUser;
+import static com.timeoutzero.flice.core.security.CoreSecurityContext.isOwner;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -41,13 +42,16 @@ public class CommentController {
 	@Autowired
 	private CoreService coreService;
 
+	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(value = "/{commentId}", method = GET)
 	public CommentDTO findById(@PathVariable("commentId") Long id){
+		
 		Comment comment = coreService.getCommentRepository().findById(id);
 		return new CommentDTO(comment);
 	}
 
+	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(method = GET)
 	public List<CommentDTO> list(@PathVariable("topicId") Long topicId, @PageableDefault Pageable pageable){
@@ -68,7 +72,6 @@ public class CommentController {
 		 
 		return coreService.getAccountOperations().getUserOperations().list(ids);
 	}
-	
 
 	private Function<CommentDTO, CommentDTO> joinAccountProfileIntoComment(List<AccountUserDTO> accounts) {
 		
@@ -80,6 +83,8 @@ public class CommentController {
 			
 			if (optional.isPresent()) {
 				dto.getAuthor().setProfile(optional.get().getProfile());
+				dto.setEditable(isOwner(optional)); 
+				dto.setDeletable(isOwner(optional));
 			}
 			return dto;
 		};
@@ -87,6 +92,7 @@ public class CommentController {
 		return mapper;
 	}
 
+	@Transactional
 	@Secured({ Role.USER, Role.ADMIN })
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@RequestMapping(method = POST)
@@ -101,11 +107,17 @@ public class CommentController {
 		return new CommentDTO(comment);
 	}
 
+	@Transactional
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{commentId}", method=PUT)
 	public CommentDTO update(@PathVariable("topicId") Long topicId, @PathVariable("commentId") Long commendId, @Valid @RequestBody CommentForm form){
-
+		
 		Comment comment = coreService.getCommentRepository().findOne(commendId);
+
+		if (!isOwner(comment.getOwner().getId())) {
+			//TODO: throw exception
+		}
+		
 		comment.setContent(form.getContent());
 		comment.setTopic(coreService.getTopicRepository().findOne(topicId));
 
@@ -114,13 +126,23 @@ public class CommentController {
 		return new CommentDTO(comment);
 	}
 
+	@Transactional
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{id}", method = DELETE)
 	public CommentDTO delete(@PathVariable("id") Long id){
-
+		
 		Comment comment = coreService.getCommentRepository().findOne(id);
-		coreService.getCommentRepository().delete(comment);
+		
+		if (!isOwner(comment.getOwner().getId())) {
+			//TODO: throw exception
+		}
 
+		coreService.getCommentRepository().delete(comment);
+		
+		if (comment.getTopic().getComments().size() == 0) {
+			coreService.getTopicRepository().delete(comment.getTopic());
+		}
+		
 		return new CommentDTO(comment);
 	}
 }

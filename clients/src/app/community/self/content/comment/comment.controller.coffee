@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller "ContentController", ($scope, $state, $stateParams, TopicService, CommentService) ->
+  .controller "ContentController", ($scope, $state, $stateParams, $sanitize, TopicService, CommentService) ->
         
     $scope.attrs =
 
@@ -11,8 +11,11 @@ angular.module "web"
       comment  :
         start  : 0
         end    : 0
+        content : ""
 
       commentActive    : no
+      editActive       : no
+
       isOnTopicPreview : no
 
       topics           : []
@@ -23,14 +26,19 @@ angular.module "web"
 
     $scope.methods =
 
-      createComment : () ->
+      sendComment : (id) ->
         
-        promise = CommentService.create $scope.attrs.topic.id, $scope.attrs.newcoment
+        if id == undefined
+          promise = CommentService.create $scope.attrs.topic.id, $scope.attrs.comment.content
+        else 
+          console.log 'update'
+          promise = CommentService.update $scope.attrs.topic.id, $scope.attrs.comment.id, $scope.attrs.comment.content   
 
         promise.success (data)->
           
-          $scope.attrs.newcoment = ""
-          $scope.attrs.commentActive = no
+          $scope.attrs.comment.id      = 0
+          $scope.attrs.comment.content = ""
+          $scope.attrs.commentActive   = no
           $scope.methods.getComments()
          
           alert 'comment created'
@@ -89,15 +97,13 @@ angular.module "web"
 
       previousPage : () ->
         
-        console.log 'a ' + $scope.attrs.page
-        console.log 'a ' + $scope.attrs.comment.start
-
         if $scope.attrs.page >= 1
+          
           $scope.attrs.page -= 1
 
           for page, index in $scope.attrs.pages 
 
-            newIndice = page -= 1
+            newIndice = page - 1
 
             if newIndice > 0
               if index is 0
@@ -105,13 +111,24 @@ angular.module "web"
               if index is $scope.attrs.pages.length - 1
                 $scope.attrs.comment.end = newIndice
 
+              console.log index
               $scope.attrs.pages[index] = newIndice
 
-         $scope.methods.getComments()
+        console.log ''
+        $scope.methods.getComments()
 
       getPage : (pageNumber) ->
-        $scope.attrs.page = pageNumber;
+        $scope.attrs.page = pageNumber - 1;
         $scope.methods.getComments()
+
+      delete : (comment) ->
+        promise = CommentService.delete comment.topicId, comment.id
+     
+        promise.success (data) ->
+          alert 'certo'
+          $scope.methods.getComments()
+        promise.error ()->
+          alert 'error'
 
       getComments : () ->
         promise = CommentService.getById $scope.attrs.topic.id, $scope.attrs.page, $scope.attrs.pageSize
@@ -121,6 +138,13 @@ angular.module "web"
 
       setCommentActive : (active) ->
         $scope.attrs.commentActive = active
+ 
+      setEditActive : (comment) ->
+        $scope.attrs.comment.id      = comment.id
+        $scope.attrs.comment.content = comment.content
+
+      isEditActive : (commentId) ->
+        $scope.attrs.comment.id == commentId
  
     do ->
 

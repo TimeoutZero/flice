@@ -34,6 +34,10 @@ public class UserOperationsImp implements UserOperations {
 		return template.get(uri, AccountUserDTO.class);
 	}
 	
+	@Override
+	public AccountUserDTO get(Long id) {
+		return template.get(ENDPOINT + "/" + id , AccountUserDTO.class);
+	}
 
 	@Override
 	public List<AccountUserDTO> list(List<Long> ids) {
@@ -61,5 +65,7 @@ public class UserOperationsImp implements UserOperations {
 		  
 		return template.post(ENDPOINT, parameters, AccountUserDTO.class);
 	}
+
+
 
 }
