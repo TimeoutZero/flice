@@ -59,7 +59,7 @@ public class Community {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "community_created")
-	private DateTime created;
+	private DateTime created = DateTime.now();
 	
 	@Column(name = "community_image")
 	private String image;
@@ -67,16 +67,13 @@ public class Community {
 	@Column(name = "community_cover")
 	private String cover;
 
-	@Column(name = "community_active")
-	private Boolean active = true;
-	
 	@Column(name = "community_privacity")
 	private Boolean visibility = true;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "community_members",
 		uniqueConstraints = @UniqueConstraint(columnNames = { "community_id", "user_id" }),
-		joinColumns = { @JoinColumn(name = "community_id")}, inverseJoinColumns = { @JoinColumn(name = "user_id") })
+		joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
 	private Collection<User> members = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })

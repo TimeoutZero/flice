@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.TestRestTemplate;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -26,9 +25,6 @@ public class JpaPersistenceProvider implements PersistenceProvider {
 	@PersistenceContext
 	private EntityManager em;
 	
-	@Autowired
-	private JdbcTemplate template;
-
 	@Autowired
 	private PlatformTransactionManager transactionManager;
 

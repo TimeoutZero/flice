@@ -50,10 +50,9 @@ public class CommunityControllerTest extends ApplicationTest {
 		
 		Community filmes   = community("Filmes").build();
 		Community games    = community("Games").build();
-		Community series   = community("Series").active(false).build();
 		Community mulheres = community("Mulheres").build();
 
-		saveAll(filmes, games, series, mulheres);
+		saveAll(filmes, games, mulheres);
 
 		JsonNode json = get("/community")
 				.expectedStatus(HttpStatus.OK).getJson();

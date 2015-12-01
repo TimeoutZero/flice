@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.joda.time.DateTime;
 
 import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Tag;
@@ -37,8 +36,6 @@ public class CommunityForm {
 		community.setName(this.name);
 		community.setDescription(this.description);
 		community.setImage(this.image);
-		community.setCreated(DateTime.now());
-		community.setActive(true);
 		community.setTags(this.tags);
 		community.setVisibility(this.visibility);
 		

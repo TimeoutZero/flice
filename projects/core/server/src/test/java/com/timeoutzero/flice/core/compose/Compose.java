@@ -22,7 +22,7 @@ public class Compose {
 	}
 
 	public static CommunityBuilder community(String name) {
-		return Community.builder().name(name).description(name).active(true).visibility(true);
+		return Community.builder().name(name).description(name).visibility(true);
 	}
 	
 	public static TopicBuilder topic(String name, Community community, User user) {
