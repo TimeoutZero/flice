@@ -41,10 +41,12 @@ public class CommunityController {
 	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(value = "/{id}", method = GET)
-	public CommunityDTO findById(@PathVariable("id") Long id) {
+	public CommunityDTO get(@PathVariable("id") Long id) {
 		
-		Community community = coreService.getCommunityRepository().findByIdAndActiveTrue(id);
-		return new CommunityDTO(community);
+		Community community = coreService.getCommunityRepository().findById(id);
+		boolean isMember = coreService.getCommunityRepository().isMember(community.getId(), getLoggedUser().getId());
+		
+		return new CommunityDTO(community, isMember);
 	}
 
 	@Transactional(readOnly = true)
@@ -56,7 +58,7 @@ public class CommunityController {
 		
 		if (getLoggedUserAuthoritys().contains(Role.ANONYMOUS)) { 
 			communitys = coreService.getCommunityRepository()
-					.findByActiveTrueAndVisibilityTrue();
+					.findByVisibilityTrue();
 		} else {
 			communitys = coreService.getUserRepository()
 					.findAllCommunityByUser(getLoggedUser().getId());
@@ -65,6 +67,19 @@ public class CommunityController {
 		return communitys.stream()
 				.map(CommunityDTO::new)
 				.collect(toList());
+	}
+	
+	@Transactional
+	@Secured({ Role.USER, Role.ADMIN })
+	@RequestMapping(value = "/{id}/join", method = PUT)
+	public CommunityDTO join(@PathVariable("id") Long id) {
+		
+		Community community = coreService.getCommunityRepository().findOne(id);
+		community.getMembers().add(coreService.getLoggedUser());
+		
+		coreService.getCommunityRepository().save(community);
+		
+		return new CommunityDTO(community);
 	}
 
 	@Transactional
@@ -77,6 +92,7 @@ public class CommunityController {
 		
 		Community community = form.toEntity();
 		community.setOwner(loggedUser);
+		community.getMembers().add(loggedUser);
 		community = coreService.getCommunityRepository().save(community);
 
 		loggedUser.getCommunitys().add(community);
@@ -104,11 +120,15 @@ public class CommunityController {
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{id}", method = DELETE)
 	public CommunityDTO delete(@PathVariable("id") Long id) {
+		
+		boolean isMember = coreService.getCommunityRepository().isMember(id, getLoggedUser().getId());
+		
+		if (isMember) {
+			//throw new
+		}
 
 		Community community = coreService.getCommunityRepository().findOne(id);
-		community.setActive(false);
-
-		coreService.getCommunityRepository().save(community);
+		coreService.getCommunityRepository().delete(community);
 
 		return new CommunityDTO(community);
 	}

@@ -95,7 +95,7 @@ public class UserController {
 	@RequestMapping(value="/topic", method=PUT)
 	public void followTopic(@RequestParam("topicId") Long topicId, @RequestParam("favorite") Boolean favorite){
 		
-		Topic topic = topicRepository.findByIdAndActiveTrue(topicId);
+		Topic topic = topicRepository.findById(topicId);
 		UserTopic userTopic = userTopicRepository.findByUserAndTopic(getLoggedUser(), topic);
 		
 		if(userTopic == null){
@@ -114,7 +114,7 @@ public class UserController {
 	@RequestMapping(value="/community", method=PUT)
 	public void followCommunity(@RequestParam("communityId") Long communityId, @RequestParam("favorite") Boolean favorite){
 		
-		Community community = communityRepository.findByIdAndActiveTrue(communityId);
+		Community community = communityRepository.findById(communityId);
 		UserCommunity userCommunity = userCommunityRepository.findByUserAndCommunity(getLoggedUser(), community);
 		
 		if(userCommunity == null){

@@ -9,6 +9,8 @@ import static org.hamcrest.Matchers.hasSize;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,6 +25,7 @@ import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Topic;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.form.TopicForm;
+import com.timeoutzero.flice.core.repository.TopicRepository;
 import com.timeoutzero.flice.core.service.CoreService;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.operations.AccountOperations;
@@ -37,8 +40,16 @@ public class TopicControllerTest extends ApplicationTest {
 	@InjectMocks
 	private CoreService coreService;
 	
+	@Autowired
+	private TopicRepository topicRepository;
+	
+	@Before
+	public void setup() {
+		topicRepository.deleteAll();
+	}
+	
 	@Test
-	public void testListActives() throws Exception{
+	public void testListSorted() throws Exception{
 		
 		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
@@ -46,12 +57,11 @@ public class TopicControllerTest extends ApplicationTest {
 		saveAll(marcos, community);
 		login(marcos);
 		
-		Topic topico1 = topic("Topico 1", community, marcos).build();
-		Topic topico2 = topic("Topico 2", community, marcos).active(false).build();
-		Topic topico3 = topic("Topico 3", community, marcos).build();
-		Topic topico4 = topic("Topico 4", community, marcos).build();
+		Topic topico1 = topic("Topico 1", community, marcos).created(DateTime.now().plusMinutes(1)).build();
+		Topic topico2 = topic("Topico 2", community, marcos).created(DateTime.now().plusMinutes(2)).build();
+		Topic topico3 = topic("Topico 3", community, marcos).created(DateTime.now().plusMinutes(3)).build();
 		
-		saveAll(topico1, topico2, topico3, topico4);
+		saveAll(topico1, topico2, topico3);
 
 		AccountUserDTO dto = new AccountUserDTO();
 		dto.setId(marcos.getId());
@@ -60,11 +70,14 @@ public class TopicControllerTest extends ApplicationTest {
 		Mockito.when(this.accountOperations.getUserOperations().list(Mockito.any())).thenReturn(Arrays.asList(dto));
 		
 		JsonNode json = get("/community/%s/topic", community.getId())
-				.expectedStatus(HttpStatus.OK).getJson();
+				.queryParam("page", "0") 
+				.queryParam("size", "10")
+				.expectedStatus(HttpStatus.OK)
+				.getJson();
 		
 		jsonAsserter(json)
 			.assertThat("$", hasSize(3))
-			.assertThat("$.[*].name", contains("Topico 1", "Topico 3", "Topico 4"));
+			.assertThat("$.[*].name", contains("Topico 3", "Topico 2", "Topico 1"));
 	}
 	
 	@Test
@@ -145,6 +158,8 @@ public class TopicControllerTest extends ApplicationTest {
 		saveAll(gta);
 		
 		delete("community/%s/topic/%s", community.getId(), gta.getId()).expectedStatus(HttpStatus.OK);
+		
+		//Assert.assertEquals(0, topicRepository.count());
 	}
 	
 }

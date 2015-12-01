@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.timeoutzero.flice.core.domain.Comment;
 
-public interface CommentRepository extends CrudRepository<Comment, Long>, PagingAndSortingRepository<Comment, Long>{
+public interface CommentRepository extends CrudRepository<Comment, Long>, PagingAndSortingRepository<Comment, Long> {
 
 	Comment findById(Long id);
 	

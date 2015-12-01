@@ -3,6 +3,16 @@ angular.module "web"
 
     $scope.methods =
 
+      join : () ->
+
+        if $scope.community.member is not true
+          promise = CommunitySelfService.join $stateParams.id
+          promise.success (data) ->
+            alert 'joined'
+            $scope.methods.init()
+          promise.error (data, status) ->
+            alert 'not joined'
+
       init : () ->
         promise = CommunitySelfService.getById $stateParams.id
 
@@ -16,14 +26,16 @@ angular.module "web"
           community.tags        = data.tags
           community.created     = data.created
           community.privacity   = data.privacity
+          community.member      = data.member
 
           $scope.community = community
 
         promise.error (data, status) ->
-          console.log 'fail'
+          alert 'fail'
 
       changeToCreateTopicView : () ->
-        $state.go 'community.self.post'
+        if $scope.community.member
+          $state.go 'community.self.post'
     
     do ->
       $scope.methods.init()

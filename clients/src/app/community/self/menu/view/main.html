@@ -6,7 +6,7 @@
       <h2>{{community.name}}</h2>
       <h4>{{community.members}} Members</h4>
       <div class="community-button-participate">
-        <button type="button" class="btn btn-info active">Participate</button>
+        <button type="button" ng-class="{'btn btn-info disabled' : community.member, 'btn btn-info active' : !community.member }" ng-click="methods.join()">Participate</button>
       </div>  
     </div>
   </div>
@@ -28,7 +28,7 @@
   </div>
 
   <div class="col-md-1">
-    <button type="button" class="btn btn-primary" ng-click="methods.changeToCreateTopicView()">Post</button>
+    <button type="button" ng-class="{'btn btn-primary' : community.member, 'btn btn-primary disabled' : !community.member}"  ng-click="methods.changeToCreateTopicView()">Post</button>
   </div>
 
   <div class="col-md-4">

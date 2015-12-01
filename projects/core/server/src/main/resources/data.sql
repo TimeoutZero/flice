@@ -14,6 +14,13 @@ VALUES
 	(5, 00000001, 'http://farla.io/assets/images/angularjs.jpg', NULL, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquam, elit nec dignissim pulvinar, tortor purus molestie sem, quis aliquam lectus justo quis purus. Donec purus augue, scelerisque a dui eget, semper dictum augue. Cras vehicula odio ph', 'https://goo.gl/8qiMmd', 'Angular', 00000001, NULL),
 	(6, 00000001, 'http://www.seriemaniacos.tv/wp-content/uploads/2015/02/Daredevil1-1200x507.jpg', NULL, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquam, elit nec dignissim pulvinar, tortor purus molestie sem, quis aliquam lectus justo quis purus. Donec purus augue, scelerisque a dui eget, semper dictum augue. Cras vehicula odio ph', 'http://images.kinoman.az/thumb/2015/04/sorvigolova-daredevil.jpg', 'Daredevil', 00000001, NULL);
 
+INSERT INTO `community_members` (`community_id`, `user_id`)
+VALUES
+	(1, 1),
+	(2, 1),
+	(3, 1),
+	(4, 1),
+	(5, 1);
 	
 INSERT INTO `tag` (`tag_id`, `tag_name`)
 VALUES

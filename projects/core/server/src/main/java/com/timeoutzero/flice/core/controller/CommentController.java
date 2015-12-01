@@ -34,7 +34,6 @@ import com.timeoutzero.flice.core.form.CommentForm;
 import com.timeoutzero.flice.core.service.CoreService;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 
-@Transactional
 @RestController
 @RequestMapping("/topic/{topicId}/comment")
 public class CommentController {

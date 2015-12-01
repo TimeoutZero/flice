@@ -2,13 +2,18 @@ package com.timeoutzero.flice.core.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.timeoutzero.flice.core.domain.Community;
 
 public interface CommunityRepository extends CrudRepository<Community, Long>{
 
-	Community findByIdAndActiveTrue(Long id);
-	List<Community> findByActiveTrueAndVisibilityTrue();
+	Community findById(Long id);
+	List<Community> findByVisibilityTrue();
+	
+	@Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Community c JOIN c.members cm WHERE c.id = :communityId AND cm.id = :userId")
+	boolean isMember(@Param("communityId") Long communityId, @Param("userId") Long userId);
 	
 }

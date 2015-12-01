@@ -4,6 +4,7 @@ package com.timeoutzero.flice.core.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -50,10 +51,7 @@ public class Topic {
 	@Column(name = "topic_created")
 	private DateTime created = DateTime.now();
 	
-	@Column(name = "topic_active")
-	private Boolean active = true;
-	
-	@OneToMany(mappedBy = "topic")
+	@OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE)
 	private List<Comment> comments = new ArrayList<>();
 	
 	@ManyToOne

@@ -6,3 +6,9 @@ angular.module "web"
       $http
         url    : CORE_API + "/community/#{id}"
         method : 'GET'
+
+    join : (id) ->
+
+      $http
+        url    : CORE_API + "/community/#{id}/join"
+        method : 'PUT'

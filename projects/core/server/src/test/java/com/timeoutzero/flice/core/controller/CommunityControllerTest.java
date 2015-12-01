@@ -66,19 +66,39 @@ public class CommunityControllerTest extends ApplicationTest {
 	@Test
 	public void testFindById() throws Exception{
 		
-		Community shows = community("Show").build();
-		saveAll(shows);
-		
 		User marcos = user("marcos.fernandes").build();
 		saveAll(marcos);
 		login(marcos);
+
+		Community shows = community("Show").members(Arrays.asList(marcos)).build();
+		saveAll(shows);
 		
 		JsonNode json = get("/community/%s", shows.getId())
 				.expectedStatus(HttpStatus.OK).getJson();
 		
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("Show"))
-			.assertThat("$.description", equalTo("Show"));
+			.assertThat("$.description", equalTo("Show"))
+			.assertEquals("$.member", true);
+	}
+	
+	@Test
+	public void testJoinCommunity() throws Exception {
+
+		User marcos = user("marcos.fernandes").build();
+		saveAll(marcos);
+		login(marcos);
+
+		Community shows = community("Show").build();
+		saveAll(shows);
+		
+		put("/community/%s/join", shows.getId()).expectedStatus(HttpStatus.OK).getJson();
+		
+		jsonAsserter(get("/community/%s", shows.getId()).getJson())
+			.assertThat("$.name", equalTo("Show"))
+			.assertThat("$.description", equalTo("Show"))
+			.assertEquals("$.member", true);
+		
 	}
 	
 	@Test

@@ -26,13 +26,23 @@ public class CommunityDTO {
 	private DateTime created;
 	private List<Tag> tags;
 	
-	public CommunityDTO(Community community){
-		super();
-		
+	private boolean member;
+	
+	public CommunityDTO(Community community) {
+		setDefaultAttributes(community);
+	}
+	
+	public CommunityDTO(Community community, boolean isMember){
+		setDefaultAttributes(community);
+		this.member 	 = isMember;
+	}
+
+	private void setDefaultAttributes(Community community) {
 		this.id	 		 = community.getId();
 		this.name 		 = community.getName();
 		this.image 		 = community.getImage();
 		this.cover 		 = community.getCover();
+		this.members     = community.getMembers().size();
 		this.description = community.getDescription();
 		//this.owner  	 = community.getOwner().getProfile().getName();
 		this.created 	 = community.getCreated();

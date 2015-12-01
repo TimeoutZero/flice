@@ -5,6 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,16 +48,17 @@ public class TopicController {
 	@RequestMapping(value = "/{topicId}", method = GET)
 	public TopicDTO findById(@PathVariable("topicId") Long id){
 
-		Topic topic = coreService.getTopicRepository().findByIdAndActiveTrue(id);
+		Topic topic = coreService.getTopicRepository().findById(id);
 		return new TopicDTO(topic);
 	}
 
 	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER })
 	@RequestMapping(method = GET)
-	public List<TopicDTO> list(@PathVariable("communityId") Long communityId){
+	public List<TopicDTO> list(@PathVariable("communityId") Long communityId, 
+			@PageableDefault(direction = Direction.DESC, sort = "created") Pageable page){
 
-		List<Topic> topics = coreService.getTopicRepository().findByCommunityIdAndActiveTrue(communityId);
+		List<Topic> topics = coreService.getTopicRepository().findByCommunityId(communityId, page);
 		List<AccountUserDTO> accounts = getAccountsByTopics(topics);
 
 		return topics.stream()
@@ -80,11 +85,12 @@ public class TopicController {
 	}
 
 	private List<AccountUserDTO> getAccountsByTopics(List<Topic> list) {
+		
 		List<Long> ids = Arrays.asList(list.stream()
 				.map(t -> t.getOwner().getAccountId())
 				.toArray(Long[]::new)); 
 		 
-		return coreService.getAccountOperations().getUserOperations().list(ids);
+		return ids.isEmpty() ? new ArrayList<>() : coreService.getAccountOperations().getUserOperations().list(ids);
 	}
 
 	@Transactional
@@ -111,6 +117,7 @@ public class TopicController {
 		return new TopicDTO(topic);
 	}
 
+	@Transactional
 	@Secured({ Role.USER , Role.ADMIN })
 	@RequestMapping(value = "/{topicId}", method = PUT)
 	public TopicDTO update(
@@ -126,13 +133,13 @@ public class TopicController {
 		return new TopicDTO(topic);
 	}
 
+	@Transactional
 	@Secured({ Role.USER , Role.ADMIN })
 	@RequestMapping(value = "/{topicId}", method = DELETE)
 	public TopicDTO delete(@PathVariable("topicId") Long id){
 
 		Topic topic = coreService.getTopicRepository().findOne(id);
-		topic.setActive(false);
-		topic = coreService.getTopicRepository().save(topic);
+		coreService.getTopicRepository().delete(id);
 
 		return new TopicDTO(topic);
 	}

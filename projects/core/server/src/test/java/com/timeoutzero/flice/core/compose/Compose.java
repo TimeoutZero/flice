@@ -26,7 +26,7 @@ public class Compose {
 	}
 	
 	public static TopicBuilder topic(String name, Community community, User user) {
-		return Topic.builder().name(name).active(true).owner(user).community(community);
+		return Topic.builder().name(name).owner(user).community(community);
 	}
 	
 	public static CommentBuilder comment(String content, Topic topic, User user) {

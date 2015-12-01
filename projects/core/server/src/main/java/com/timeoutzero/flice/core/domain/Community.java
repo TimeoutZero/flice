@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.core.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -33,7 +35,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude="tags")
+@EqualsAndHashCode(exclude = { "tags", "members" })
 @ToString()
 @Builder
 @Table(name = "community")
@@ -71,9 +73,15 @@ public class Community {
 	@Column(name = "community_privacity")
 	private Boolean visibility = true;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "community_tags", joinColumns={ @JoinColumn(name = "comunity_id") }, inverseJoinColumns={ @JoinColumn(name = "tag_id") })
-	private List<Tag> tags = new ArrayList<Tag>();
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "community_members",
+		uniqueConstraints = @UniqueConstraint(columnNames = { "community_id", "user_id" }),
+		joinColumns = { @JoinColumn(name = "community_id")}, inverseJoinColumns = { @JoinColumn(name = "user_id") })
+	private Collection<User> members = new ArrayList<>();
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "community_tags", joinColumns = { @JoinColumn(name = "comunity_id") }, inverseJoinColumns={ @JoinColumn(name = "tag_id") })
+	private List<Tag> tags = new ArrayList<>();
 	
 	
 	
