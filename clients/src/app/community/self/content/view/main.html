@@ -16,12 +16,14 @@
           <div class="col-md-11">
 
             <div class="col-md-12">
-              <h4 align="left">{{topic.name}}</h4>
+              <div class="col-md-9" style="padding: 0px">
+                <h4 align="left">{{topic.name}}</h4>
+              </div>
             </div>  
 
             <div class="col-md-12 row">
               <div class="col-xs-12 col-md-2" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">By: {{topic.author.profile.name}}</div>
-              <div class="col-xs-12 col-md-8" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">{{topic.answers}} answers</div>
+              <div class="col-xs-12 col-md-2" ng-class="{'col-md-12' : attrs.isOnTopicPreview}">{{topic.answers}} answers</div>
               <div class="col-xs-12 col-md-2" ng-class="{'col-md-12 topic-preview-on-last-update' : attrs.isOnTopicPreview, 'col-md-12 topic-preview-off-last-update' : !attrs.isOnTopicPreview}">{{topic.lastUpdate}}</div>
             </div>
           </div>
@@ -45,8 +47,12 @@
 
 <div class="preview-topic" ng-class="{'col-md-9 community-menu-topic-content transition-active-topic': attrs.isOnTopicPreview}"  ng-show="attrs.isOnTopicPreview">
 
-  <h2 class="community-actual-title-topic">{{attrs.topic.name}}</h2>
-
+  <div class="col-md-12 row">
+    <div class="col-md-9" style="padding: 0px;">
+      <h2 class="community-actual-title-topic">{{attrs.topic.name}}</h2>
+    </div>
+  </div>
+ 
   <div class="community-pages">
     <nav>
       <ul class="pagination">
@@ -75,7 +81,7 @@
   <div ng-repeat="comment in attrs.comments">
     <div class="col-md-12 community-topic-container row">
       
-      <div class="col-md-3 row">
+      <div class="col-md-2">
 
         <div class="col-md-12">
           <img align="center" class="img-thumbnail comment-photo"  src="{{comment.author.profile.photo}}" alt="">
@@ -87,21 +93,18 @@
 
       </div>
       
-      <div class="col-md-9 row">
+      <div class="col-md-10">
 
         <div class="col-md-12 community-topic-header">
             
-            <div ng-class="{'col-md-offset-7 col-md-3' : comment.editable && comment.deletable, 'col-md-offset-7 col-md-5' : !comment.editable && !comment.deletable}">
-              10:41 - 18/09/2011
-            </div>
-            <div ng-show="comment.editable" ng-class="{'col-md-1' : comment.editable}" >
-              <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="methods.setEditActive({{comment}})"></span>
-            </div>
-            
-            <div ng-show="comment.deletable" ng-class="{'col-md-1' : comment.deletable}">
-              <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="methods.delete({{comment}})"></span>
-            </div>
+          <div ng-class="{'col-md-offset-7 col-md-3' : comment.editable && comment.deletable, 'col-md-offset-7 col-md-5' : !comment.editable && !comment.deletable}">
+            10:41 - 18/09/2011
           </div>
+          <div ng-show="comment.editable && comment.deletable " style="text-align : right;" ng-class="{'col-md-2' : comment.editable}" >
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="methods.setEditActive({{comment}})"></span>
+            <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="methods.delete({{comment}})"></span>
+          </div>
+        </div>
         
         <div ng-show="!methods.isEditActive({{comment.id}})" class="class-md-12">
           <p align="justify" ng-bind-html="comment.content"></p>
@@ -121,7 +124,6 @@
     </div>
   </div>
   
-
   <div ng-show="attrs.commentActive">
     <div class="form-group col-md-12">
       <div text-angular ng-model="attrs.comment.content"></div>
@@ -133,8 +135,10 @@
     </div>
   </div>
 
-  <div ng-show="!attrs.commentActive" class="col-md-offset-11 col-md-1">
-    <button class="btn btn-primary" ng-click="methods.setCommentActive(true)">Comment</button>
+  <div ng-show="!attrs.commentActive" class="col-md-12">
+    <div style="text-align : right;">
+      <button class="btn btn-primary" ng-click="methods.setCommentActive(true)">Comment</button>
+    </div>
   </div>
 
   <div class="community-pages">

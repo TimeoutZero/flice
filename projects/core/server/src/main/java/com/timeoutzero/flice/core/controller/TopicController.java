@@ -1,5 +1,6 @@
 package com.timeoutzero.flice.core.controller;
 
+import static com.timeoutzero.flice.core.security.CoreSecurityContext.isOwner;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -77,6 +78,8 @@ public class TopicController {
 			
 			if (optional.isPresent()) {
 				dto.getAuthor().setProfile(optional.get().getProfile());
+				dto.setEditable(isOwner(optional)); 
+				dto.setDeletable(isOwner(optional));
 			}
 			return dto;
 		};

@@ -23,7 +23,6 @@ angular.module "web"
       page             : 0
       comments         : []
 
-
     $scope.methods =
 
       sendComment : (id) ->
@@ -31,7 +30,6 @@ angular.module "web"
         if id == undefined
           promise = CommentService.create $scope.attrs.topic.id, $scope.attrs.comment.content
         else 
-          console.log 'update'
           promise = CommentService.update $scope.attrs.topic.id, $scope.attrs.comment.id, $scope.attrs.comment.content   
 
         promise.success (data)->
@@ -67,10 +65,8 @@ angular.module "web"
       isActive : (id) ->
         $scope.attrs.topic.id == id
 
-
       isActivePage : (pageNumber) ->
         $scope.attrs.page + 1 == pageNumber
-
 
       nextPage : () ->
 
@@ -111,10 +107,8 @@ angular.module "web"
               if index is $scope.attrs.pages.length - 1
                 $scope.attrs.comment.end = newIndice
 
-              console.log index
               $scope.attrs.pages[index] = newIndice
 
-        console.log ''
         $scope.methods.getComments()
 
       getPage : (pageNumber) ->

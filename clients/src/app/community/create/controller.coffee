@@ -17,10 +17,6 @@ angular.module "web"
         { id: "2", name: "teste2" }
       ]
 
-    $scope.$watch 'communityCreateForm', (x)->
-      console.log x
-
-
     $scope.methods = 
 
       create : ()->

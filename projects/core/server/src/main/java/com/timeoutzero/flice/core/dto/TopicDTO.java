@@ -21,7 +21,10 @@ public class TopicDTO {
 	private DateTime created;
 	private DateTime lastUpdated;
 	private int answers;
-
+	
+	private boolean editable;
+	private boolean deletable;
+	
 	public TopicDTO(Topic topic){
 		super();
 		this.id		 	 = topic.getId();

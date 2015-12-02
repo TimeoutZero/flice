@@ -4,7 +4,9 @@ import static com.timeoutzero.flice.core.compose.Compose.topic;
 import static com.timeoutzero.flice.core.compose.Compose.user;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 import java.util.Arrays;
 
@@ -77,6 +79,8 @@ public class TopicControllerTest extends ApplicationTest {
 		
 		jsonAsserter(json)
 			.assertThat("$", hasSize(3))
+			.assertThat("$.[*].editable", everyItem(is(true)))
+			.assertThat("$.[*].deletable", everyItem(is(true)))
 			.assertThat("$.[*].name", contains("Topico 3", "Topico 2", "Topico 1"));
 	}
 	
