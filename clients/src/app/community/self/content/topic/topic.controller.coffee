@@ -5,7 +5,6 @@ angular.module 'web'
       create : () ->
         promise = TopicService.create $stateParams.id, $scope.topic
         promise.success (data) ->
-          alert 'certo'
           $state.go 'community.self.content', { "id" : $stateParams.id }
         promise.error (data) ->
           alert 'error'
@@ -13,7 +12,6 @@ angular.module 'web'
       update : () ->
         promise = TopicService.update $stateParams.id, $scope.topic
         promise.success (data) ->
-          alert 'atualizado'
           $state.go 'community.self.content', { "id" : $stateParams.id }
         promise.error (data) ->
           alert 'error'
@@ -21,6 +19,6 @@ angular.module 'web'
       delete : () ->
         promise = TopicService.delete $scope.topic.id
         promise.success (data)->
-          alert 'certo'
+          $state.go 'community.self.content', { "id" : $stateParams.id }
         promise.error (data)->
           alert 'error'

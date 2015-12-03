@@ -38,8 +38,6 @@ angular.module "web"
           $scope.attrs.comment.content = ""
           $scope.attrs.commentActive   = no
           $scope.methods.getComments()
-         
-          alert 'comment created'
 
         promise.error (data)->
           alert 'fail to create comment'
@@ -119,7 +117,6 @@ angular.module "web"
         promise = CommentService.delete comment.topicId, comment.id
      
         promise.success (data) ->
-          alert 'certo'
           $scope.methods.getComments()
         promise.error ()->
           alert 'error'

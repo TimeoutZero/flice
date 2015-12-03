@@ -10,21 +10,25 @@ angular.module "web"
           'page' : page
           'size' : pageSize
 
+
     create : (id, data) ->
       $http
-        url     : CORE_API + "/topic/#{id}/comment"
-        method  : "POST"
-        data    :
+        feedback : true
+        url      : CORE_API + "/topic/#{id}/comment"
+        method   : "POST"
+        data     :
           'content' : data
 
     update : (topicId, commentId, data) ->
       $http
-        url     : CORE_API + "/topic/#{topicId}/comment/#{commentId}"
-        method  : "PUT"
-        data    :
+        feedback : true
+        url      : CORE_API + "/topic/#{topicId}/comment/#{commentId}"
+        method   : "PUT"
+        data     :
           'content' : data
 
     delete : (topicId, commentId) ->
       $http
-        url    : CORE_API + "/topic/#{topicId}/comment/#{commentId}"
-        method : "DELETE"
+        feedback : true
+        url      : CORE_API + "/topic/#{topicId}/comment/#{commentId}"
+        method   : "DELETE"

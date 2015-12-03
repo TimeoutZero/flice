@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller 'LoginController', ($rootScope, $scope, $state, $timeout, LoginService) ->
+  .controller 'LoginController', ($rootScope, $scope, $state, $timeout, LoginService, hToast) ->
 
     $scope.attrs =
       isSignIn : yes
@@ -18,25 +18,15 @@ angular.module "web"
           promise = LoginService.createToken($scope.userForm)
 
           promise.success (data, headers) ->
-
             $rootScope.isLogged = yes
-            $scope.$emit 'feedback', { success: true, message: 'Welcome' }
             $state.go 'community.list'
           
-          promise.error (data, status) ->
-            $scope.$emit 'feedback', { success: false, message: 'Houston, we have a problem! Try later :(' }
-
-
         else
-          $scope.$emit 'feedback', { success: false, message :'E-mail or password invalid'}
+          hToast.error 'E-mail or password invalid'
 
       register : ()->
         
         promise = LoginService.register($scope.signupForm)
 
         promise.success (data) ->
-          $scope.$emit 'feedback', { success: true, message :'Welcome at flice community'}
           $scope.methods.changePages()
-
-        promise.error (data, status) ->
-          $scope.$emit 'feedback', { success: false, message: 'Houston, we have a problem! Try later :(' }

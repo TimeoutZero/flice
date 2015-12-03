@@ -10,5 +10,6 @@ angular.module "web"
     join : (id) ->
 
       $http
-        url    : CORE_API + "/community/#{id}/join"
-        method : 'PUT'
+        feedback : true
+        url      : CORE_API + "/community/#{id}/join"
+        method   : 'PUT'

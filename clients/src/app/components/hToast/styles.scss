@@ -1,0 +1,40 @@
+
+
+.ng-toast__message {
+  $successColor : #50AE69;
+  $errorColor   : #E24342;
+  $infoColor    : #1A77D2;
+
+  .alert {
+    border: none;
+  }
+
+  .alert-success {
+    background: $successColor;
+    color: #FFFFFF;
+  }
+
+  .alert-danger {
+    background: $errorColor;
+    color: #FFFFFF;
+  }
+
+  .alert-info {
+    background: $infoColor;
+    color: #FFFFFF;
+  }
+
+  .close {
+    &:hover {
+      color: #FFFFFF;
+    }
+
+    .icon {
+      font-size: 14px;
+
+      &:hover {
+        color: #FFFFFF;
+      }
+    }
+  }
+}

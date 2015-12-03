@@ -8,7 +8,6 @@ angular.module "web"
         if $scope.community.member is not true
           promise = CommunitySelfService.join $stateParams.id
           promise.success (data) ->
-            alert 'joined'
             $scope.methods.init()
           promise.error (data, status) ->
             alert 'not joined'

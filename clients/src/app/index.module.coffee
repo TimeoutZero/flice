@@ -8,5 +8,7 @@ angular.module 'web', [
   'ui.bootstrap', 
   'rt.select2',
   'angularFileUpload',
-  'textAngular'
+  'textAngular',
+  'ngToast',
+  'hToast'
 ]

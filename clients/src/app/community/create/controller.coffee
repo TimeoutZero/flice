@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller "CommunityCreateController", ($scope, $state, CommunityService, FileUploader) ->
+  .controller "CommunityCreateController", ($scope, $state, hToast, CommunityService, FileUploader) ->
     
     $scope.uploader = new FileUploader();
 
@@ -25,13 +25,7 @@ angular.module "web"
           promise = CommunityService.create($scope.community)
 
           promise.success (data) ->
-           
-            $scope.$emit 'feedback', { success: true, message: 'Community created!' }
             $state.go 'community.list'
-
-          promise.error (data, status) ->
-
-            $scope.$emit 'feedback', { success: false, message: 'Fail to create community!' }
             
         else
-          $scope.$emit 'feedback', { success: false, message: 'Did you forget any field? :)' }
+          hToast.error 'Did you forget any field? :)'

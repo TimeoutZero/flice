@@ -10,8 +10,9 @@ angular.module "web"
     create : (communityId, data) ->
 
       $http
-        url    : CORE_API + "/community/#{communityId}/topic"
-        method : 'POST'
-        data   :
+        feedback : true
+        url      : CORE_API + "/community/#{communityId}/topic"
+        method   : 'POST'
+        data     :
           'name'        : data.name
           'content'     : data.content
