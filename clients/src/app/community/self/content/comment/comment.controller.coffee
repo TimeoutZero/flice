@@ -90,22 +90,25 @@ angular.module "web"
   
 
       previousPage : () ->
-        
-        if $scope.attrs.page >= 1
-          
+
+        if $scope.attrs.page > 0
+
           $scope.attrs.page -= 1
 
-          for page, index in $scope.attrs.pages 
+          start = $scope.attrs.pages[0]
 
-            newIndice = page - 1
+          if $scope.attrs.page <= start - 1 && $scope.attrs.page != 0
+            for page, index in $scope.attrs.pages 
 
-            if newIndice > 0
-              if index is 0
-                $scope.attrs.comment.start = newIndice
-              if index is $scope.attrs.pages.length - 1
-                $scope.attrs.comment.end = newIndice
+              newIndice = page - 1
 
-              $scope.attrs.pages[index] = newIndice
+              if newIndice > 0
+                if index is 0
+                  $scope.attrs.comment.start = newIndice
+                if index is $scope.attrs.pages.length - 1
+                  $scope.attrs.comment.end = newIndice
+
+                $scope.attrs.pages[index] = newIndice
 
         $scope.methods.getComments()
 
