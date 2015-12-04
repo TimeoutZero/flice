@@ -28,8 +28,13 @@ angular.module "web"
             templateUrl : 'app/community/create/main.html'
             controller  : 'CommunityCreateController'
       )
+      .state('community.list'
+        url: "/list"
+        controller  : 'CommunityListController'
+        templateUrl : "app/community/list/main.html"
+      )
       .state('community.self'
-        url        : '/self/:id'
+        url        : '/:id'
         redirectTo : 'community.self.content'
         views :
           '' :
@@ -53,10 +58,5 @@ angular.module "web"
             controller  : 'TopicController'
             templateUrl : 'app/community/self/post/view/main.html'
       )
-      .state('community.list'
-        url: "/list"
-        controller  : 'CommunityListController'
-        templateUrl : "app/community/list/main.html"
-      )
-  
+
     $urlRouterProvider.otherwise '/community/login'

@@ -155,8 +155,8 @@ html, body, .main-view {
   }
 
   .community-topic-container {
-    background-color : rgb(232, 236, 236);
-    padding          : 25px 25px;
+    //background-color : rgb(232, 236, 236);
+    padding          : 5px 0px;
     margin-top       : 10px;
     margin-bottom    : 10px;
   }
@@ -167,10 +167,10 @@ html, body, .main-view {
     text-align    : right;
   }
 
-  .community-topic-header {
-    margin: 20px 0px 10px 0px;
-    font-weight: bold;
-    text-align: right;
-  }
+  // .community-topic-header {
+  //   margin: 20px 0px 10px 0px;
+  //   font-weight: bold;
+  //   text-align: right;
+  // }
 
 }
