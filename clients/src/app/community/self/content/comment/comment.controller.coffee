@@ -16,8 +16,6 @@ angular.module "web"
       commentActive    : no
       editActive       : no
 
-      isOnTopicPreview : no
-
       topics           : []
       topic            : {}
       page             : 0
@@ -42,22 +40,22 @@ angular.module "web"
         promise.error (data)->
           alert 'fail to create comment'
 
-      openTopicPreview : (topic) ->
+      activeTopic : (topic) ->
+        console.log topic.id == $scope.attrs.topic.id
         if topic.id == $scope.attrs.topic.id
-          $scope.attrs.isOnTopicPreview = no
+          $state.go 'community.self.topic', {'topicId' : topic.id}
           $scope.attrs.topic            = {}
           return
 
-        $scope.attrs.isOnTopicPreview = yes
-        $scope.attrs.topic            = topic
-
+        $scope.attrs.topic = topic
         $scope.methods.getComments()
 
         $scope.attrs.comment.start = $scope.attrs.page + 1;
-        $scope.attrs.comment.end = if $scope.attrs.topic.qtyPages > 5 then 5 else $scope.attrs.topic.qtyPages; 
+        $scope.attrs.comment.end   = if $scope.attrs.topic.qtyPages > 5 then 5 else $scope.attrs.topic.qtyPages; 
 
         $scope.attrs.pages = (result for result in [$scope.attrs.comment.start..$scope.attrs.comment.end])
 
+        console.log $scope.attrs.comment.end
         $scope.$emit 'hide-menu'
 
       isActive : (id) ->
@@ -147,5 +145,10 @@ angular.module "web"
 
         for topic in data 
           topic.qtyPages = Math.ceil topic.answers / $scope.attrs.pageSize
+          if topic.id == parseInt($stateParams.topicId)
+            console.log 'true'
+            $scope.methods.activeTopic topic
+
 
         $scope.attrs.topics = data
+

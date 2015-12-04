@@ -35,21 +35,30 @@ angular.module "web"
       )
       .state('community.self'
         url        : '/:id'
-        redirectTo : 'community.self.content'
+        redirectTo : 'community.self.topic'
         views :
           '' :
-            controller  : 'CommunitySelfController'
-            templateUrl : 'app/community/self/main.html'
+            templateUrl : 'app/community/self/content/comment/main.html'
+          'community-self-menu@community.self' :
+            controller  : 'MenuController'
+            templateUrl : 'app/community/self/menu/view/main.html'
+      )
+      .state('community.self.topic'
+        url   : '/topic/'
+        views :
+          'container@community.self' :
+            controller  : 'TopicController'
+            templateUrl : 'app/community/self/content/topic/view/main.html'
           'community-self-menu@community.self' :
             controller  : 'MenuController'
             templateUrl : 'app/community/self/menu/view/main.html'
       )
       .state('community.self.content'
-        url : ''
+        url : '/topic/:topicId/page/:page'
         views :
           'container@community.self' :
             controller  : 'ContentController'
-            templateUrl : 'app/community/self/content/view/main.html'
+            templateUrl : 'app/community/self/content/comment/view/main.html'
       )
       .state('community.self.post'
         url : '/post'

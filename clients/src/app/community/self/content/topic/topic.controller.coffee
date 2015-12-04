@@ -22,3 +22,16 @@ angular.module 'web'
           $state.go 'community.self.content', { "id" : $stateParams.id }
         promise.error (data)->
           alert 'error'
+
+      sendTo : (topic)->
+        $state.go 'community.self.content', { 'topicId' : topic.id }
+
+    do ->
+
+      promise = TopicService.getById $stateParams.id
+      promise.success (data) ->
+
+        for topic in data 
+          topic.qtyPages = Math.ceil topic.answers / $scope.attrs.pageSize
+
+        $scope.attrs.topics = data

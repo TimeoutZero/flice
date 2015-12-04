@@ -1,0 +1,52 @@
+<div class="col-md-12">
+
+  <div class="col-md-12">
+    <ul class="list-unstyled">
+      <li ng-repeat="topic in attrs.topics"  >
+
+        <div class="row" ng-click="methods.sendTo({{topic}})">
+
+          <div class="col-md-1">
+            <img class="img-rounded topic-photo" src="{{topic.author.profile.photo}}" alt="">
+          </div>
+          <div class="col-md-11">
+
+            <div class="col-md-12">
+              <div class="col-md-9" style="padding: 0px">
+                <h4 align="left">{{topic.name}}</h4>
+              </div>
+            </div>  
+
+            <div class="col-md-12 row">
+              <div class="col-xs-12 col-md-2">By: {{topic.author.profile.name}}</div>
+              <div class="col-xs-12 col-md-2">{{topic.answers}} answers</div>
+              <div class="col-xs-12 col-md-2">
+                <span  uib-dropdown on-toggle="toggled(open)">
+                  <a href id="simple-dropdown" uib-dropdown-toggle>
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true" ></span>
+                  </a>
+                  <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                    <li role="menuitem"><a href="" ng-click="methods.setEditActive({{comment}})">Update</a></li>
+                    <li role="menuitem"><a href="" ng-click="methods.delete({{comment}})">Delete</a></li>
+                  </ul>
+                </span>
+
+                {{topic.lastUpdate}}</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-12">
+            <hr>
+          </div>
+
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-12">
+    <hr>
+  </div>
+</div>
