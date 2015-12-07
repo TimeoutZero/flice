@@ -1,11 +1,16 @@
 <div class="col-md-12">
   <div class="col-md-3 community-content-cover">
     <div class="community-titles">
-      <h2>{{community.name}}</h2>
+      <h2>{{community.name}}</h2> 
+
       <h4>{{community.members}} Members</h4>
       <div class="community-button-participate">
         <button type="button" ng-class="{'btn btn-info disabled' : community.member, 'btn btn-info active' : !community.member }" ng-click="methods.join()">Participate</button>
       </div>  
+
+      <a ui-sref="community.create">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+      </a>
     </div>
   </div>
   <div class="col-md-9 community-cover-container">

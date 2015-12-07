@@ -23,7 +23,7 @@ public class AuthenticatorCookieHandler {
 		Cookie cookie = null;
 
 		if (optionalCookie.isPresent()) {
-			cookie = update(optionalCookie);
+			cookie = update(optionalCookie, token);
 		} else {
 			cookie = create(token);
 		}
@@ -33,20 +33,21 @@ public class AuthenticatorCookieHandler {
 
 	private Cookie create(String token) {
 		Cookie cookie = new Cookie(TokenFilter.CUSTOM_COOKIE_X_FLICE_TOKEN, token);
-		setDefaultCookie(cookie);
+		setDefaultCookie(cookie, token);
 		return cookie;
 	}
 
-	private Cookie update(Optional<Cookie> optionalCookie) {
+	private Cookie update(Optional<Cookie> optionalCookie, String token) {
 		Cookie cookie = optionalCookie.get();
-		setDefaultCookie(cookie);
+		setDefaultCookie(cookie, token);
 		return cookie;
 	}
 
-	private void setDefaultCookie(Cookie cookie) {
+	private void setDefaultCookie(Cookie cookie, String token) {
 		cookie.setMaxAge(COOKIE_EXPIRE_SECONDS * COOKIE_EXPIRE_DAYS);
 		cookie.setHttpOnly(true);
 		cookie.setPath("/");
+		cookie.setValue(token);
 	}
 
 	private Optional<Cookie> getAuthorizationCookie(HttpServletRequest request) {

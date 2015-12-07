@@ -1,11 +1,11 @@
-<div class="col-md-3 community-menu-topics">
+<div class="col-md-3">
 
   <div class="col-md-12">
 
     <ul class="list-unstyled">
       <li ng-repeat="topic in attrs.topics" ng-click="methods.activeTopic({{topic}})">
 
-        <div class="row" ng-class="{'topic-active' : methods.isActive({{topic.id}})}" >
+        <div  ng-class="{'topic-active' : methods.isActive({{topic.id}})}" >
 
           <div class="col-md-12">
             <div class="col-md-9" style="padding: 0px">
@@ -40,8 +40,7 @@
 
   </div>
 
-
-  <div class="col-md-9 community-menu-topic-content transition-active-topic" >
+  <div class="col-md-9 comment-container" >
 
     <div class="col-md-12 row">
       <div class="col-md-9" style="padding: 0px;">
@@ -75,7 +74,7 @@
 
   </div>
   <div ng-repeat="comment in attrs.comments">
-    <div class="col-md-12 community-topic-container row">
+    <div class="col-md-12 comment-container row">
 
       <div class="col-md-2">
         <div class="col-md-12">
@@ -83,96 +82,101 @@
         </div>
       </div>
 
-      <div class="col-md-7">
-        <div class="col-md-12 row" style="margin-left: -9%;">
+      <div class="col-md-9">
+        <div class="col-md-12" style="margin-left: -9%;">
+         <div class="row">
+
           <div class="col-md-9">
-            <div class="row">
-              <div class="col-md-12" style="font-weight: bold;">
-                <h4>{{comment.author.profile.name}}</h4>
-              </div> 
-              <div class="col-md-12" style="font-size: 12px; font-style: italic; margin-top: -10px;">
-                Writer, Social Media, Advocate, Project Manager and Internet Manager
-              </div>
+            <div class="col-md-12" style="font-weight: bold;">
+              <h4>{{comment.author.profile.name}}</h4>
+            </div> 
+            <div class="col-md-12" style="font-size: 12px; font-style: italic; margin-top: -10px;">
+              Writer, Social Media, Advocate, Project Manager and Internet Manager
             </div>
           </div>
 
-          <div ng-show="!methods.isEditActive({{comment.id}})" class="class-md-12 content-space">
-            <p align="justify" ng-bind-html="comment.content"></p>
-          </div>
+          <div class="col-md-3">
 
-          <div ng-show="methods.isEditActive({{comment.id}})" class="content-space">
-            <div class="form-group col-md-12">
-              <div text-angular ng-model="attrs.comment.content"></div>
-            </div>
+            <div style="text-align: right;">
+              <span ng-show="comment.editable && comment.deletable" uib-dropdown on-toggle="toggled(open)">
+                <a href id="simple-dropdown" uib-dropdown-toggle>
+                  <span class="glyphicon glyphicon-menu-down" aria-hidden="true" ></span>
+                </a>
+                <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+                  <li role="menuitem"><a href="" ng-click="methods.setEditActive({{comment}})">Update</a></li>
+                  <li role="menuitem"><a href="" ng-click="methods.delete({{comment}})">Delete</a></li>
+                </ul>
+              </span>
 
-            <div class="col-md-offset-10 col-md-2">
-              <button class="btn btn-default" ng-click="methods.setEditActive({{comment.id}})">Cancel</button>
-              <button class="btn btn-primary" ng-click="methods.sendComment({{comment.id}})">Save</button>
+              10:41 - 18/09/2011
+
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-3" >
-        <div style="text-align: right;">
-          <span ng-show="comment.editable && comment.deletable" uib-dropdown on-toggle="toggled(open)">
-            <a href id="simple-dropdown" uib-dropdown-toggle>
-              <span class="glyphicon glyphicon-menu-down" aria-hidden="true" ></span>
-            </a>
-            <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
-              <li role="menuitem"><a href="" ng-click="methods.setEditActive({{comment}})">Update</a></li>
-              <li role="menuitem"><a href="" ng-click="methods.delete({{comment}})">Delete</a></li>
-            </ul>
-          </span>
 
-          10:41 - 18/09/2011
+        <div ng-show="!methods.isEditActive({{comment.id}})" class="class-md-12 content-space">
+          <p align="justify" ng-bind-html="comment.content"></p>
+        </div>
 
+        <div ng-show="methods.isEditActive({{comment.id}})" class="content-space">
+          <div class="form-group col-md-12">
+            <div text-angular ng-model="attrs.comment.content"></div>
+          </div>
+
+          <div class="col-md-offset-10 col-md-2">
+            <button class="btn btn-default" ng-click="methods.setEditActive({{comment.id}})">Cancel</button>
+            <button class="btn btn-primary" ng-click="methods.sendComment({{comment.id}})">Save</button>
+          </div>
         </div>
       </div>
     </div>
+<!-- 
+-->
+</div>
 
+</div>
+
+<div ng-show="attrs.commentActive">
+  <div class="form-group col-md-12">
+    <div text-angular ng-model="attrs.comment.content"></div>
   </div>
 
-  <div ng-show="attrs.commentActive">
-    <div class="form-group col-md-12">
-      <div text-angular ng-model="attrs.comment.content"></div>
-    </div>
-
-    <div class="col-md-offset-10 col-md-2">
-      <button class="btn btn-default" ng-click="methods.setCommentActive(false)">Cancel</button>
-      <button class="btn btn-primary" ng-click="methods.sendComment()">Save</button>
-    </div>
+  <div class="col-md-offset-10 col-md-2">
+    <button class="btn btn-default" ng-click="methods.setCommentActive(false)">Cancel</button>
+    <button class="btn btn-primary" ng-click="methods.sendComment()">Save</button>
   </div>
+</div>
 
-  <div ng-show="!attrs.commentActive" class="col-md-12">
-    <div style="text-align : right;">
-      <button class="btn btn-primary" ng-click="methods.setCommentActive(true)">Comment</button>
-    </div>
+<div ng-show="!attrs.commentActive" class="col-md-12">
+  <div style="text-align : right;">
+    <button class="btn btn-primary" ng-click="methods.setCommentActive(true)">Comment</button>
   </div>
+</div>
 
-  <div class="community-pages">
-    <nav>
-      <ul class="pagination">
-        <li>
-          <a href="" ng-click="methods.previousPage()" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-
-        <li 
-        ng-repeat="page in attrs.pages"
-        ng-click="methods.getPage(page)"
-        ng-class="{'active' : methods.isActivePage(page)} ">
-        <a href="">{{page}}</a>
-      </li>
-
+<div class="community-pages">
+  <nav>
+    <ul class="pagination">
       <li>
-        <a href="" ng-click="methods.nextPage()" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
+        <a href="" ng-click="methods.previousPage()" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-    </ul>
-  </nav>
+
+      <li 
+      ng-repeat="page in attrs.pages"
+      ng-click="methods.getPage(page)"
+      ng-class="{'active' : methods.isActivePage(page)} ">
+      <a href="">{{page}}</a>
+    </li>
+
+    <li>
+      <a href="" ng-click="methods.nextPage()" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 </div>
 
 </div>
