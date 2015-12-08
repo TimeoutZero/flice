@@ -8,9 +8,9 @@
         <button type="button" ng-class="{'btn btn-info disabled' : community.member, 'btn btn-info active' : !community.member }" ng-click="methods.join()">Participate</button>
       </div>  
 
-      <a ui-sref="community.create">
+      <div ng-click="methods.edit()">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-      </a>
+      </div>
     </div>
   </div>
   <div class="col-md-9 community-cover-container">

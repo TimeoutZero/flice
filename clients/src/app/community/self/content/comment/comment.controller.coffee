@@ -41,9 +41,12 @@ angular.module "web"
           alert 'fail to create comment'
 
       activeTopic : (topic) ->
-        console.log topic.id == $scope.attrs.topic.id
+
+        $state.go '.', { 'id' : $stateParams.id, 'topicId' : topic.id, 'page': 1 }, { notify : false }
+        $stateParams.topicId = topic.id
+
         if topic.id == $scope.attrs.topic.id
-          $state.go 'community.self.topic', {'topicId' : topic.id}
+          $state.go 'community.self.topic', { 'topicId' : topic.id }
           $scope.attrs.topic            = {}
           return
 
@@ -55,11 +58,8 @@ angular.module "web"
 
         $scope.attrs.pages = (result for result in [$scope.attrs.comment.start..$scope.attrs.comment.end])
 
-        console.log $scope.attrs.comment.end
-        $scope.$emit 'hide-menu'
-
       isActive : (id) ->
-        $scope.attrs.topic.id == id
+        $stateParams.topicId == id
 
       isActivePage : (pageNumber) ->
         $scope.attrs.page + 1 == pageNumber
@@ -146,9 +146,7 @@ angular.module "web"
         for topic in data 
           topic.qtyPages = Math.ceil topic.answers / $scope.attrs.pageSize
           if topic.id == parseInt($stateParams.topicId)
-            console.log 'true'
             $scope.methods.activeTopic topic
-
 
         $scope.attrs.topics = data
 

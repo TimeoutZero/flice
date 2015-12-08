@@ -5,26 +5,26 @@ angular.module 'web'
       create : () ->
         promise = TopicService.create $stateParams.id, $scope.topic
         promise.success (data) ->
-          $state.go 'community.self.content', { "id" : $stateParams.id }
+          $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
         promise.error (data) ->
           alert 'error'
 
       update : () ->
         promise = TopicService.update $stateParams.id, $scope.topic
         promise.success (data) ->
-          $state.go 'community.self.content', { "id" : $stateParams.id }
+          $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
         promise.error (data) ->
           alert 'error'
 
       delete : () ->
         promise = TopicService.delete $scope.topic.id
         promise.success (data)->
-          $state.go 'community.self.content', { "id" : $stateParams.id }
+          $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
         promise.error (data)->
           alert 'error'
 
-      sendTo : (topic)->
-        $state.go 'community.self.content', { 'topicId' : topic.id }
+      sendTo : (topic) ->
+        $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : topic.id, 'page' : 1}
 
     do ->
 

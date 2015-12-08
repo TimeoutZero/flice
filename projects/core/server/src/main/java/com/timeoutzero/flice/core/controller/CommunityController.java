@@ -105,7 +105,6 @@ public class CommunityController {
 	@RequestMapping(value = "/{id}", method = PUT)
 	public CommunityDTO update(@PathVariable("id") Long id, @Valid @RequestBody CommunityForm form) {
 		
-
 		Community community = coreService.getCommunityRepository().findOne(id);
 		community.setName(form.getName());
 		community.setDescription(form.getDescription());

@@ -12,6 +12,9 @@ angular.module "web"
           promise.error (data, status) ->
             alert 'not joined'
 
+      edit : ()->
+        $state.go 'community.form', { 'id' : $stateParams.id }
+
       init : () ->
         promise = CommunitySelfService.getById $stateParams.id
 

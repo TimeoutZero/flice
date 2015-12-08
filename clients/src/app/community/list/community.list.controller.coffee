@@ -8,7 +8,7 @@ angular.module "web"
         $scope.isListView = !$scope.isListView
 
       goToCommunity: (id) ->
-        $state.go 'community.self', { id: id }
+        $state.go 'community.self', { 'id' : id }
 
     do () ->
 

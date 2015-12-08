@@ -21,12 +21,12 @@ angular.module "web"
             templateUrl : 'app/community/login/main.html'
             controller  : 'LoginController'
       )      
-      .state('community.create'
-        url   : '/create'
+      .state('community.form'
+        url   : '/form/:id'
         views :
           '' :
-            templateUrl : 'app/community/create/main.html'
-            controller  : 'CommunityCreateController'
+            templateUrl : 'app/community/form/main.html'
+            controller  : 'FormController'
       )
       .state('community.list'
         url: "/list"

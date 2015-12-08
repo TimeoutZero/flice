@@ -3,9 +3,9 @@
   <div class="col-md-12">
 
     <ul class="list-unstyled">
-      <li ng-repeat="topic in attrs.topics" ng-click="methods.activeTopic({{topic}})">
+      <li ng-repeat="topic in attrs.topics" ng-click="methods.activeTopic({{topic}})" >
 
-        <div  ng-class="{'topic-active' : methods.isActive({{topic.id}})}" >
+        <div ng-class="{'topic-active' : methods.isActive({{topic.id}})}">
 
           <div class="col-md-12">
             <div class="col-md-9" style="padding: 0px">

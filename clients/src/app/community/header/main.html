@@ -19,7 +19,7 @@
   <div class="col-md-4">
     <div class="col-md-6" ng-show="methods.isLogged()">
       <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
-      <a ui-sref="community.create">Criar comunidade</a>
+      <a ui-sref="community.form">Criar comunidade</a>
     </div>
     <div class="col-md-6" ng-show="methods.isLogged()">
       <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
@@ -28,11 +28,4 @@
   </div>
 
 </div>
-</div>
-
-<div class="feedback" ng-class="{ 'feedback-fade-in' : attrs.feedback.fadein, 'feedback-fade-out' : attrs.feedback.fadeout }">
-	<div class="feedback-content">
-		<h4>{{attrs.feedback.title}}</h4>
-		<p align="justify">{{attrs.feedback.message}}</p>
-	</div>
 </div>
