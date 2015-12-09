@@ -1,11 +1,15 @@
 angular.module "web"
   .service "TopicService", (CORE_API, $http) ->
 
-    getById: (communityId) ->
+    getById: (communityId, page) ->
 
       $http
         url    : CORE_API + "/community/#{communityId}/topic"
         method : 'GET'
+        params   :
+          'page' : page
+          'size' : 10
+
  
     create : (communityId, data) ->
 

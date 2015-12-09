@@ -1,8 +1,11 @@
 <div class="col-md-12">
 
   <div class="col-md-12">
-    <ul class="list-unstyled">
-      <li ng-repeat="topic in attrs.topics"  >
+
+    <div infinite-scroll="methods.loadMore()" infinite-scroll-distance="0">
+     <ul class="list-unstyled">
+
+      <li ng-repeat="topic in attrs.topics | orderBy:'-id' ">
 
         <div class="row" ng-click="methods.sendTo({{topic}})">
 
@@ -46,7 +49,8 @@
     </ul>
   </div>
 
-  <div class="col-md-12">
-    <hr>
-  </div>
+</div>
+
+<div class="col-md-12">
+  <hr>
 </div>

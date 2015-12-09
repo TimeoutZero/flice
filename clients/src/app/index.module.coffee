@@ -10,5 +10,6 @@ angular.module 'web', [
   'angularFileUpload',
   'textAngular',
   'ngToast',
-  'hToast'
+  'hToast',
+  'infinite-scroll'
 ]
