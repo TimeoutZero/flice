@@ -9,7 +9,6 @@ angular.module "web"
         params   :
           'page' : page
           'size' : 10
-
  
     create : (communityId, data) ->
 
@@ -20,3 +19,12 @@ angular.module "web"
         data     :
           'name'        : data.name
           'content'     : data.content
+
+    update : (communityId, data) ->
+
+      $http
+        feedback : true
+        url      : CORE_API + "/community/#{communityId}/topic/#{data.id}"
+        method   : 'PUT'
+        data     :
+          'name'        : data.name

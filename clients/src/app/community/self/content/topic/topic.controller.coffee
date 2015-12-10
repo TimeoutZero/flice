@@ -7,25 +7,26 @@ angular.module 'web'
       maps    : {}
  
     $scope.methods =
-      create : () ->
-        promise = TopicService.create $stateParams.id, $scope.topic
-        promise.success (data) ->
-          $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
-        promise.error (data) ->
-          alert 'error'
 
-      update : () ->
-        promise = TopicService.update $stateParams.id, $scope.topic
+      cancel : () ->
+        
+        $state.go 'community.self', { 'id' : $stateParams.id }
+
+      create : () ->
+        
+        promise = TopicService.create $stateParams.id, $scope.topic
+        
         promise.success (data) ->
           $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
         promise.error (data) ->
           alert 'error'
 
       delete : () ->
+        
         promise = TopicService.delete $scope.topic.id
-        promise.success (data)->
+        promise.success (data) ->
           $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
-        promise.error (data)->
+        promise.error (data) ->
           alert 'error'
 
       loadMore : () ->

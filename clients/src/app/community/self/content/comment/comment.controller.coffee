@@ -14,7 +14,7 @@ angular.module "web"
         content : ""
 
       commentActive    : no
-      editActive       : no
+      topicEditActive  : no
 
       topics           : []
       topic            : {}
@@ -22,6 +22,19 @@ angular.module "web"
       comments         : []
 
     $scope.methods =
+
+      setTopicEditActive : (boolean) ->
+        $scope.attrs.topicEditActive = boolean
+        console.log $scope.attrs.topicEditActive
+
+      updateTopic : () ->
+        
+        promise = TopicService.update $stateParams.id, $scope.attrs.topic
+        
+        promise.success (data) ->
+          $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
+        promise.error (data) ->
+          alert 'error'
 
       sendComment : (id) ->
         
@@ -131,11 +144,11 @@ angular.module "web"
       setCommentActive : (active) ->
         $scope.attrs.commentActive = active
  
-      setEditActive : (comment) ->
+      setCommentEditActive : (comment) ->
         $scope.attrs.comment.id      = comment.id
         $scope.attrs.comment.content = comment.content
 
-      isEditActive : (commentId) ->
+      isCommentEditActive : (commentId) ->
         $scope.attrs.comment.id == commentId
  
     do ->

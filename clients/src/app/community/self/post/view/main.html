@@ -4,12 +4,7 @@
     <div class="form-group">
       <label class="control-label col-md-1">Name:</label>
       <div class="col-md-11">
-        <input 
-          type="text" 
-          name="name" 
-          class="form-control"
-          ng-model="topic.name"
-          required>
+        <input type="text" name="name" class="form-control" ng-model="topic.name" required>
       </div>
     </div>
 
@@ -19,22 +14,10 @@
 
     <div class="form-group">
       <div class="col-md-offset-10 col-md-2">
-        
-        <button 
-          type="button" 
-          class="btn btn-default" 
-          ng-click="methods.cancel()">
-            Cancel
-        </button>
-        
-        <button 
-          type="button"
-          class="btn btn-primary"
-          ng-click="methods.create()">
-            Submit
-        </button>
-
+        <button type="button" class="btn btn-default" ng-click="methods.cancel()">Cancel </button>
+        <button type="button" class="btn btn-primary" ng-click="methods.create()">Submit</button>
       </div>
     </div>
+
   </form>
 </div>

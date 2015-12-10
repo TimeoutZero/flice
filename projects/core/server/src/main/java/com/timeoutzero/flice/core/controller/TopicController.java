@@ -34,6 +34,7 @@ import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.dto.TopicDTO;
 import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.form.TopicForm;
+import com.timeoutzero.flice.core.form.UpdateTopicForm;
 import com.timeoutzero.flice.core.service.CoreService;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 
@@ -125,10 +126,9 @@ public class TopicController {
 	@RequestMapping(value = "/{topicId}", method = PUT)
 	public TopicDTO update(
 			@PathVariable("communityId") Long communityId, 
-			@PathVariable("topicId") Long id, @Valid @RequestBody TopicForm form){
+			@PathVariable("topicId") Long id, @Valid @RequestBody UpdateTopicForm form){
 
 		Topic topic = coreService.getTopicRepository().findOne(id);
-		topic.setCommunity(coreService.getCommunityRepository().findOne(communityId));
 		topic.setName(form.getName());
 
 		topic = coreService.getTopicRepository().save(topic);
