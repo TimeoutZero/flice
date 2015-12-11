@@ -25,13 +25,13 @@ angular.module "web"
 
       setTopicEditActive : (boolean) ->
         $scope.attrs.topicEditActive = boolean
-        console.log $scope.attrs.topicEditActive
 
       updateTopic : () ->
         
         promise = TopicService.update $stateParams.id, $scope.attrs.topic
         
         promise.success (data) ->
+          $scope.methods.setTopicEditActive(false)
           $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
         promise.error (data) ->
           alert 'error'
@@ -56,7 +56,6 @@ angular.module "web"
       activeTopic : (topic) ->
 
         $state.go '.', { 'id' : $stateParams.id, 'topicId' : topic.id, 'page': 1 }, { notify : false }
-        $stateParams.topicId = topic.id
 
         if topic.id == $scope.attrs.topic.id
           $state.go 'community.self.topic', { 'topicId' : topic.id }
@@ -71,8 +70,9 @@ angular.module "web"
 
         $scope.attrs.pages = (result for result in [$scope.attrs.comment.start..$scope.attrs.comment.end])
 
-      isActive : (id) ->
-        $stateParams.topicId == id
+      isTopicActive : (id) ->
+        console.log "id: #{id} boolean : #{$scope.attrs.topic.id == id}"
+        $scope.attrs.topic.id == id
 
       isActivePage : (pageNumber) ->
         $scope.attrs.page + 1 == pageNumber

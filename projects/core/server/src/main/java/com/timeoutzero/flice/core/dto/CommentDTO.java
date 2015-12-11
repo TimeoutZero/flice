@@ -20,7 +20,6 @@ public class CommentDTO {
 	private UserDTO author;
 	private DateTime created;
 	
-	private boolean deletable;
 	private boolean editable;
 	
 	public CommentDTO(final Comment comment){

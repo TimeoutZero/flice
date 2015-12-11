@@ -23,7 +23,6 @@ public class TopicDTO {
 	private int answers;
 	
 	private boolean editable;
-	private boolean deletable;
 	
 	public TopicDTO(Topic topic){
 		super();

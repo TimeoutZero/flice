@@ -83,7 +83,6 @@ public class CommentController {
 			if (optional.isPresent()) {
 				dto.getAuthor().setProfile(optional.get().getProfile());
 				dto.setEditable(isOwner(optional)); 
-				dto.setDeletable(isOwner(optional));
 			}
 			return dto;
 		};

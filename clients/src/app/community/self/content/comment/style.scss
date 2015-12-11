@@ -4,15 +4,27 @@
 }
 
 .comment-photo {
-  width  : 100px;
-  height : 100px;
+  width  : 150px;
+  height : 150px;
 } 
 
 .content-space {
   padding-left : 5%;
-  padding-top  : 5%;
+  padding-top  : 2%;
 }
 
 .comment-container {
   margin-top    : 15px;
+}
+
+.topic-name-container {
+  h2 {
+    display: inline ;
+  }
+}
+
+.topic-active {
+  background-color  : rgb(245, 245, 245);
+  border-left-style : solid;
+  border-color      : #C32C4F;
 }
