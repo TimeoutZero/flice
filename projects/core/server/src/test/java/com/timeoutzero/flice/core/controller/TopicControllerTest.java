@@ -66,7 +66,7 @@ public class TopicControllerTest extends ApplicationTest {
 		saveAll(topico1, topico2, topico3);
 
 		AccountUserDTO dto = new AccountUserDTO();
-		dto.setId(marcos.getId());
+		dto.setId(marcos.getAccountId());
 		
 		Mockito.when(this.accountOperations.getUserOperations()).thenReturn(Mockito.mock(UserOperations.class));
 		Mockito.when(this.accountOperations.getUserOperations().list(Mockito.any())).thenReturn(Arrays.asList(dto));
@@ -80,12 +80,11 @@ public class TopicControllerTest extends ApplicationTest {
 		jsonAsserter(json)
 			.assertThat("$", hasSize(3))
 			.assertThat("$.[*].editable", everyItem(is(true)))
-			.assertThat("$.[*].deletable", everyItem(is(true)))
 			.assertThat("$.[*].name", contains("Topico 3", "Topico 2", "Topico 1"));
 	}
 	
 	@Test
-	public void testFindById() throws Exception{
+	public void tesGet() throws Exception{
 		
 		User marcos = user("marcos.fernandes").build();
 		saveAll(marcos);

@@ -82,7 +82,7 @@ public class CommentController {
 			
 			if (optional.isPresent()) {
 				dto.getAuthor().setProfile(optional.get().getProfile());
-				dto.setEditable(isOwner(optional)); 
+				dto.setEditable(isOwner(optional.get().getId())); 
 			}
 			return dto;
 		};

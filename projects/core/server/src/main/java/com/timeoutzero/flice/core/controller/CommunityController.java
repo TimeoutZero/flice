@@ -9,7 +9,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -44,14 +46,27 @@ public class CommunityController {
 	public CommunityDTO get(@PathVariable("id") Long id) {
 		
 		Community community = coreService.getCommunityRepository().findById(id);
-		boolean isMember = coreService.getCommunityRepository().isMember(community.getId(), getLoggedUser().getId());
 		
-		return new CommunityDTO(community, isMember);
+		return new CommunityDTO(community);
+	}
+	
+	@Transactional(readOnly = true)
+	@Secured({ Role.ANONYMOUS, Role.USER})
+	@RequestMapping(value = "/{id}/member/info", method = GET)
+	public Map<String, Boolean> info(@PathVariable("id") Long id) {
+
+		Community community = coreService.getCommunityRepository().findById(id);
+
+		Map<String, Boolean> dto = new HashMap<>();
+		dto.put("owner", community.getOwner().getId().equals(getLoggedUser().getId()));
+		dto.put("member", coreService.getCommunityRepository().isMember(community.getId(), getLoggedUser().getId()));
+		
+		return dto;
 	}
 
 	@Transactional(readOnly = true)
-	@RequestMapping(method = GET)
 	@Secured({ Role.ANONYMOUS , Role.USER})
+	@RequestMapping(method = GET)
 	public List<CommunityDTO> list() {
 		
 		List<Community> communitys = new ArrayList<>();

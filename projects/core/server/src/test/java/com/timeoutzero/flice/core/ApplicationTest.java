@@ -2,12 +2,17 @@ package com.timeoutzero.flice.core;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
@@ -16,6 +21,8 @@ import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -23,10 +30,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.jayway.jsonassert.JsonAssert;
 import com.jayway.jsonassert.JsonAsserter;
 import com.timeoutzero.flice.core.domain.User;
+import com.timeoutzero.flice.core.enums.Role;
+import com.timeoutzero.flice.core.security.AuthenticatorService;
+import com.timeoutzero.flice.core.security.TokenFilter;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { CoreApplication.class, MockBeans.class })
+@SpringApplicationConfiguration(classes = { CoreApplication.class })
 @IntegrationTest("server.port=10001")
 public abstract class ApplicationTest {
 
@@ -37,10 +47,16 @@ public abstract class ApplicationTest {
 	private JdbcTemplate template;
 
 	private static List<Object> toPersist = new ArrayList<Object>();
-
 	private final String server;
 
-	private String token;
+	@Mock
+	private AuthenticatorService authenticatorService;
+	
+	@Autowired
+	@InjectMocks
+	private TokenFilter tokenFilter;
+	
+	private static final String token = "teste";
 
 	public ApplicationTest() {
 		this.server = "http://localhost:10001/";
@@ -80,7 +96,13 @@ public abstract class ApplicationTest {
 	}
 
 	protected void login(User user) {
-		this.token = "teste";
+		
+		List<SimpleGrantedAuthority> roles = user.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+		Mockito.when(authenticatorService.createAuthentication("teste")).thenReturn(new UsernamePasswordAuthenticationToken(user, token, roles));
+	}
+	
+	protected void anonymous() {
+		Mockito.when(authenticatorService.createAuthentication("teste")).thenReturn(new UsernamePasswordAuthenticationToken(null, null, Arrays.asList(new SimpleGrantedAuthority(Role.ANONYMOUS))));
 	}
 
 	protected RequestBuilder get(String uri) {

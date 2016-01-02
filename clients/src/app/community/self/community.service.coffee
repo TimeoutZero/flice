@@ -1,11 +1,17 @@
 angular.module "web"
   .service "CommunitySelfService", (CORE_API, $http) ->
 
-    getById: (id) ->
+    getById : (id) ->
 
       $http
         url    : CORE_API + "/community/#{id}"
         method : 'GET'
+
+    getMemberInfo : (id) ->
+    
+      $http
+        url     : CORE_API + "/community/#{id}/member/info" 
+        method  : 'GET'
 
     join : (id) ->
 

@@ -1,13 +1,15 @@
 angular.module "web"
-  .controller "ContentController", ($scope, $state, $stateParams, $sanitize, TopicService, CommentService) ->
+  .controller "ContentController", ($scope, $rootScope, $state, $stateParams, $sanitize, CommunitySelfService, TopicService, CommentService) ->
         
     $scope.attrs =
 
       #CONSTANT
-      pageSize         : 10
+      pageSize  : 10
 
       #ATTRIBUTES
 
+      member   : false
+      
       comment  :
         start  : 0
         end    : 0
@@ -33,6 +35,15 @@ angular.module "web"
         promise.success (data) ->
           $scope.methods.setTopicEditActive(false)
           $state.go 'community.self.content', { 'id' : $stateParams.id, 'topicId' : data.id, 'page' : 1}
+        promise.error (data) ->
+          alert 'error'
+
+      deleteTopic : ()->
+
+        promise = TopicService.delete $stateParams.id, $scope.attrs.topic.id
+
+        promise.success (data) ->
+          $state.go 'community.self.topic', { 'id' : $stateParams.id } 
         promise.error (data) ->
           alert 'error'
 
@@ -71,7 +82,6 @@ angular.module "web"
         $scope.attrs.pages = (result for result in [$scope.attrs.comment.start..$scope.attrs.comment.end])
 
       isTopicActive : (id) ->
-        console.log "id: #{id} boolean : #{$scope.attrs.topic.id == id}"
         $scope.attrs.topic.id == id
 
       isActivePage : (pageNumber) ->
@@ -127,7 +137,7 @@ angular.module "web"
         $scope.attrs.page = pageNumber - 1;
         $scope.methods.getComments()
 
-      delete : (comment) ->
+      deleteComment : (comment) ->
         promise = CommentService.delete comment.topicId, comment.id
      
         promise.success (data) ->
@@ -150,6 +160,19 @@ angular.module "web"
 
       isCommentEditActive : (commentId) ->
         $scope.attrs.comment.id == commentId
+
+      initMemberInfo : () ->
+
+        promise = CommunitySelfService.getMemberInfo($stateParams.id)
+        
+        promise.success (data) ->
+          $scope.attrs.member = data.member 
+          $scope.attrs.owner  = data.owner
+        promise.error (data) ->
+          alert 'error member request'
+
+    $rootScope.$on 'joinedCommunity', (event) ->
+      $scope.attrs.member = true
  
     do ->
 
@@ -162,4 +185,4 @@ angular.module "web"
             $scope.methods.activeTopic topic
 
         $scope.attrs.topics = data
-
+        $scope.methods.initMemberInfo()

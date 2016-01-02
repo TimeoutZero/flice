@@ -74,12 +74,15 @@ public class TopicController {
 		Function<TopicDTO, TopicDTO> mapper = dto -> {
 		
 			Optional<AccountUserDTO> optional = accounts.stream()
-					.filter(account -> account.getId().equals(dto.getAuthor().getId()))
+					.filter(account -> account.getId().equals(dto.getAuthor().getAccountId()))
 					.findFirst();
 			
 			if (optional.isPresent()) {
-				dto.getAuthor().setProfile(optional.get().getProfile());
-				dto.setEditable(isOwner(optional)); 
+			
+				AccountUserDTO accountUserDTO = optional.get();
+				
+				dto.getAuthor().setProfile(accountUserDTO.getProfile());
+				dto.setEditable(isOwner(accountUserDTO.getId())); 
 			}
 			return dto;
 		};

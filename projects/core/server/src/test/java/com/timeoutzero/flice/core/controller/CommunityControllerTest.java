@@ -53,7 +53,8 @@ public class CommunityControllerTest extends ApplicationTest {
 		Community mulheres = community("Mulheres").build();
 
 		saveAll(filmes, games, mulheres);
-
+		anonymous();
+		
 		JsonNode json = get("/community")
 				.expectedStatus(HttpStatus.OK).getJson();
 		
@@ -77,27 +78,26 @@ public class CommunityControllerTest extends ApplicationTest {
 		
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("Show"))
-			.assertThat("$.description", equalTo("Show"))
-			.assertEquals("$.member", true);
+			.assertThat("$.description", equalTo("Show"));
 	}
 	
 	@Test
 	public void testJoinCommunity() throws Exception {
 
 		User marcos = user("marcos.fernandes").build();
-		saveAll(marcos);
+		User lucas = user("lucas.martins").build();
+		
+		saveAll(marcos, lucas);
 		login(marcos);
 
-		Community shows = community("Show").build();
+		Community shows = community("Show").owner(lucas).build();
 		saveAll(shows);
 		
 		put("/community/%s/join", shows.getId()).expectedStatus(HttpStatus.OK).getJson();
 		
-		jsonAsserter(get("/community/%s", shows.getId()).getJson())
-			.assertThat("$.name", equalTo("Show"))
-			.assertThat("$.description", equalTo("Show"))
-			.assertEquals("$.member", true);
-		
+		jsonAsserter(get("/community/%s/member/info", shows.getId()).getJson())
+			.assertEquals("$.member", true)
+			.assertEquals("$.owner", false);
 	}
 	
 	@Test

@@ -2,7 +2,6 @@ package com.timeoutzero.flice.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -31,6 +30,9 @@ public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private TokenAuthenticatorProvider tokenAuthenticatorProvider;
 	
+	@Autowired
+	private TokenFilter tokenFilter;
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web
@@ -52,7 +54,7 @@ public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-			.addFilterBefore(tokenSecurityFilter(), BasicAuthenticationFilter.class);
+			.addFilterBefore(tokenFilter, BasicAuthenticationFilter.class);
 	}
 	
 	@Override
@@ -60,8 +62,8 @@ public class CoreSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(tokenAuthenticatorProvider);
 	}
 	
-	@Bean(name = "tokenSecurityFilter")
-	public TokenFilter tokenSecurityFilter() {
-		return new TokenFilter();
-	}
+//	@Bean(name = "tokenSecurityFilter")
+//	public TokenFilter tokenSecurityFilter() {
+//		return new TokenFilter();
+//	}
 }

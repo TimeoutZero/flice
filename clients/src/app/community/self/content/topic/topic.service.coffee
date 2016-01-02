@@ -20,11 +20,21 @@ angular.module "web"
           'name'        : data.name
           'content'     : data.content
 
-    update : (communityId, data) ->
+    update : (communityId, topic) ->
 
       $http
         feedback : true
-        url      : CORE_API + "/community/#{communityId}/topic/#{data.id}"
+        url      : CORE_API + "/community/#{communityId}/topic/#{topic.id}"
         method   : 'PUT'
         data     :
           'name'        : data.name
+
+    delete : (communityId, topicId) ->
+
+      $http
+        # feedback : 
+        #   message = 'Topic deleted!'
+        feedback : true
+        url    : CORE_API + "/community/#{communityId}/topic/#{topicId}"
+        method : 'DELETE'
+

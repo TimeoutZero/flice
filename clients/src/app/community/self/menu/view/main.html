@@ -5,10 +5,10 @@
 
       <h4>{{community.members}} Members</h4>
       <div class="community-button-participate">
-        <button type="button" ng-class="{'btn btn-info disabled' : community.member, 'btn btn-info active' : !community.member }" ng-click="methods.join()">Participate</button>
+        <button type="button" ng-class="{'btn btn-info disabled' : attrs.member, 'btn btn-info active' : !attrs.member }" ng-click="methods.join()">Participate</button>
       </div>  
 
-      <div ng-click="methods.edit()">
+      <div ng-show="attrs.owner" ng-click="methods.edit()">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
       </div>
     </div>
@@ -29,7 +29,7 @@
   </div>
 
   <div class="col-md-1">
-    <button type="button" ng-class="{'btn btn-primary' : community.member, 'btn btn-primary disabled' : !community.member}"  ng-click="methods.changeToCreateTopicView()">Post</button>
+    <button type="button" ng-class="{'btn btn-info disabled' : !attrs.member, 'btn btn-info active' : attrs.member }"  ng-click="methods.changeToCreateTopicView()">Post</button>
   </div>
 
   <div class="col-md-4">

@@ -114,6 +114,7 @@ public class CommentControllerTest extends ApplicationTest{
 		
 		Comment comentario = comment("comentario", topic, marcos).build();
 		saveAll(comentario);
+		login(marcos); 
 		
 		CommentForm form = new CommentForm();
 		form.setContent("comentario editado");

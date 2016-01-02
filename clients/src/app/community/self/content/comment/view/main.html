@@ -23,8 +23,6 @@
         </div>
 
       </div>
-
-      
     </li>
   </ul>
 
@@ -45,7 +43,7 @@
               </a>
               <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
                 <li role="menuitem"><a href="" ng-click="methods.setTopicEditActive(true)">Update</a></li>
-                <li role="menuitem"><a href="" ng-click="methods.delete({{comment}})">Delete</a></li>
+                <li role="menuitem"><a href="" ng-click="methods.deleteTopic({{comment}})">Delete</a></li>
               </ul>
             </span>
           </div>
@@ -117,7 +115,7 @@
                   </a>
                   <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
                     <li role="menuitem"><a href="" ng-click="methods.setCommentEditActive({{comment}})">Update</a></li>
-                    <li role="menuitem"><a href="" ng-click="methods.delete({{comment}})">Delete</a></li>
+                    <li role="menuitem"><a href="" ng-click="methods.deleteComment({{comment}})">Delete</a></li>
                   </ul>
                 </span>
 
@@ -160,7 +158,7 @@
 
   <div ng-show="!attrs.commentActive" class="col-md-12">
     <div style="text-align : right;">
-      <button class="btn btn-primary" ng-click="methods.setCommentActive(true)">Comment</button>
+      <button ng-class="{'btn btn-info disabled' : !attrs.member, 'btn btn-info active' : attrs.member }" ng-click="methods.setCommentActive(true)">Comment</button>
     </div>
   </div>
 

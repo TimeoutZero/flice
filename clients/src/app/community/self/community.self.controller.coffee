@@ -1,3 +1,2 @@
 angular.module "web"
-  .controller "CommunitySelfController", ($scope) ->
-  
+  .controller "CommunitySelfController", ($scope, CommunitySelfService) ->

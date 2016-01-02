@@ -59,6 +59,9 @@ angular.module "web"
           'container@community.self' :
             controller  : 'ContentController'
             templateUrl : 'app/community/self/content/comment/view/main.html'
+          'community-self-menu@community.self' :
+            controller  : 'MenuController'
+            templateUrl : 'app/community/self/menu/view/main.html'
       )
       .state('community.self.post'
         url : '/post'
