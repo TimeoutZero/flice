@@ -53,6 +53,7 @@ public class CommentControllerTest extends ApplicationTest{
 		login(marcos);
 		
 		topic = topic("TWD", community, marcos).build();
+		
 		saveAll(topic);
 	}
 	
@@ -134,4 +135,5 @@ public class CommentControllerTest extends ApplicationTest{
 		
 		delete("/topic/%s/comment/%s", topic.getId(), comentario.getId()).expectedStatus(HttpStatus.OK);
 	}
+
 }

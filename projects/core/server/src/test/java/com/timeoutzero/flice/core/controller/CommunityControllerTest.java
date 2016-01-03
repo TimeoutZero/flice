@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.core.controller;
 
 import static com.timeoutzero.flice.core.compose.Compose.community;
+import static com.timeoutzero.flice.core.compose.Compose.tag;
 import static com.timeoutzero.flice.core.compose.Compose.user;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.timeoutzero.flice.core.ApplicationTest;
 import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.Tag;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.form.CommunityForm;
 
@@ -171,6 +173,25 @@ public class CommunityControllerTest extends ApplicationTest {
 		
 		delete("/community/%s", games.getId())
 			.expectedStatus(HttpStatus.OK);
+	}
+	
+	@Test
+	public void testAutocompleteTag() throws Exception {
+		
+		User lucas = user("lucas.martins").build();
+		
+		Tag tag1 = tag("Books").build();
+		Tag tag2 = tag("Movie").build();
+		Tag tag3 = tag("Movies & Series").build();
+		Tag tag4 = tag("Cinema").build();
+		
+		saveAll(lucas, tag1, tag2, tag3, tag4);
+		login(lucas);
+		
+		jsonAsserter(get("community/tag/autocomplete").queryParam("attr", "Mov").getJson())
+			.assertThat("$", hasSize(2))
+			.assertThat("$.[*].id", contains(tag2.getId().intValue(), tag3.getId().intValue()))
+			.assertThat("$.[*].name", contains("Movie", "Movies & Series"));
 	}
 	
 }

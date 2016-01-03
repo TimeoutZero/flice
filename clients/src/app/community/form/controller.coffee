@@ -1,9 +1,10 @@
 angular.module "web"
-  .controller "FormController", ($scope, $state, $stateParams, hToast, CommunityService, FileUploader) ->
+  .controller "FormController", ($scope, $state, $stateParams, hToast, CommunityService, TagService, FileUploader) ->
     
     $scope.uploader = new FileUploader();
 
     $scope.attrs =
+      tags       : []
       percentage : 20
 
     $scope.community =
@@ -11,11 +12,6 @@ angular.module "web"
       images :
         cover : "/assets/images/community_cover.jpg",
         thumb : "/assets/images/community_thumb.jpg"
-
-    $scope.values = [
-        { id: "1", name: "teste1" },
-        { id: "2", name: "teste2" }
-      ]
 
     $scope.methods = 
 
@@ -32,7 +28,18 @@ angular.module "web"
             
         else
           hToast.error 'Did you forget any field? :)' 
-    
+      
+      refreshTags : (arg)->
+      
+        if arg.length >= 3
+          
+          promise = TagService.getAutocompleteByName(arg);
+
+          promise.success (data) ->
+            $scope.attrs.tags = data
+          promise.error (data)->
+            alert 'error get tags by autocomplete'
+
     do ->
       
       if $stateParams.id != undefined

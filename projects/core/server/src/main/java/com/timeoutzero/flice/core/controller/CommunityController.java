@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -22,12 +23,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.Tag;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.dto.CommunityDTO;
+import com.timeoutzero.flice.core.dto.TagDTO;
 import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.form.CommunityForm;
 import com.timeoutzero.flice.core.service.CoreService;
@@ -148,4 +152,15 @@ public class CommunityController {
 		return new CommunityDTO(community);
 	}
 
+	
+	@Secured({ Role.USER, Role.ADMIN })
+	@RequestMapping(value = "/tag/autocomplete")
+	public List<TagDTO> getAutocompleteTags(@RequestParam("attr") String attr) {
+		
+		List<Tag> tags = coreService.getTagRepository().findByNameContaining(attr);
+		
+		return tags
+				.stream().map(TagDTO::new)
+				.collect(Collectors.toList());
+	}
 }

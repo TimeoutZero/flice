@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.repository.CommentRepository;
 import com.timeoutzero.flice.core.repository.CommunityRepository;
+import com.timeoutzero.flice.core.repository.TagRepository;
 import com.timeoutzero.flice.core.repository.TopicRepository;
 import com.timeoutzero.flice.core.repository.UserRepository;
 import com.timeoutzero.flice.core.security.CoreSecurityContext;
@@ -31,6 +32,9 @@ public class CoreService {
 	
 	@Autowired
 	private TopicRepository topicRepository;
+	
+	@Autowired
+	private TagRepository tagRepository;
 	
 	public User getLoggedUser() {
 		return getUserRepository().findOne(CoreSecurityContext.getLoggedUser().getId());

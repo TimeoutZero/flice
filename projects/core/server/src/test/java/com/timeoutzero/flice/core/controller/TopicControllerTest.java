@@ -12,7 +12,6 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,7 +26,6 @@ import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Topic;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.form.TopicForm;
-import com.timeoutzero.flice.core.repository.TopicRepository;
 import com.timeoutzero.flice.core.service.CoreService;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.operations.AccountOperations;
@@ -41,14 +39,14 @@ public class TopicControllerTest extends ApplicationTest {
 	@Autowired
 	@InjectMocks
 	private CoreService coreService;
-	
-	@Autowired
-	private TopicRepository topicRepository;
-	
-	@Before
-	public void setup() {
-		topicRepository.deleteAll();
-	}
+//	
+//	@Autowired
+//	private TopicRepository topicRepository;
+//	
+//	@Before
+//	public void setup() {
+//		topicRepository.deleteAll();
+//	}
 	
 	@Test
 	public void testListSorted() throws Exception{

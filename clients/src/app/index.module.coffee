@@ -6,7 +6,7 @@ angular.module 'web', [
   'ngResource', 
   'ui.router', 
   'ui.bootstrap', 
-  'rt.select2',
+  'ui.select',
   'angularFileUpload',
   'textAngular',
   'ngToast',

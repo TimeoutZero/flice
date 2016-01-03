@@ -9,6 +9,8 @@ import com.timeoutzero.flice.core.domain.Comment;
 import com.timeoutzero.flice.core.domain.Comment.CommentBuilder;
 import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Community.CommunityBuilder;
+import com.timeoutzero.flice.core.domain.Tag;
+import com.timeoutzero.flice.core.domain.Tag.TagBuilder;
 import com.timeoutzero.flice.core.domain.Topic;
 import com.timeoutzero.flice.core.domain.Topic.TopicBuilder;
 import com.timeoutzero.flice.core.domain.User;
@@ -31,5 +33,9 @@ public class Compose {
 	
 	public static CommentBuilder comment(String content, Topic topic, User user) {
 		return Comment.builder().content(content).created(DateTime.now()).topic(topic).owner(user);
+	}
+	
+	public static TagBuilder tag(String name) {
+		return Tag.builder().name(name);
 	}
 }
