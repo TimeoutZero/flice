@@ -26,7 +26,8 @@ var basebuildOptions = {
 
 basebuildOptions.modulesData = {
   proxy: {
-    target: 'http://localhost:8080'
+    //target: 'http://localhost:8080'
+    target: 'http://192.168.99.100:8080'
   }
 };
 

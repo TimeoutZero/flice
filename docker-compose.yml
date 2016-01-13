@@ -1,14 +1,36 @@
 ---
 
-# nginx:
-#   image: library/nginx:latest
-#   ports:
-#     - "80:80"
-#   volumes:
-#     - clients/httpd.conf:/etc/nginx/conf.d/default.conf
-#     - clients/.tmp/serve:/usr/share/nginx/html
-#     - clients/bower_components:/usr/share/nginx/html/bower_components
- 
+core: 
+  image: lucasgmartins/java8
+  ports:
+    - "8080:8080"
+    - "8000:8000"
+  links:
+    - mysql
+    - account
+    - fakes3ssl:flice.s3.amazonaws.com
+  volumes:
+    - ./projects/core/server/target/core.jar:/app/core.jar
+  command: java -jar
+          -Dspring.profiles.active=DEV 
+          -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n 
+          -Daws.access.token=fakeToken -Daws.secret.key=fakeSecretKey 
+          /app/core.jar  
+  environment:
+    - S3_BUCKET_NAME=testbucket
+    - AWS_SECRET_ACCESS_KEY=fake
+    - AWS_ACCESS_KEY_ID=alsofake
+
+account:
+  image: lucasgmartins/java8
+  ports:
+    - "8081:8080"
+  links:
+    - mysql
+  volumes:
+    - ./projects/account/server/target/account.jar:/app/account.jar
+  command: java -jar -Dspring.profiles.active=DEV /app/account.jar 
+
 mysql:
   image: lucasgmartins/mysql
   ports:
@@ -18,23 +40,17 @@ mysql:
     MYSQL_CORE_DATABASE     : flice-core
     MYSQL_SECURITY_DATABASE : flice-account
 
-# account:
-#   image: lucasgmartins/java8
-#   ports:
-#     - "8081:8080"
-#   links:
-#     - mysql
-#   volumes:
-#     - projects/account/server/target/flice-account.jar:/app/flice-account.jar
-#   command: java -jar -Dspring.profiles.active=DEV /app/flice-account.jar 
-
-# core: 
-#   image: lucasgmartins/java8
-#   ports:
-#     - "8080:8080"
-#   links:
-#     - mysql
-#     - account
-#   volumes:
-#     - projects/core/server/target/flice-core.jar:/app/flice-core.jar
-#   command: java -jar -Dspring.profiles.active=DEV /app/flice-core.jar 
+fakes3:
+  image: lphoward/fake-s3
+  ports:
+    - "4569:4569"
+    
+fakes3ssl:
+  image: cbachich/ssl-proxy
+  ports:
+    - "443:443"
+  links:
+    - fakes3:proxyapp
+  environment:
+    - PORT=443
+    - TARGET_PORT=4569

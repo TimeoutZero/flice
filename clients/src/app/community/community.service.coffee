@@ -18,7 +18,10 @@ angular.module 'web'
         data   : 
           'name'        : form.name
           'description' : form.description
-          'visibility'  : form.visibility
+          'privacity'   : form.visibility
+          'tags'        : form.tags
+          'image'       : form.image
+          'cover'       : form.cover
     
     update : (form) ->
       $http
@@ -27,4 +30,7 @@ angular.module 'web'
         data   : 
           'name'        : form.name
           'description' : form.description
-          'visibility'  : form.visibility
+          'privacity'   : form.visibility
+          'tags'        : form.tags
+          'image'       : form.image
+          'cover'       : form.cover

@@ -24,7 +24,7 @@ public class Compose {
 	}
 
 	public static CommunityBuilder community(String name) {
-		return Community.builder().name(name).description(name).visibility(true);
+		return Community.builder().name(name).description(name).privacity(true);
 	}
 	
 	public static TopicBuilder topic(String name, Community community, User user) {

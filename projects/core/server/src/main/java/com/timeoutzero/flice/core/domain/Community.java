@@ -2,7 +2,8 @@ package com.timeoutzero.flice.core.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,7 +69,7 @@ public class Community {
 	private String cover;
 
 	@Column(name = "community_privacity")
-	private Boolean visibility = true;
+	private Boolean privacity = true;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "community_members",
@@ -76,9 +77,9 @@ public class Community {
 		joinColumns = { @JoinColumn(name = "community_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
 	private Collection<User> members = new ArrayList<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
 	@JoinTable(name = "community_tags", joinColumns = { @JoinColumn(name = "comunity_id") }, inverseJoinColumns={ @JoinColumn(name = "tag_id") })
-	private List<Tag> tags = new ArrayList<>();
+	private Set<Tag> tags = new HashSet<>();
 	
 	
 	

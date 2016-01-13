@@ -11,5 +11,7 @@ angular.module 'web', [
   'textAngular',
   'ngToast',
   'hToast',
-  'infinite-scroll'
+  'infinite-scroll',
+  'angular-img-cropper'
+  # 'ngImgCrop'
 ]

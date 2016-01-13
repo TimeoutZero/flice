@@ -3,12 +3,26 @@ angular.module "web"
     
     $scope.uploader = new FileUploader();
 
+    $scope.cropper =
+      source  :
+        image : null
+        cover : null
+      cropped :
+        image : null
+        cover : null
+
+    $scope.bounds = 
+      left   : 0
+      right  : 0
+      top    : 0
+      bottom : 0
+
     $scope.attrs =
       tags       : []
       percentage : 20
 
     $scope.community =
-      visibility : true
+      privacity : true
       images :
         cover : "/assets/images/community_cover.jpg",
         thumb : "/assets/images/community_thumb.jpg"
@@ -18,14 +32,28 @@ angular.module "web"
       create : ()->
         if $scope.communityCreateForm.$valid
 
+          if $scope.cropper.cropped.image != null
+            $scope.community.image = $scope.cropper.cropped.image
+         
+          if $scope.cropper.cropped.cover != null
+            $scope.community.cover = $scope.cropper.cropped.cover
+
           if $scope.community.id == undefined
             promise = CommunityService.create($scope.community)
+
+            console.log $scope.community
+
+            promise.success (data) ->
+              $state.go 'community.list'
+            promise.error (data) ->
+              alert 'error create community'
+              
           else 
             promise = CommunityService.update($scope.community)
 
             promise.success (data) ->
               $state.go 'community.list'
-            
+              
         else
           hToast.error 'Did you forget any field? :)' 
       
@@ -37,6 +65,10 @@ angular.module "web"
 
           promise.success (data) ->
             $scope.attrs.tags = data
+
+            if data.length == 0
+              $scope.attrs.tags.push { id : null , name : arg } 
+          
           promise.error (data)->
             alert 'error get tags by autocomplete'
 
@@ -50,6 +82,7 @@ angular.module "web"
           $scope.community.id          = data.id
           $scope.community.name        = data.name
           $scope.community.description = data.description
+          $scope.community.tags        = data.tags
 
 
 

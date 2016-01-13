@@ -1,5 +1,6 @@
 package com.timeoutzero.flice.core;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -37,7 +39,7 @@ import com.timeoutzero.flice.core.security.TokenFilter;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreApplication.class })
-@IntegrationTest("server.port=10001")
+@IntegrationTest({ "server.port=10001", "spring.profiles.active=DEV"} )
 public abstract class ApplicationTest {
 
 	@Autowired
@@ -65,6 +67,7 @@ public abstract class ApplicationTest {
 	@Before
 	public void setUp() {
 		
+		FileUtils.deleteQuietly(new File("/tmp/community"));
 		MockitoAnnotations.initMocks(this);
 
 		toPersist.clear();

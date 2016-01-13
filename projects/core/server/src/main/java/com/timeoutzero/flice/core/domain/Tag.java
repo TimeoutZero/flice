@@ -12,12 +12,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Builder
@@ -29,6 +32,7 @@ public class Tag{
 	@Column(name = "tag_id")
 	private Long id;
 
+	@NonNull
 	@Column(name = "tag_name")
 	private String name;
 	

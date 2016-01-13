@@ -23,7 +23,8 @@
     "ngInfiniteScroll": "~1.2.1",
     "select2": "~4.0.1",
     "angular-select2": "~1.4.2",
-    "ui-select": "angular-ui-select#~0.13.2"
+    "ui-select": "angular-ui-select#~0.13.2",
+    "angular-img-cropper": "~1.1.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.0"

@@ -11,7 +11,7 @@ import com.timeoutzero.flice.core.domain.Community;
 public interface CommunityRepository extends CrudRepository<Community, Long>{
 
 	Community findById(Long id);
-	List<Community> findByVisibilityTrue();
+	List<Community> findByPrivacityTrue();
 	
 	@Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Community c JOIN c.members cm WHERE c.id = :communityId AND cm.id = :userId")
 	boolean isMember(@Param("communityId") Long communityId, @Param("userId") Long userId);

@@ -111,6 +111,12 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>io.redspark.holmes</groupId>
+			<artifactId>simple-file-manager</artifactId>
+			<version>1.0.3-SNAPSHOT</version>
+		</dependency>
+
 		<!-- TEST -->
 
 		<dependency>
@@ -122,7 +128,7 @@
 
 	<build>
 
-		<finalName>flice-core</finalName>
+		<finalName>core</finalName>
 
 		<plugins>
 

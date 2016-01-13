@@ -1,13 +1,13 @@
 package com.timeoutzero.flice.core.form;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.timeoutzero.flice.core.domain.Community;
-import com.timeoutzero.flice.core.domain.Tag;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,26 +18,26 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class CommunityForm {
 
-	@NotBlank(message = "name.blank")
+	@NotBlank(message = "invalid.name.blank")
 	private String name;
 	
-	@NotBlank(message = "description.blank")
+	@NotBlank(message = "invalid.description.blank")
 	private String description;
 
-	@NotNull(message = "visibility.null")
-	private Boolean visibility;
+	@NotNull(message = "invalid.visibility.null")
+	private Boolean privacity;
 
 	private String image;
-	private List<Tag> tags;
+	private String cover;
+	
+	private Set<TagForm> tags = new HashSet<>();
 	
 	public Community toEntity(){
 		
 		Community community = new Community();
 		community.setName(this.name);
 		community.setDescription(this.description);
-		community.setImage(this.image);
-		community.setTags(this.tags);
-		community.setVisibility(this.visibility);
+		community.setPrivacity(this.privacity);
 		
 		return community;
 	}

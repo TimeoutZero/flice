@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -35,6 +37,8 @@ import com.timeoutzero.flice.core.dto.TagDTO;
 import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.form.CommunityForm;
 import com.timeoutzero.flice.core.service.CoreService;
+import com.timeoutzero.flice.core.service.ImageService;
+import com.timeoutzero.flice.core.service.ImageService.TYPE;
 
 @RestController
 @RequestMapping("/community")
@@ -42,7 +46,10 @@ public class CommunityController {
 
 	@Autowired
 	private CoreService coreService;
-
+	
+	@Autowired
+	private ImageService imageService;
+	
 	//https://api.myjson.com/bins/4gdhe
 	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER})
@@ -77,7 +84,7 @@ public class CommunityController {
 		
 		if (getLoggedUserAuthoritys().contains(Role.ANONYMOUS)) { 
 			communitys = coreService.getCommunityRepository()
-					.findByVisibilityTrue();
+					.findByPrivacityTrue();
 		} else {
 			communitys = coreService.getUserRepository()
 					.findAllCommunityByUser(getLoggedUser().getId());
@@ -112,12 +119,37 @@ public class CommunityController {
 		Community community = form.toEntity();
 		community.setOwner(loggedUser);
 		community.getMembers().add(loggedUser);
+		
 		community = coreService.getCommunityRepository().save(community);
+		
+		community.setTags(getTags(form));
+		community.setImage(imageService.write(community, form.getImage(), TYPE.THUMB));
+		community.setCover(imageService.write(community, form.getCover(), TYPE.COVER));
 
 		loggedUser.getCommunitys().add(community);
 		coreService.getUserRepository().save(loggedUser);
 		
 		return new CommunityDTO(community);
+	}
+
+	private Set<Tag> getTags(CommunityForm form) {
+		return  form.getTags().stream().map(tagForm -> { 
+			 
+			Tag tag = null;
+			if (tagForm.getId() == null) {
+				
+				tag = coreService.getTagRepository().findByName(tagForm.getName());
+				if (tag == null) {
+					tag = new Tag(tagForm.getName());
+					coreService.getTagRepository().save(tag);
+				}
+			} else {
+				
+				tag = coreService.getTagRepository().findOne(tagForm.getId());
+			}
+			
+			return tag;
+		}).collect(Collectors.toSet());
 	}
 
 	@Secured({ Role.USER, Role.ADMIN })
@@ -127,9 +159,17 @@ public class CommunityController {
 		Community community = coreService.getCommunityRepository().findOne(id);
 		community.setName(form.getName());
 		community.setDescription(form.getDescription());
-		community.setVisibility(form.getVisibility());
-		community.setImage(form.getImage());
-		community.setTags(form.getTags());
+		community.setPrivacity(form.getPrivacity());
+		
+		if (Base64.isBase64(form.getImage())) {
+			community.setImage(imageService.write(community, form.getImage(), TYPE.THUMB));
+		}
+		
+		if (Base64.isBase64(form.getCover())) {
+			community.setCover(imageService.write(community, form.getCover(), TYPE.COVER));
+		}
+		
+		community.setTags(getTags(form));
 		
 		coreService.getCommunityRepository().save(community);
 

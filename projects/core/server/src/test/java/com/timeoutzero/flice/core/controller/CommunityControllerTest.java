@@ -5,11 +5,18 @@ import static com.timeoutzero.flice.core.compose.Compose.tag;
 import static com.timeoutzero.flice.core.compose.Compose.user;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
+import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,8 +25,20 @@ import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Tag;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.form.CommunityForm;
+import com.timeoutzero.flice.core.form.TagForm;
+import com.timeoutzero.flice.core.service.ImageService;
+import com.timeoutzero.flice.core.util.ImageMockUtil;
+
+import io.redspark.simple.file.manager.SimpleFileManager;
 
 public class CommunityControllerTest extends ApplicationTest {
+	
+	@Autowired
+	@InjectMocks
+	private ImageService imageService;
+	
+	@Mock
+	private SimpleFileManager simpleFileManager;
 	
 	@Test
 	public void testListMyCommunitys() throws Exception { 
@@ -103,17 +122,32 @@ public class CommunityControllerTest extends ApplicationTest {
 	}
 	
 	@Test
-	public void testCreate() throws Exception{
+	public void testCreate() throws Exception {
+		
+		Mockito.doNothing().when(simpleFileManager).write(Mockito.any(File.class), Mockito.anyString());
+
+		Tag tag1 = tag("Games").build();
+		Tag tag2 = tag("Youtubers").build();
+		
+		saveAll(tag1, tag2);
 		
 		CommunityForm form = new CommunityForm();
-		form.setName("Games");
+		form.setName("4Play");
 		form.setDescription("Comunidade de games");
 		form.setImage("imagem");
-		form.setVisibility(false);
+		form.setPrivacity(false);
+		form.setImage(ImageMockUtil.getMockBase64Image());
+		form.setCover(ImageMockUtil.getMockBase64Image());
 		
-		User marcos = user("marcos.fernandes").build();
-		saveAll(marcos);
-		login(marcos);
+		TagForm tagForm1 = new TagForm(tag1.getId(), tag2.getName());
+		TagForm tagForm2 = new TagForm(tag2.getId(), tag2.getName());
+		TagForm tagForm3 = new TagForm(null, "4Players");
+		
+		form.setTags(new HashSet<>(Arrays.asList(tagForm1, tagForm2, tagForm3)));
+		
+		User lucas = user("lucas.martins").build();
+		saveAll(lucas);
+		login(lucas);
 		
 		JsonNode json = post("/community")
 		    .json(form)
@@ -121,14 +155,26 @@ public class CommunityControllerTest extends ApplicationTest {
 		    .getJson();
 		
 		jsonAsserter(json)
-			.assertThat("$.name", equalTo("Games"))
-			.assertThat("$.description", equalTo("Comunidade de games"))
-			.assertThat("$.image", equalTo("imagem"));
+			.assertEquals("$.name", "4Play")
+			.assertEquals("$.description", "Comunidade de games")
+			.assertEquals("$.privacity", false)
+			.assertNotNull("$.image")
+			.assertNotNull("$.cover")
+			.assertThat("$.tags.[*]", hasSize(3))
+			.assertThat("$.tags.[*].id", hasItems(tag1.getId().intValue(), tag2.getId().intValue()))
+			.assertThat("$.tags.[*].name", hasItems(tag1.getName(), tag2.getName(), "4Players"));
 	}
 
 	@Test
 	public void testUpdate() throws Exception{
+		
+		Mockito.doNothing().when(simpleFileManager).write(Mockito.any(File.class), Mockito.anyString());
 
+		Tag tag1 = tag("Games").build();
+		Tag tag2 = tag("Youtubers").build();
+		
+		saveAll(tag1, tag2);
+		
 		User lucas = user("lucas.martins").build(); 
 		saveAll(lucas);
 		login(lucas);
@@ -137,6 +183,9 @@ public class CommunityControllerTest extends ApplicationTest {
 				.description("Comunidade de games")
 				.image("imagem")
 				.owner(lucas)
+				.image("/tmp/community/image")
+				.cover("/tmp/community/cover")
+				.tags(new HashSet<>(Arrays.asList(tag1, tag2)))
 				.build();
 		
 		saveAll(games);
@@ -145,7 +194,15 @@ public class CommunityControllerTest extends ApplicationTest {
 		form.setName("Vídeo Games");
 		form.setDescription("Comunidade de vídeo games");
 		form.setImage("novaimagem.png");
-		form.setVisibility(false);
+		form.setPrivacity(false);
+		form.setImage(ImageMockUtil.getMockBase64Image());
+		form.setCover(ImageMockUtil.getMockBase64Image());
+		
+		TagForm tagForm1 = new TagForm(tag1.getId(), tag2.getName());
+		TagForm tagForm2 = new TagForm(tag2.getId(), tag2.getName());
+		TagForm tagForm3 = new TagForm(null, "4Players");
+		
+		form.setTags(new HashSet<>(Arrays.asList(tagForm1, tagForm2, tagForm3)));		
 		
 		JsonNode json = post("/community")
 				.json(form)
@@ -155,7 +212,11 @@ public class CommunityControllerTest extends ApplicationTest {
 		jsonAsserter(json)
 			.assertEquals("$.name", "Vídeo Games")
 			.assertEquals("$.description", "Comunidade de vídeo games")
-			.assertEquals("$.image", "novaimagem.png");
+			.assertNotNull("$.image")
+			.assertNotNull("$.cover")
+			.assertThat("$.tags.[*]", hasSize(3))
+			.assertThat("$.tags.[*].id", hasItems(tag1.getId().intValue(), tag2.getId().intValue()))
+			.assertThat("$.tags.[*].name", hasItems(tag1.getName(), tag2.getName(), "4Players"));
 	}
 	
 	@Test

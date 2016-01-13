@@ -1,9 +1,9 @@
 <div class="container" >
   <form class="form-horizontal" name="communityCreateForm" novalidate>
 
-    <div class="row">
+    <div class="">
 
-      <div class="col-md-9">
+      <div class="col-md-12">
 
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="{{attrs.percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{attrs.percentage}}%">
@@ -35,14 +35,13 @@
           <label class="control-label col-md-2">Tags:</label>
           <div class="col-md-10">
             
-            <ui-select multiple ng-model="selectedItem">
+            <ui-select multiple ng-model="community.tags">
               <ui-select-match placeholder="Select or search a person in the list...">{{$item.name}}</ui-select-match>
 
-              <ui-select-choices repeat="tag in (attrs.tags | filter: $select.search) track by tag.name" refresh="methods.refreshTags($select.search)" refresh-delay="0">
+              <ui-select-choices repeat="tag in (attrs.tags | filter: $select.search) track by tag.name" refresh="methods.refreshTags($select.search)" refresh-delay="1000">
                   <span ng-bind="tag.name"></span>
               </ui-select-choices>
             </ui-select>
-          
 
           </div>
         </div>
@@ -67,7 +66,7 @@
 
         </div>
 
-        <div class="form-group">
+<!--         <div class="form-group">
           <input type="file" nv-file-select uploader="uploader"/><br/>
           <ul>
             <li ng-repeat="item in uploader.queue">
@@ -76,7 +75,34 @@
               <button ng-click="item.upload()">upload</button>
             </li>
           </ul>
+        </div> -->
+
+        <div class="form-group col-md-12">
+          <div class="col-md-6">
+
+            <input type="file" img-cropper-fileread image="cropper.source.image" /> 
+            <canvas width="500" height="300" id="canvas" image-cropper image="cropper.source.image" cropped-image="cropper.cropped.image" crop-width="300" crop-height="300" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+
+          </div>
+          <div class="col-md-6" align="center">
+            <div>Cropped Image (Left: {{bounds.left}} Right: {{bounds.right}} Top: {{bounds.top}} Bottom: {{bounds.bottom}})</div>
+            <div ng-show="cropper.cropped.image!=null"><img ng-src="{{cropper.cropped.image}}" /></div>
+          </div>
         </div>
+        
+        <div class="form-group col-md-12">
+          <div class="col-md-6">
+
+            <input type="file" img-cropper-fileread image="cropper.source.cover" /> 
+            <canvas width="500" height="300" id="canvas" image-cropper image="cropper.source.cover" cropped-image="cropper.cropped.cover" crop-width="1400" crop-height="250" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+            
+          </div> 
+          <div class="col-md-6" align="center">
+           <!--  <div>Cropped Image (Left: {{bounds.left}} Right: {{bounds.right}} Top: {{bounds.top}} Bottom: {{bounds.bottom}})</div>
+            <div ng-show="cropper.cropped.cover!=null"><img ng-src="{{cropper.cropped.cover}}" /></div> -->
+          </div>
+        </div>
+       
       </div>
 
       <div class="form-group">
