@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.timeoutzero.flice.core.domain.Community;
 
 import io.redspark.simple.file.manager.SimpleFileManager;
+import io.redspark.simple.file.manager.enums.Mode;
 
 @Component
 public class ImageService {
@@ -24,7 +25,7 @@ public class ImageService {
 	
 	@Autowired
 	private SimpleFileManager simpleFileManager;
-
+	
 	public String write(Community community, String base64, TYPE type) {
 		
 		String[] split = base64.split(",");
@@ -43,11 +44,11 @@ public class ImageService {
 			LOG.error(e.getLocalizedMessage());
 		}
 		
-		String path = String.format("s3://flice/community/%d/static/%s.%s", community.getId(), type.toString().toLowerCase(), mime);
+		String path = String.format("community/%d/static/%s.%s", community.getId(), type.toString().toLowerCase(), mime);
 		
 		try {
 			
-			simpleFileManager.write(file, path);
+			simpleFileManager.write(file, Mode.S3.getValue() +  path);
 			
 		} catch (IOException e) {
 			LOG.error(e.getLocalizedMessage());
@@ -55,6 +56,6 @@ public class ImageService {
 		
 		FileUtils.deleteQuietly(file);
 
-		return AWS_S3_ENDPOINT + path;
+		return AWS_S3_ENDPOINT + File.separator  + path;
 	}
 }

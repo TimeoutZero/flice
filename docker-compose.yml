@@ -15,11 +15,8 @@ core:
           -Dspring.profiles.active=DEV 
           -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n 
           -Daws.access.token=fakeToken -Daws.secret.key=fakeSecretKey 
+          -Dcom.amazonaws.sdk.disableCertChecking=true
           /app/core.jar  
-  environment:
-    - S3_BUCKET_NAME=testbucket
-    - AWS_SECRET_ACCESS_KEY=fake
-    - AWS_ACCESS_KEY_ID=alsofake
 
 account:
   image: lucasgmartins/java8

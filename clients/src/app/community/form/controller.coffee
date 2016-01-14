@@ -41,8 +41,6 @@ angular.module "web"
           if $scope.community.id == undefined
             promise = CommunityService.create($scope.community)
 
-            console.log $scope.community
-
             promise.success (data) ->
               $state.go 'community.list'
             promise.error (data) ->
