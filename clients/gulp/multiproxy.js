@@ -15,26 +15,30 @@ module.exports = function(options) {
   var moduleOptions = options.modulesData['proxy'];
   var _             = options.plugins.lodash;
   var chalk         = options.plugins.chalk;
-  httpProxy         = options.plugins.httpProxy;
+  httpProxy         = require('../node_modules/basebuild-angular/node_modules/http-proxy')
 
   /*
    * Location of your backend server
    */
   var proxies = {
-    python2: {
-      target: 'http://localhost:8000',
+    core: {
+      // from : 'http://localhost/api/core'
+      // to   : 'http://192.168.99.100:8080',
+
+      target: 'http://192.168.99.100:8080',
       next: function(req, res, next){
-        return req.url.indexOf('python2') === -1
-      }
+        return req.url.indexOf('http://flice.s3.amazon.com') > -1 && /\.(html|css|js|png|jpg|jpeg|gif|ico|xml|rss|txt|eot|svg|ttf|woff|woff2|cur|json)(\?((r|v|rel|rev)=[\-\.\w]*)?)?$/.test(req.url)
+      },
     },
-    python1: {
-      target: 'http://localhost:8001',
+    s3: {
+      from : 'http://flice.s3.amazon.com',
+      target: 'http://192.168.99.100:4569',
+     
       next: function(req, res, next){
-        return req.url.indexOf('python1') === -1
+        return req.url.indexOf('http://flice.s3.amazon.com') === -1
       }
     }
   };
-
 
   /**
    * Executed only if the module is enabled

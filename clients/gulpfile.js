@@ -29,7 +29,8 @@ basebuildOptions.modulesData = {
   //   //target: 'http://localhost:8080'
   //   target: 'http://192.168.99.100:8080'
   // }
-  proxy: {
+
+  proxy  : {
     uses : 'gulp/multiproxy.js'
   }
 };
