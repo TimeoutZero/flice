@@ -26,14 +26,17 @@ module.exports = function(options) {
       // to   : 'http://192.168.99.100:8080',
 
       target: 'http://192.168.99.100:8080',
+      
+      // Não é pra fazer proxy quando a url tiver não tiver /api/
       next: function(req, res, next){
-        return req.url.indexOf('http://flice.s3.amazon.com') > -1 && /\.(html|css|js|png|jpg|jpeg|gif|ico|xml|rss|txt|eot|svg|ttf|woff|woff2|cur|json)(\?((r|v|rel|rev)=[\-\.\w]*)?)?$/.test(req.url)
-      },
+        var isAPI = req.url.indexOf('/api/') === -1;
+        return isAPI;
+      }
     },
     s3: {
-      from : 'http://flice.s3.amazon.com',
       target: 'http://192.168.99.100:4569',
-     
+
+      // Não é pra fazer proxy quando a url tiver não tiver http://flice.s3.amazon.com
       next: function(req, res, next){
         return req.url.indexOf('http://flice.s3.amazon.com') === -1
       }
