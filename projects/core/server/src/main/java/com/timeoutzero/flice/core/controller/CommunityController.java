@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.Community.Privacy;
 import com.timeoutzero.flice.core.domain.Tag;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.dto.CommunityDTO;
@@ -84,7 +85,7 @@ public class CommunityController {
 		
 		if (getLoggedUserAuthoritys().contains(Role.ANONYMOUS)) { 
 			communitys = coreService.getCommunityRepository()
-					.findByPrivacityTrue();
+					.findByPrivacy(Privacy.PUBLIC);
 		} else {
 			communitys = coreService.getUserRepository()
 					.findAllCommunityByUser(getLoggedUser().getId());
@@ -159,7 +160,7 @@ public class CommunityController {
 		Community community = coreService.getCommunityRepository().findOne(id);
 		community.setName(form.getName());
 		community.setDescription(form.getDescription());
-		community.setPrivacity(form.getPrivacity());
+		community.setPrivacy(form.getPrivacy());
 		
 		if (Base64.isBase64(form.getImage())) {
 			community.setImage(imageService.write(community, form.getImage(), TYPE.THUMB));

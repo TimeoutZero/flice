@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.joda.time.DateTime;
 
 import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.Community.Privacy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +25,7 @@ public class CommunityDTO {
 	private String description;
 	private String owner;
 	private DateTime created;
-	private boolean privacity;
+	private Privacy privacy;
 	private Set<TagDTO> tags;
 	
 	public CommunityDTO(Community community) {
@@ -34,9 +35,9 @@ public class CommunityDTO {
 		this.cover 		 = community.getCover();
 		this.members     = community.getMembers().size();
 		this.description = community.getDescription();
-		//this.owner  	 = community.getOwner().getProfile().getName();
+		this.owner  	 = community.getOwner().getProfile().getName();
 		this.created 	 = community.getCreated();
-		this.privacity	 = community.getPrivacity();
+		this.privacy	 = community.getPrivacy();
 		this.tags 		 = community.getTags().stream()
 				.map(TagDTO::new).collect(Collectors.toSet());
 	}

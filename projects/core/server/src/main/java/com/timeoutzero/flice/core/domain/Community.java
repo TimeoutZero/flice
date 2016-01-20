@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -42,6 +44,8 @@ import lombok.ToString;
 @Table(name = "community")
 public class Community {
 	
+	public static enum Privacy { PUBLIC, PRIVATE };
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "community_id")
@@ -68,8 +72,9 @@ public class Community {
 	@Column(name = "community_cover")
 	private String cover;
 
-	@Column(name = "community_privacity")
-	private Boolean privacity = true;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "community_privacy")
+	private Privacy privacy = Privacy.PUBLIC;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "community_members",

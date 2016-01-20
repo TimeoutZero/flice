@@ -34,11 +34,11 @@ module.exports = function(options) {
       }
     },
     s3: {
-      target: 'http://192.168.99.100:4569',
+      target: 'http://192.168.99.100:8082',
 
       // Não é pra fazer proxy quando a url tiver não tiver http://flice.s3.amazon.com
       next: function(req, res, next){
-        return req.url.indexOf('http://flice.s3.amazon.com') === -1
+        return req.url.indexOf('default:8082') === -1;
       }
     }
   };

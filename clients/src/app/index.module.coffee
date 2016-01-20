@@ -7,7 +7,6 @@ angular.module 'web', [
   'ui.router', 
   'ui.bootstrap', 
   'ui.select',
-  'angularFileUpload',
   'textAngular',
   'ngToast',
   'hToast',

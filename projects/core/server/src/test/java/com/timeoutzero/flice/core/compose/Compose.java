@@ -23,8 +23,8 @@ public class Compose {
 		return User.builder().accountId(1l).email(username).roles(Arrays.asList(Role.USER));
 	}
 
-	public static CommunityBuilder community(String name) {
-		return Community.builder().name(name).description(name).privacity(true);
+	public static CommunityBuilder community(User owner, String name) {
+		return Community.builder().owner(owner).name(name).description(name).privacy(Community.Privacy.PUBLIC);
 	}
 	
 	public static TopicBuilder topic(String name, Community community, User user) {

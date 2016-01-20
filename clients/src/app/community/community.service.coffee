@@ -18,7 +18,7 @@ angular.module 'web'
         data   : 
           'name'        : form.name
           'description' : form.description
-          'privacity'   : form.visibility
+          'privacy'     : form.privacy
           'tags'        : form.tags
           'image'       : form.image
           'cover'       : form.cover
@@ -30,7 +30,7 @@ angular.module 'web'
         data   : 
           'name'        : form.name
           'description' : form.description
-          'privacity'   : form.visibility
+          'privacy'     : form.privacy
           'tags'        : form.tags
           'image'       : form.image
           'cover'       : form.cover

@@ -1,23 +1,22 @@
 <div class="navbar navbar-default navbar-fixed-top community-navbar">
   <div class="col-md-12">
 
-    <div class="col-md-4 flice-title">
+    <div class="col-md-2 flice-title">
       <a ui-sref="community.list">flice</a>
     </div>
 
-    <div ng-teste></div>
     
-  </div>
 
-  <div class="col-md-4" style="padding: 0px;">
-    <div class="col-md-6" ng-show="methods.isLogged()">
-      <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
-      <a ui-sref="community.form">Create community</a>
+    <div class="col-md-4" style="padding: 0px;">
+      <div class="col-md-6" ng-show="methods.isLogged()">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+        <a ui-sref="community.form">Create community</a>
+      </div>
+      <div class="col-md-6" ng-show="methods.isLogged()">
+        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+        <a ui-sref="community.list">My communities</a>
+      </div>
     </div>
-    <div class="col-md-6" ng-show="methods.isLogged()">
-      <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-      <a ui-sref="community.list">My communities</a>
-    </div>
-  </div>
 
+  </div>
 </div>

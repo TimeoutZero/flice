@@ -1,64 +1,56 @@
 package com.timeoutzero.flice.core.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.timeoutzero.flice.core.domain.User;
-import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.service.CoreService;
+import com.timeoutzero.flice.rest.AccountException;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.operations.AccountOperations;
 
 @Service
 public class AuthenticatorService {
 
-	@Autowired
-	private AccountOperations accountOperations;
+	private static final String EXCEPTION_BLANK_TOKEN = "blank.token"; 
 
 	@Autowired
 	private CoreService service;
 
-	@Transactional
+	@Autowired
+	private AccountOperations accountOperations;
+
+	@Transactional(readOnly = true)
 	public UsernamePasswordAuthenticationToken createAuthentication(String token) throws BadCredentialsException {
 
 		AccountUserDTO result = getAccountByToken(token);
 
-		User user = null;
-		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-		if (result != null) {
-
-			user = service.getUserRepository().findByAccountId(result.getId());
-			user.setProfile(result.getProfile());
-			authorities = user.getRoles().stream()
-					.map(SimpleGrantedAuthority::new)
-					.collect(Collectors.toList());
-
-		} else {
-			authorities.add(new SimpleGrantedAuthority(Role.ANONYMOUS));
-		}
+		User user = service.getUserRepository().findByAccountId(result.getId());
+		user.setProfile(result.getProfile());
+		
+		Collection<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
 
  		return new UsernamePasswordAuthenticationToken(user, token, authorities);
 	}
 
 	private AccountUserDTO getAccountByToken(String token) {
 
-		if (StringUtils.isNotBlank(token)) {
-
-			accountOperations.getTokenOperations().authorize(token);
-			return accountOperations.getUserOperations().get(token);
+		if (StringUtils.isBlank(token)) {
+			throw new AccountException(HttpStatus.UNAUTHORIZED, EXCEPTION_BLANK_TOKEN);
 		}
-
-		return null;
+		
+		accountOperations.getTokenOperations().authorize(token);
+		return accountOperations.getUserOperations().get(token);
 	}
 }

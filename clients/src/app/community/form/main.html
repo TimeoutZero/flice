@@ -5,21 +5,13 @@
 
       <div class="col-md-12">
 
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="{{attrs.percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{attrs.percentage}}%">
-            {{attrs.percentage}}%
-          </div>
-        </div>
-
         <div class="form-group"  ng-class="{ 'has-error' : communityCreateForm.name.$invalid &&!communityCreateForm.name.$pristine }"> 
           <label class="control-label col-md-2">Name:</label>
 
           <div class="col-md-10">
             <input type="text" name="name" class="form-control" ng-model="community.name" placeholder="Community name.." required>
 
-            <p ng-show="communityCreateForm.name.$invalid && !communityCreateForm.name.$pristine">
-              Enter a valid name.
-            </p>
+            <p ng-show="communityCreateForm.name.$invalid && !communityCreateForm.name.$pristine">Enter a valid name.</p>
           </div>
 
         </div>
@@ -48,34 +40,29 @@
 
         <div class="form-group">
 
-          <label class="control-label col-md-2">Visibility:</label>
+          <label class="control-label col-md-2">Privacy:</label>
           <div class="col-md-2">
 
             <div class="radio">
               <label>
-                <input type="radio" name="visibility" value="true" ng-model="community.visibility" checked>Public
+                <input type="radio" name="Privacy" value="PUBLIC" ng-model="community.privacity" ng-checked="community.privacy == 'PUBLIC'">Public
               </label>
             </div>
 
             <div class="radio">
               <label>
-                <input type="radio" name="visibility" value="false" ng-model="community.visibility">Private
+                <input type="radio" name="Privacy" value="PRIVATE" ng-model="community.privacity" ng-checked="community.privacy == 'PRIVATE'">Private
               </label>
             </div>
           </div>
 
         </div>
 
-<!--         <div class="form-group">
-          <input type="file" nv-file-select uploader="uploader"/><br/>
-          <ul>
-            <li ng-repeat="item in uploader.queue">
-              Name: <span ng-bind="item.file.name"></span><br/>   
-              <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, width: 850, height: 400 }"></div>
-              <button ng-click="item.upload()">upload</button>
-            </li>
-          </ul>
-        </div> -->
+        <div class="form-group">
+          
+       
+        <h5>Thumb</h5>
+        <hr>
 
         <div class="form-group col-md-12">
           <div class="col-md-6">
@@ -89,6 +76,9 @@
             <div ng-show="cropper.cropped.image!=null"><img ng-src="{{cropper.cropped.image}}" /></div>
           </div>
         </div>
+
+        <h5>Cover</h5>
+        <hr>
         
         <div class="form-group col-md-12">
           <div class="col-md-6">
@@ -110,6 +100,6 @@
           <button type="button" class="btn btn-primary" ng-click="methods.create()" ng-disabled="communityCreateForm.$invalid">Submit</button>
         </div>
       </div>
-
+ </div>
     </form>
   </div>

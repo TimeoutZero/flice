@@ -12,11 +12,12 @@ core:
   volumes:
     - ./projects/core/server/target/core.jar:/app/core.jar
   command: java -jar
-          -Dspring.profiles.active=DEV 
-          -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n 
+          -Dspring.profiles.active=DEV
+          -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n
+          -Dmock.s3=http://default:8082
           -Daws.access.token=fakeToken -Daws.secret.key=fakeSecretKey 
           -Dcom.amazonaws.sdk.disableCertChecking=true
-          /app/core.jar  
+          /app/core.jar
 
 account:
   image: lucasgmartins/java8
@@ -26,7 +27,9 @@ account:
     - mysql
   volumes:
     - ./projects/account/server/target/account.jar:/app/account.jar
-  command: java -jar -Dspring.profiles.active=DEV /app/account.jar 
+  command: java -jar 
+          -Dspring.profiles.active=DEV 
+          /app/account.jar
 
 mysql:
   image: lucasgmartins/mysql
@@ -37,11 +40,19 @@ mysql:
     MYSQL_CORE_DATABASE     : flice-core
     MYSQL_SECURITY_DATABASE : flice-account
 
+mocks3:
+  image : lucasgmartins/mocks3
+  ports :
+    - "8082:8080"
+  links :
+    - fakes3ssl:flice.s3.amazonaws.com
+
 fakes3:
-  image: lphoward/fake-s3
+  image: smaj/spurious-s3
+  hostname: default
   ports:
     - "4569:4569"
-    
+
 fakes3ssl:
   image: cbachich/ssl-proxy
   ports:

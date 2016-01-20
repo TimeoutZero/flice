@@ -1,5 +1,6 @@
 package com.timeoutzero.flice.core.controller;
 
+import static com.timeoutzero.flice.core.compose.Compose.community;
 import static com.timeoutzero.flice.core.compose.Compose.topic;
 import static com.timeoutzero.flice.core.compose.Compose.user;
 import static org.hamcrest.Matchers.contains;
@@ -51,8 +52,8 @@ public class TopicControllerTest extends ApplicationTest {
 	@Test
 	public void testListSorted() throws Exception{
 		
-		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
+		Community community = community(marcos, "Games").build();
 		
 		saveAll(marcos, community);
 		login(marcos);
@@ -88,7 +89,7 @@ public class TopicControllerTest extends ApplicationTest {
 		saveAll(marcos);
 		login(marcos);
 
-		Community community = Compose.community("Games").owner(marcos).build();
+		Community community = Compose.community(marcos, "Games").build();
 		saveAll(community);
 		
 		Topic gta = topic("GTA V", community, marcos).build();
@@ -105,8 +106,8 @@ public class TopicControllerTest extends ApplicationTest {
 	@Test
 	public void testCreate() throws Exception {
 		
-		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
+		Community community = Compose.community(marcos, "Games").build();
 		
 		saveAll(marcos, community);
 		login(marcos);
@@ -126,8 +127,8 @@ public class TopicControllerTest extends ApplicationTest {
 	@Test
 	public void testUpdate() throws Exception {
 		
-		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
+		Community community = Compose.community(marcos, "Games").build();
 		
 		saveAll(marcos, community);
 		login(marcos);
@@ -149,8 +150,8 @@ public class TopicControllerTest extends ApplicationTest {
 	@Test
 	public void testDelete() throws Exception {
 		
-		Community community = Compose.community("Games").build();
 		User marcos = user("marcos.fernandes").build();
+		Community community = Compose.community(marcos, "Games").build();
 		
 		saveAll(marcos, community);
 		login(marcos);
@@ -158,7 +159,8 @@ public class TopicControllerTest extends ApplicationTest {
 		Topic gta = topic("GTA V", community, marcos).build();
 		saveAll(gta);
 		
-		delete("community/%s/topic/%s", community.getId(), gta.getId()).expectedStatus(HttpStatus.OK);
+		delete("community/%s/topic/%s", community.getId(), gta.getId())
+			.expectedStatus(HttpStatus.OK);
 		
 		//Assert.assertEquals(0, topicRepository.count());
 	}

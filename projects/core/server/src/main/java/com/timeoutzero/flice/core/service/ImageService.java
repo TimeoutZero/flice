@@ -1,7 +1,6 @@
 package com.timeoutzero.flice.core.service;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -10,21 +9,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.timeoutzero.flice.core.domain.Community;
-
-import io.redspark.simple.file.manager.SimpleFileManager;
-import io.redspark.simple.file.manager.enums.Mode;
 
 @Component
 public class ImageService {
 	
 	private static Logger LOG = LoggerFactory.getLogger(ImageService.class);
 	
-	private static final String AWS_S3_ENDPOINT = "http:/flice.s3.amazonaws.com";
 	public static enum TYPE { THUMB , COVER }
+
+	@Autowired
+	private String awsEndpoint;
 	
 	@Autowired
-	private SimpleFileManager simpleFileManager;
+	private AmazonS3Client amazonS3;
 	
 	public String write(Community community, String base64, TYPE type) {
 		
@@ -44,18 +45,22 @@ public class ImageService {
 			LOG.error(e.getLocalizedMessage());
 		}
 		
-		String path = String.format("community/%d/static/%s.%s", community.getId(), type.toString().toLowerCase(), mime);
-		
-		try {
-			
-			simpleFileManager.write(file, Mode.S3.getValue() +  path);
-			
-		} catch (IOException e) {
-			LOG.error(e.getLocalizedMessage());
-		}
+		String key = String.format("flice/community/%d/static/%s.%s", community.getId(), type.toString().toLowerCase(), mime);
+
+		saveFileAtS3(file, "flice", key);
 		
 		FileUtils.deleteQuietly(file);
 
-		return AWS_S3_ENDPOINT + File.separator  + path;
+		return awsEndpoint + File.separator  + key;
 	}
+
+	private void saveFileAtS3(File file, String bucket, String key) {
+		
+		PutObjectRequest put = new PutObjectRequest(bucket, key, file);
+		put.withCannedAcl(CannedAccessControlList.PublicRead);
+		
+		amazonS3.putObject(put);
+	}
+	
+	
 }

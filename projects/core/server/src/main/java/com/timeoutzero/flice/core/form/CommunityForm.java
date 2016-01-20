@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.Community.Privacy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +26,7 @@ public class CommunityForm {
 	private String description;
 
 	@NotNull(message = "invalid.visibility.null")
-	private Boolean privacity;
+	private Privacy privacy;
 
 	private String image;
 	private String cover;
@@ -37,7 +38,7 @@ public class CommunityForm {
 		Community community = new Community();
 		community.setName(this.name);
 		community.setDescription(this.description);
-		community.setPrivacity(this.privacity);
+		community.setPrivacy(this.privacy);
 		
 		return community;
 	}

@@ -39,7 +39,7 @@ import com.timeoutzero.flice.core.security.TokenFilter;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CoreApplication.class })
-@IntegrationTest({ "server.port=10001", "spring.profiles.active=DEV"} )
+@IntegrationTest({ "server.port=10001", "spring.profiles.active=DEV", "mock.s3=teste", "aws.access.token=teste", "aws.secret.key=teste"} )
 public abstract class ApplicationTest {
 
 	@Autowired

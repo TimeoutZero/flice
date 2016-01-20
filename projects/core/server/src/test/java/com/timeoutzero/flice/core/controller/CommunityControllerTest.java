@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -19,17 +18,19 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.timeoutzero.flice.core.ApplicationTest;
 import com.timeoutzero.flice.core.domain.Community;
+import com.timeoutzero.flice.core.domain.Community.Privacy;
 import com.timeoutzero.flice.core.domain.Tag;
 import com.timeoutzero.flice.core.domain.User;
 import com.timeoutzero.flice.core.form.CommunityForm;
 import com.timeoutzero.flice.core.form.TagForm;
 import com.timeoutzero.flice.core.service.ImageService;
 import com.timeoutzero.flice.core.util.ImageMockUtil;
-
-import io.redspark.simple.file.manager.SimpleFileManager;
 
 public class CommunityControllerTest extends ApplicationTest {
 	
@@ -38,15 +39,18 @@ public class CommunityControllerTest extends ApplicationTest {
 	private ImageService imageService;
 	
 	@Mock
-	private SimpleFileManager simpleFileManager;
+	private AmazonS3Client amazons3;
 	
 	@Test
 	public void testListMyCommunitys() throws Exception { 
 		
-		Community movies   = community("Movies").build();
-		Community games    = community("Games").build();
-		Community series   = community("Series").build();
-		Community politic  = community("Politic").build();
+		User bruno = user("bruno").build();
+		saveAll(bruno);
+		
+		Community movies   = community(bruno, "Movies").build();
+		Community games    = community(bruno, "Games").build();
+		Community series   = community(bruno, "Series").build();
+		Community politic  = community(bruno, "Politic").build();
 
 		saveAll(movies, games, series, politic);
 		
@@ -69,9 +73,12 @@ public class CommunityControllerTest extends ApplicationTest {
 	@Test
 	public void testeListActivesNotSignIn() throws Exception{
 		
-		Community filmes   = community("Filmes").build();
-		Community games    = community("Games").build();
-		Community mulheres = community("Mulheres").build();
+		User lucas = user("lucas.martins").build();
+		saveAll(lucas);
+		
+		Community filmes   = community(lucas, "Filmes").build();
+		Community games    = community(lucas, "Games").build();
+		Community mulheres = community(lucas, "Mulheres").build();
 
 		saveAll(filmes, games, mulheres);
 		anonymous();
@@ -91,7 +98,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		saveAll(marcos);
 		login(marcos);
 
-		Community shows = community("Show").members(Arrays.asList(marcos)).build();
+		Community shows = community(marcos, "Show").members(Arrays.asList(marcos)).owner(marcos).build();
 		saveAll(shows);
 		
 		JsonNode json = get("/community/%s", shows.getId())
@@ -111,7 +118,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		saveAll(marcos, lucas);
 		login(marcos);
 
-		Community shows = community("Show").owner(lucas).build();
+		Community shows = community(lucas, "Show").build();
 		saveAll(shows);
 		
 		put("/community/%s/join", shows.getId()).expectedStatus(HttpStatus.OK).getJson();
@@ -124,7 +131,7 @@ public class CommunityControllerTest extends ApplicationTest {
 	@Test
 	public void testCreate() throws Exception {
 		
-		Mockito.doNothing().when(simpleFileManager).write(Mockito.any(File.class), Mockito.anyString());
+		Mockito.when(amazons3.putObject(Mockito.any(PutObjectRequest.class))).thenReturn(new PutObjectResult());
 
 		Tag tag1 = tag("Games").build();
 		Tag tag2 = tag("Youtubers").build();
@@ -135,7 +142,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		form.setName("4Play");
 		form.setDescription("Comunidade de games");
 		form.setImage("imagem");
-		form.setPrivacity(false);
+		form.setPrivacy(Privacy.PUBLIC);
 		form.setImage(ImageMockUtil.getMockBase64Image());
 		form.setCover(ImageMockUtil.getMockBase64Image());
 		
@@ -157,7 +164,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		jsonAsserter(json)
 			.assertEquals("$.name", "4Play")
 			.assertEquals("$.description", "Comunidade de games")
-			.assertEquals("$.privacity", false)
+			.assertEquals("$.privacy", Privacy.PUBLIC.toString())
 			.assertNotNull("$.image")
 			.assertNotNull("$.cover")
 			.assertThat("$.tags.[*]", hasSize(3))
@@ -168,7 +175,7 @@ public class CommunityControllerTest extends ApplicationTest {
 	@Test
 	public void testUpdate() throws Exception{
 		
-		Mockito.doNothing().when(simpleFileManager).write(Mockito.any(File.class), Mockito.anyString());
+		Mockito.when(amazons3.putObject(Mockito.any(PutObjectRequest.class))).thenReturn(new PutObjectResult());
 
 		Tag tag1 = tag("Games").build();
 		Tag tag2 = tag("Youtubers").build();
@@ -179,7 +186,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		saveAll(lucas);
 		login(lucas);
 		
-		Community games = community("Games")
+		Community games = community(lucas, "Games")
 				.description("Comunidade de games")
 				.image("imagem")
 				.owner(lucas)
@@ -194,7 +201,7 @@ public class CommunityControllerTest extends ApplicationTest {
 		form.setName("Vídeo Games");
 		form.setDescription("Comunidade de vídeo games");
 		form.setImage("novaimagem.png");
-		form.setPrivacity(false);
+		form.setPrivacy(Privacy.PUBLIC);
 		form.setImage(ImageMockUtil.getMockBase64Image());
 		form.setCover(ImageMockUtil.getMockBase64Image());
 		
@@ -221,15 +228,16 @@ public class CommunityControllerTest extends ApplicationTest {
 	
 	@Test
 	public void testDelete() throws Exception{
+
+		User marcos = user("marcos.fernandes").build();
+		saveAll(marcos);
 		
-		Community games = community("Games")
+		Community games = community(marcos, "Games")
 				.description("Comunidade de games")
 				.image("imagem").build();
 		
 		saveAll(games);
 		
-		User marcos = user("marcos.fernandes").build();
-		saveAll(marcos);
 		login(marcos);
 		
 		delete("/community/%s", games.getId())

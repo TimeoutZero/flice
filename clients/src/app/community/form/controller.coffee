@@ -1,8 +1,6 @@
 angular.module "web"
-  .controller "FormController", ($scope, $state, $stateParams, hToast, CommunityService, TagService, FileUploader) ->
+  .controller "FormController", ($scope, $state, $stateParams, hToast, CommunityService, TagService) ->
     
-    $scope.uploader = new FileUploader();
-
     $scope.cropper =
       source  :
         image : null
@@ -22,7 +20,7 @@ angular.module "web"
       percentage : 20
 
     $scope.community =
-      privacity : true
+      privacy : 'PUBLIC'
       images :
         cover : "/assets/images/community_cover.jpg",
         thumb : "/assets/images/community_thumb.jpg"
@@ -72,8 +70,8 @@ angular.module "web"
 
     do ->
       
-      if $stateParams.id != undefined
-      
+      if $stateParams.id != undefined && $stateParams.id.length > 0
+        
         promise = CommunityService.get $stateParams.id
       
         promise.success (data) ->
@@ -81,6 +79,8 @@ angular.module "web"
           $scope.community.name        = data.name
           $scope.community.description = data.description
           $scope.community.tags        = data.tags
+          $scope.community.privacy   = data.privacy
+
 
 
 

@@ -47,7 +47,7 @@ public class CommentControllerTest extends ApplicationTest{
 	public void before(){
 		
 		marcos = user("marcos.fernandes").build();
-		Community community = Compose.community("Seriados").build();
+		Community community = Compose.community(marcos, "Seriados").build();
 	
 		saveAll(marcos, community);
 		login(marcos);
