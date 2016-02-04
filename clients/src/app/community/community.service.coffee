@@ -6,10 +6,21 @@ angular.module 'web'
         url     : CORE_API + "/community/#{id}"
         method  : 'GET'
 
-    list : () ->
+    getAutocompleteByName : (attr) ->
+      $http
+        url     : CORE_API + "/community/autocomplete"
+        method  : 'GET'
+        params    :
+          'word' : attr
+
+    list : (page) ->
+      console.log page
       $http
         url     : CORE_API + '/community'
         method  : 'GET'
+        params   :
+          'page' : page
+          'size' : 15
 
     create : (form) ->
       $http

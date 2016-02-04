@@ -57,7 +57,8 @@ public class TopicController {
 	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER })
 	@RequestMapping(method = GET)
-	public List<TopicDTO> list(@PathVariable("communityId") Long communityId, 
+	public List<TopicDTO> list(
+			@PathVariable("communityId") Long communityId, 
 			@PageableDefault(direction = Direction.DESC, sort = "created") Pageable page){
 
 		List<Topic> topics = coreService.getTopicRepository().findByCommunityId(communityId, page);

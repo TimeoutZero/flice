@@ -11,6 +11,7 @@ angular.module 'web', [
   'ngToast',
   'hToast',
   'infinite-scroll',
-  'angular-img-cropper'
+  'angular-img-cropper',
+  'angular-loading-bar'
   # 'ngImgCrop'
 ]

@@ -1,14 +1,12 @@
 package com.timeoutzero.flice.core.controller;
 
 import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUser;
-import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUserAuthoritys;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +17,9 @@ import javax.validation.Valid;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,21 +80,25 @@ public class CommunityController {
 	@Transactional(readOnly = true)
 	@Secured({ Role.ANONYMOUS , Role.USER})
 	@RequestMapping(method = GET)
-	public List<CommunityDTO> list() {
+	public List<CommunityDTO> list(@PageableDefault(direction = Direction.DESC, sort = "created") Pageable pageable) {
 		
-		List<Community> communitys = new ArrayList<>();
-		
-		if (getLoggedUserAuthoritys().contains(Role.ANONYMOUS)) { 
-			communitys = coreService.getCommunityRepository()
-					.findByPrivacy(Privacy.PUBLIC);
-		} else {
-			communitys = coreService.getUserRepository()
-					.findAllCommunityByUser(getLoggedUser().getId());
-		}
+		List<Community> communitys = coreService.getCommunityRepository()
+				.findByPrivacy(Privacy.PUBLIC, pageable);
 
 		return communitys.stream()
 				.map(CommunityDTO::new)
 				.collect(toList());
+	}
+	
+	@Transactional(readOnly = true)
+	@Secured({ Role.ANONYMOUS , Role.USER})
+	@RequestMapping(value = "/autocomplete", method = GET)
+	public List<CommunityDTO> findByAutocomplete(@RequestParam("word") String word) {
+		
+		return coreService.getCommunityRepository()
+				.findByNameContaining(word)
+				.stream().map(CommunityDTO::new)
+				.collect(Collectors.toList());
 	}
 	
 	@Transactional

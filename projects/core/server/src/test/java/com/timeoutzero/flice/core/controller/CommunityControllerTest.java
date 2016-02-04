@@ -23,6 +23,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.timeoutzero.flice.core.ApplicationTest;
+import com.timeoutzero.flice.core.RequestBuilder;
 import com.timeoutzero.flice.core.domain.Community;
 import com.timeoutzero.flice.core.domain.Community.Privacy;
 import com.timeoutzero.flice.core.domain.Tag;
@@ -107,6 +108,30 @@ public class CommunityControllerTest extends ApplicationTest {
 		jsonAsserter(json)
 			.assertThat("$.name", equalTo("Show"))
 			.assertThat("$.description", equalTo("Show"));
+	}
+	
+	@Test
+	public void testFindByAutocomplete() throws Exception {
+	
+		User lucas = user("lucas.martins").build();
+		saveAll(lucas);
+		login(lucas); 
+
+		Community community1 = community(lucas, "NFL").members(Arrays.asList(lucas)).owner(lucas).build();
+		Community community2 = community(lucas, "NFL Patriots").members(Arrays.asList(lucas)).owner(lucas).build();
+		Community community3 = community(lucas, "Show").members(Arrays.asList(lucas)).owner(lucas).build();
+		
+		saveAll(community1, community2, community3);
+		
+		RequestBuilder request = get("/community/autocomplete");
+		request.queryParam("word", "NFL");
+		
+		JsonNode json = request
+				.expectedStatus(HttpStatus.OK).getJson();
+		
+		jsonAsserter(json)
+			.assertThat("$", hasSize(2))
+			.assertThat("$.[*].name", contains("NFL", "NFL Patriots"));
 	}
 	
 	@Test

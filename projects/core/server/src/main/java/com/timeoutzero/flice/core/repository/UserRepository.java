@@ -2,6 +2,7 @@ package com.timeoutzero.flice.core.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +16,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	User findByAccountId(@Param("accountId") Long accountId);
 	
 	@Query("SELECT uc FROM User u JOIN u.communitys uc WHERE u.id = :id")
-	List<Community> findAllCommunityByUser(@Param("id") Long id);
+	List<Community> findAllCommunityByUser(@Param("id") Long id, Pageable pageable);
 	
 }

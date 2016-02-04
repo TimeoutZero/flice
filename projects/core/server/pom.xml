@@ -159,13 +159,25 @@
 			</plugin>
 
 		</plugins>
+
+		<extensions>
+			<extension>
+				<groupId>org.springframework.build</groupId>
+				<artifactId>aws-maven</artifactId>
+				<version>5.0.0.RELEASE</version>
+			</extension>
+		</extensions>
 	</build>
 
 	<repositories>
 		<repository>
-			<id>DClick Geral</id>
-			<name>Dclick geral</name>
-			<url>http://office-sp.dclick.com.br/nexus/content/groups/dclick</url>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>flice.timeoutzero.com</id>
+			<url>s3://flice.timeoutzero.com</url>
 		</repository>
 	</repositories>
+
 </project>

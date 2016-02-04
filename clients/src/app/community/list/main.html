@@ -12,27 +12,34 @@
     </div>
   </div> -->
 
-  <div ng-show="!isListView" class="community-item col-md-2"  ng-repeat="community in communities">
-    <div class="community-thumb">
+  
+  <div class="list-search col-md-12">
+    <input type="text" ng-model="attrs.autocompleteWord" ng-change="methods.search()">
+  </div>
+  
+  <div infinite-scroll="methods.loadMore()" infinite-scroll-distance="0">
+    <div ng-show="!isListView" class="community-item col-md-2"  ng-repeat="community in attrs.communities">
+      <div class="community-thumb">
 
-      <div class="community-thumb-image">
-        <a ui-sref="community.self({ id: community.id })">
-          <img class="img-rounded" src="{{community.image}}" alt="...">
-        </a>
+        <div class="community-thumb-image">
+          <a ui-sref="community.self({ id: community.id })">
+            <img class="img-rounded" src="{{community.image}}" alt="...">
+          </a>
+        </div>
+
+        <div class="tags-wrapper">
+          <p ng-repeat="tag in community.tags" class="community-thumb-tags">
+            <span>
+              {{tag.name}}
+            </span>
+          </p>
+        </div>
       </div>
 
-      <div class="tags-wrapper">
-        <p ng-repeat="tag in community.tags" class="community-thumb-tags">
-          <span>
-            {{tag.name}}
-          </span>
-        </p>
+      <div class="community-thumb-description">
+        <p class="community-thumb-title">{{community.name}}</p>
       </div>
-    </div>
 
-    <div class="community-thumb-description">
-      <p class="community-thumb-title">{{community.name}}</p>
     </div>
-
   </div>
 </div>

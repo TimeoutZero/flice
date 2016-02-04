@@ -1,24 +1,36 @@
 
-.search {
-  margin-top  : 20px; 
+.list-search {
+  margin-top    : 20px; 
+  margin-bottom : 20px;
+  text-align: center;
+
+  input {
+    border: 0;
+    border-bottom: 1px solid #B9AFAF;
+    outline: 0;
+    width             : 400px;
+    height            : 30px;
+
+    font-size: 24px;
+  }
 }
 
-
 .community-item {
-  margin-bottom    : 5px;
+
+  margin-bottom : 5px;
   position      : relative;
   float         : left;
   cursor        : pointer;
   min-height    : 1px;
-  min-width     : 305px;
+  min-width     : 250px;
   // margin-top    : 20px;
 }
 
 .community-thumb {
   min-height : 1px;
   position   : relative;
-  height     : 300px;
-  width      : 300px;
+  height     : 245px;
+  width      : 245px;
   background-color : #000;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -63,10 +75,10 @@
 
   height      : 35px;
   line-height : 35px;
-  width       : 300px;
+  width       : 245px;
   background-color: #251923;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius : 5px;
+  // border-bottom-left-radius: 5px;
+  // border-bottom-right-radius : 5px;
 
   .community-thumb-title {
     margin: 0px 5px 5px 5px;

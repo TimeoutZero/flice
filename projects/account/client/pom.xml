@@ -79,7 +79,6 @@
 			<version>${apache.commons.io.version}</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -92,7 +91,7 @@
 			<artifactId>json-path-assert</artifactId>
 			<version>${jsonpath.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -100,27 +99,27 @@
 
 	</dependencies>
 
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.springframework.build</groupId>
+				<artifactId>aws-maven</artifactId>
+				<version>5.0.0.RELEASE</version>
+			</extension>
+		</extensions>
+	</build>
+
 	<distributionManagement>
-		<site>
-			<id>tomcat</id>
-			<url>scp:///</url>
-		</site>
-
 		<repository>
-			<id>nexus</id>
-			<url>http://office-sp.dclick.com.br/nexus/content/repositories/releases/</url>
+			<id>flice.timeoutzero.com</id>
+			<url>s3://flice.timeoutzero.com</url>
 		</repository>
-
-		<snapshotRepository>
-			<id>nexus</id>
-			<url>http://office-sp.dclick.com.br/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>DClickNexus</id>
-			<url>http://office-sp.dclick.com.br/nexus/content/groups/dclick/</url>
+			<id>flice.timeoutzero.com</id>
+			<url>s3://flice.timeoutzero.com</url>
 		</repository>
 	</repositories>
 
