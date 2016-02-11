@@ -5,10 +5,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -26,20 +32,25 @@ import com.timeoutzero.flice.core.domain.UserCommunity;
 import com.timeoutzero.flice.core.domain.UserTopic;
 import com.timeoutzero.flice.core.dto.UserDTO;
 import com.timeoutzero.flice.core.enums.Role;
+import com.timeoutzero.flice.core.exception.WebException;
 import com.timeoutzero.flice.core.form.UserForm;
 import com.timeoutzero.flice.core.repository.CommunityRepository;
 import com.timeoutzero.flice.core.repository.TopicRepository;
 import com.timeoutzero.flice.core.repository.UserCommunityRepository;
 import com.timeoutzero.flice.core.repository.UserRepository;
 import com.timeoutzero.flice.core.repository.UserTopicRepository;
+import com.timeoutzero.flice.core.service.SmtpMailSender;
 import com.timeoutzero.flice.core.util.AuthenticatorCookieHandler;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 import com.timeoutzero.flice.rest.operations.AccountOperations;
 
 @RestController
-@Transactional
 @RequestMapping("/user")
 public class UserController {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+
+	private static final int INVITES_LIMIT = 5;
 
 	@Autowired
 	private UserTopicRepository userTopicRepository;
@@ -62,12 +73,17 @@ public class UserController {
 	@Autowired
 	private AuthenticatorCookieHandler authenticatorCookieHandler;
 	
+	@Autowired
+	private SmtpMailSender mailSender;
+	
+	@Transactional(readOnly = true)
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/me", method = GET)
 	public UserDTO me() {
 		return new UserDTO(getLoggedUser());
 	}
 	
+	@Transactional
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = POST)
 	public UserDTO create(@RequestBody @Valid UserForm form) {
@@ -82,6 +98,36 @@ public class UserController {
 		userRepository.save(user);
 		 
 		return new UserDTO(user);
+	}
+	
+	@Secured({ Role.USER, Role.ADMIN })
+	@RequestMapping(value = "/invite", method = POST)
+	public Map<String, Integer> invite(@RequestParam("email") String email) {
+		
+		String subject = "Welcome to exclusive club";
+		String body	   = "body";
+		
+		User user = getLoggedUser();
+		
+		if (user.getInvites() <= INVITES_LIMIT) {
+			throw new WebException(HttpStatus.PRECONDITION_FAILED, "The invites exceed limit!");
+		}
+
+		try {
+			
+			mailSender.send(email, subject, body);
+		
+		} catch (MessagingException e) {
+			LOG.error("Problem to invite e-mail: [ {} ] , details : {}", email,  e.getLocalizedMessage());
+		}
+		
+		user.setInvites(user.getInvites() + 1);
+		userRepository.save(user);
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("invites", getLoggedUser().getInvites());
+		
+		return map;
 	}
 
 	@RequestMapping(value = "/token", method = POST)

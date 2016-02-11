@@ -48,6 +48,9 @@ public class User{
 	@Column(name = "user_email")
 	private String email;
 	
+	@Column(name = "invites")
+	private int invites;
+
 	@Transient
 	private ProfileDTO profile = new ProfileDTO();
 	
@@ -58,5 +61,6 @@ public class User{
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_communities", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "community_id") })
 	private List<Community> communitys = new ArrayList<>();
+	
 
 }

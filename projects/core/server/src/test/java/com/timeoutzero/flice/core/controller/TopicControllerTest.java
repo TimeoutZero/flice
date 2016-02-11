@@ -40,14 +40,6 @@ public class TopicControllerTest extends ApplicationTest {
 	@Autowired
 	@InjectMocks
 	private CoreService coreService;
-//	
-//	@Autowired
-//	private TopicRepository topicRepository;
-//	
-//	@Before
-//	public void setup() {
-//		topicRepository.deleteAll();
-//	}
 	
 	@Test
 	public void testListSorted() throws Exception{

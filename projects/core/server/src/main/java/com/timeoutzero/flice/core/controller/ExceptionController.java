@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.timeoutzero.flice.core.exception.WebException;
 import com.timeoutzero.flice.rest.AccountException;
 import com.timeoutzero.flice.rest.dto.ExceptionDTO;
 
@@ -19,6 +20,15 @@ public class ExceptionController {
 	private static Logger LOG = LoggerFactory.getLogger(ExceptionController.class);
 
 	private static final String EXCEPTION_ACCESS_DENIED = "Access denied!";
+	
+	
+	@ResponseBody
+	@ExceptionHandler(value = WebException.class)
+	public ExceptionDTO webException(WebException exception, HttpServletResponse response ) {
+		
+		response.setStatus(exception.getStatus().value());
+		return new ExceptionDTO(exception.getStatus().value(), exception.getLocalizedMessage());
+	}
 	
 	@ResponseBody
 	@ExceptionHandler(value = AccessDeniedException.class)

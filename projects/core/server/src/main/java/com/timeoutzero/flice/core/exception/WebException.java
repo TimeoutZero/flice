@@ -1,11 +1,13 @@
 package com.timeoutzero.flice.core.exception;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-import org.springframework.http.HttpStatus;
-
+@Getter
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)

@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -147,5 +149,17 @@ public abstract class ApplicationTest {
 
 	protected JsonAsserter jsonAsserter(JsonNode json) throws UnsupportedEncodingException {
 		return JsonAssert.with(json.toString());
+	}
+	
+	protected final Object unwrapProxy(Object bean) throws Exception {
+		/*
+		 * If the given object is a proxy, set the return value as the object
+		 * being proxied, otherwise return the given object.
+		 */
+		if (AopUtils.isAopProxy(bean) && bean instanceof Advised) {
+			Advised advised = (Advised) bean;
+			bean = advised.getTargetSource().getTarget();
+		}
+		return bean;
 	}
 }
