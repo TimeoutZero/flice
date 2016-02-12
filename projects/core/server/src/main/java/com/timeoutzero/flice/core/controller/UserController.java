@@ -5,6 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,20 +107,23 @@ public class UserController {
 	public Map<String, Integer> invite(@RequestParam("email") String email) {
 		
 		String subject = "Welcome to exclusive club";
-		String body	   = "body";
 		
 		User user = getLoggedUser();
 		
-		if (user.getInvites() <= INVITES_LIMIT) {
+		if (user.getInvites() >= INVITES_LIMIT) {
 			throw new WebException(HttpStatus.PRECONDITION_FAILED, "The invites exceed limit!");
 		}
 
 		try {
 			
+			byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/email/invites.html"));
+			String body = new String(bytes);
 			mailSender.send(email, subject, body);
 		
 		} catch (MessagingException e) {
 			LOG.error("Problem to invite e-mail: [ {} ] , details : {}", email,  e.getLocalizedMessage());
+		} catch (IOException e) {
+			LOG.error("Problem to find e-mail template details : {}", e.getLocalizedMessage());
 		}
 		
 		user.setInvites(user.getInvites() + 1);

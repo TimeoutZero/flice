@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h3>Invites</h3>
+</div>
+<div class="modal-body" style="height: 100%">
+ 
+  <p align="center">We are open forum, but right now at beta test we choose to be with the bests. Why don't you call a friend to be part of exclusive members?</p>
+  
+  <form class="form-horizontal" novalidate>
+    <div class="input-group" style="width: 100%;">
+      <label class="contro-label">E-mail:</label>
+      <input type="text" class="form-control" placeholder="friend@gmail.com..." ng-model="attrs.email" required>
+    </div>
+  </form>
+
+  <div class="col-md-offset-8" style="margin-top: 10px;">
+    <button class="btn btn-default" >Cancel</button>
+    <button class="btn btn-primary" ng-click="methods.send()">Send</button>
+  </div>
+</div>

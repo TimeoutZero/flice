@@ -1,6 +1,6 @@
 
-INSERT INTO `user` (`user_id`, `user_account_id`, `user_email`) VALUES (1, 1 , 'lucas.gmmartins@gmail.com');
-INSERT INTO `user` (`user_id`, `user_account_id`, `user_email`) VALUES (2, 2 , 'bruce.wayne@gmail.com');
+INSERT INTO `user` (`user_id`, `user_account_id`, `user_email`, `invites`) VALUES (1, 1 , 'lucas.gmmartins@gmail.com', 0);
+INSERT INTO `user` (`user_id`, `user_account_id`, `user_email`, `invites`) VALUES (2, 2 , 'bruce.wayne@gmail.com', 0);
 
 INSERT INTO `user_roles` (`user_id`, `roles`) VALUES (1, 'ROLE_USER');
 INSERT INTO `user_roles` (`user_id`, `roles`) VALUES (2, 'ROLE_USER');

@@ -5,17 +5,22 @@
       <a ui-sref="community.list">flice</a>
     </div>
 
-    
+    <div class="col-md-10" style="padding: 0px;">
 
-    <div class="col-md-4" style="padding: 0px;">
-      <div class="col-md-6" ng-show="methods.isLogged()">
+      <div class="col-md-3" ng-show="methods.isLogged()">
         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
         <a ui-sref="community.form">Create community</a>
       </div>
-      <div class="col-md-6" ng-show="methods.isLogged()">
+
+      <div class="col-md-3" ng-show="methods.isLogged()">
         <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
         <a ui-sref="community.list">My communities</a>
       </div>
+
+      <div class="col-md-3" ng-show="methods.isLogged()">
+        <span class="glyphicon glyphicon-envelope" ng-click="methods.openInviteModal()" aria-hidden="true" ng-click="methods.openInviteModal()"></span>
+      </div>
+  
     </div>
 
   </div>
