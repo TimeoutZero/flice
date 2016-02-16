@@ -5,7 +5,7 @@
       <a ui-sref="community.list">flice</a>
     </div>
 
-    <div class="col-md-10" style="padding: 0px;">
+    <div class="col-md-10 row" style="padding: 0px;">
 
       <div class="col-md-3" ng-show="methods.isLogged()">
         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
@@ -17,8 +17,14 @@
         <a ui-sref="community.list">My communities</a>
       </div>
 
+      <div class="col-md-3" ng-show="methods.isLogged()" ng-click="methods.openInviteModal()">
+        <span class="glyphicon glyphicon-envelope" ng-click="methods.openInviteModal()" aria-hidden="true"></span>
+        <a ui-sref="">Invites</a>
+      </div>
+
       <div class="col-md-3" ng-show="methods.isLogged()">
-        <span class="glyphicon glyphicon-envelope" ng-click="methods.openInviteModal()" aria-hidden="true" ng-click="methods.openInviteModal()"></span>
+        <span class="glyphicon glyphicon-cog" ng-click="methods.openInviteModal()" aria-hidden="true" ng-click="methods.openInviteModal()"></span>
+        <a ui-sref="community.list">Configurations</a>
       </div>
   
     </div>

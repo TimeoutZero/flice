@@ -7,6 +7,7 @@ angular.module 'web'
     $scope.methods =
 
       send : ()->
+        
         promise = InviteService.send($scope.attrs.email)
 
         promise.success (data) ->

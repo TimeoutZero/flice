@@ -118,6 +118,7 @@ public class UserController {
 			
 			byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/email/invites.html"));
 			String body = new String(bytes);
+			
 			mailSender.send(email, subject, body);
 		
 		} catch (MessagingException e) {

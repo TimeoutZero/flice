@@ -11,16 +11,18 @@
 }
 
 .community-navbar {
+  
   color            : #FFF;
   background-color : #C32C4F;
-  border-color     : #C32C4F;
+  //border-color     : #C32C4F;
   height           : 63px;
   line-height      : 63px;
 
   a {
-    color           : #FFF;
-    text-decoration : none
+    text-decoration : none;
+    color: #FFF;
   }
+
 
 }
 
