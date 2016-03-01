@@ -3,7 +3,6 @@ package com.timeoutzero.flice.core.controller;
 import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUser;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,11 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.timeoutzero.flice.core.domain.Community;
-import com.timeoutzero.flice.core.domain.Topic;
 import com.timeoutzero.flice.core.domain.User;
-import com.timeoutzero.flice.core.domain.UserCommunity;
-import com.timeoutzero.flice.core.domain.UserTopic;
 import com.timeoutzero.flice.core.dto.UserDTO;
 import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.exception.WebException;
@@ -142,42 +137,42 @@ public class UserController {
 		String token = accountOperations.getTokenOperations().create(form.getEmail(), form.getPassword());
 		response.addCookie(authenticatorCookieHandler.retrieveCookie(request, token));
 	}
-	
-	@Secured({ Role.USER, Role.ADMIN })
-	@RequestMapping(value="/topic", method=PUT)
-	public void followTopic(@RequestParam("topicId") Long topicId, @RequestParam("favorite") Boolean favorite){
-		
-		Topic topic = topicRepository.findById(topicId);
-		UserTopic userTopic = userTopicRepository.findByUserAndTopic(getLoggedUser(), topic);
-		
-		if(userTopic == null){
-			userTopic = new UserTopic();
-		}
-		
-		userTopic.setFavorite(favorite);;
-		userTopic.setUser(getLoggedUser());
-		userTopic.setTopic(topic);
-		
-		userTopicRepository.save(userTopic);
-		
-	}
-
-	@Secured({ Role.USER, Role.ADMIN})
-	@RequestMapping(value="/community", method=PUT)
-	public void followCommunity(@RequestParam("communityId") Long communityId, @RequestParam("favorite") Boolean favorite){
-		
-		Community community = communityRepository.findById(communityId);
-		UserCommunity userCommunity = userCommunityRepository.findByUserAndCommunity(getLoggedUser(), community);
-		
-		if(userCommunity == null){
-			userCommunity = new UserCommunity();
-		}
-		
-		userCommunity.setFavorite(favorite);;
-		userCommunity.setUser(getLoggedUser());
-		userCommunity.setCommunity(community);
-		
-		userCommunityRepository.save(userCommunity);
-	}
-	
+//	
+//	@Secured({ Role.USER, Role.ADMIN })
+//	@RequestMapping(value="/topic", method=PUT)
+//	public void followTopic(@RequestParam("topicId") Long topicId, @RequestParam("favorite") Boolean favorite){
+//		
+//		Topic topic = topicRepository.findById(topicId);
+//		UserTopic userTopic = userTopicRepository.findByUserAndTopic(getLoggedUser(), topic);
+//		
+//		if(userTopic == null){
+//			userTopic = new UserTopic();
+//		}
+//		
+//		userTopic.setFavorite(favorite);;
+//		userTopic.setUser(getLoggedUser());
+//		userTopic.setTopic(topic);
+//		
+//		userTopicRepository.save(userTopic);
+//		
+//	}
+//
+//	@Secured({ Role.USER, Role.ADMIN})
+//	@RequestMapping(value="/community", method=PUT)
+//	public void followCommunity(@RequestParam("communityId") Long communityId, @RequestParam("favorite") Boolean favorite){
+//		
+//		Community community = communityRepository.findById(communityId);
+//		UserCommunity userCommunity = userCommunityRepository.findByUserAndCommunity(getLoggedUser(), community);
+//		
+//		if(userCommunity == null){
+//			userCommunity = new UserCommunity();
+//		}
+//		
+//		userCommunity.setFavorite(favorite);;
+//		userCommunity.setUser(getLoggedUser());
+//		userCommunity.setCommunity(community);
+//		
+//		userCommunityRepository.save(userCommunity);
+//	}
+//	
 }
