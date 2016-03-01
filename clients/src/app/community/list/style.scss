@@ -15,14 +15,19 @@
   }
 }
 
+.list-view {
+  margin-right  : 0;
+  padding-right : 0;
+}
+
 .community-item {
 
-  margin-bottom : 5px;
+  margin-bottom : 10px;
   position      : relative;
   float         : left;
   cursor        : pointer;
   min-height    : 1px;
-  min-width     : 250px;
+  min-width     : 195px;
   // margin-top    : 20px;
 }
 
@@ -30,7 +35,7 @@
   min-height : 1px;
   position   : relative;
   height     : 245px;
-  width      : 245px;
+  width      : 185px;
   background-color : #000;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -75,8 +80,8 @@
 
   height      : 35px;
   line-height : 35px;
-  width       : 245px;
-  background-color: #251923;
+  width       : 185px;
+  background-color: rgb(37, 48, 86);
   // border-bottom-left-radius: 5px;
   // border-bottom-right-radius : 5px;
 
@@ -85,6 +90,6 @@
     text-align: center;
     vertical-align: text-top;
     color: #FFF;
-    font-size : 16px;
+    font-size : 12px;
   }
 }

@@ -18,7 +18,7 @@ public class SmtpMailSender {
 	public void send(String to, String subject, String body) throws MessagingException {
 		
 		String url = "http://localhost:3000/#/community/user?email=" + Base64.encodeBase64String(to.getBytes());
-		body.replace("${URL}", url);
+		body = body.replace("${URL}", url);
 		
 		MimeMessage message = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
