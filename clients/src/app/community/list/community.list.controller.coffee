@@ -1,8 +1,6 @@
 angular.module "web"
   .controller "CommunityListController", ($scope, $state, $stateParams, $timeout, CommunityService, hToast) ->
 
-    $scope.isListView = false
-
     $scope.attrs =
       page              : 0
       autocompleteWord  : ''

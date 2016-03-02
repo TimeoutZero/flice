@@ -1,24 +1,12 @@
 
 <div>
-<!--   
-  <div class="search">
-    <button ng-click="methods.changeView()">Change View</button>
-  </div> -->
-<!--   
-  <div ng-show="isListView" class="community-item" ng-repeat="community in communities">
-    <div class="col-md-2" ng-click="methods.goToCommunity({{community.id}})">
-      <div class="col-md-12"><img class="" src="{{community.image}}" alt="..."></div>
-      <div class="col-md-12">{{community.name}}</div>
-    </div>
-  </div> -->
-
   
   <div class="list-search container col-md-12">
     <input type="text" ng-model="attrs.autocompleteWord" ng-change="methods.search()">
   </div>
   
-  <div class="container list-view" infinite-scroll="methods.loadMore()" infinite-scroll-distance="0">
-    <div ng-show="!isListView" class="community-item col-md-1"  ng-repeat="community in attrs.communities">
+  <div class="container" infinite-scroll="methods.loadMore()" infinite-scroll-distance="0">
+    <div class="community-item col-md-1"  ng-repeat="community in attrs.communities">
       <div class="community-thumb">
 
         <div class="community-thumb-image">

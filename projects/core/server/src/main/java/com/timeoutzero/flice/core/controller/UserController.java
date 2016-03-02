@@ -4,18 +4,15 @@ import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedU
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -31,11 +28,7 @@ import com.timeoutzero.flice.core.dto.UserDTO;
 import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.exception.WebException;
 import com.timeoutzero.flice.core.form.UserForm;
-import com.timeoutzero.flice.core.repository.CommunityRepository;
-import com.timeoutzero.flice.core.repository.TopicRepository;
-import com.timeoutzero.flice.core.repository.UserCommunityRepository;
 import com.timeoutzero.flice.core.repository.UserRepository;
-import com.timeoutzero.flice.core.repository.UserTopicRepository;
 import com.timeoutzero.flice.core.service.SmtpMailSender;
 import com.timeoutzero.flice.core.util.AuthenticatorCookieHandler;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
@@ -45,24 +38,12 @@ import com.timeoutzero.flice.rest.operations.AccountOperations;
 @RequestMapping("/user")
 public class UserController {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+//	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
 	private static final int INVITES_LIMIT = 5;
 
 	@Autowired
-	private UserTopicRepository userTopicRepository;
-	
-	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
-	private UserCommunityRepository userCommunityRepository;
-	
-	@Autowired
-	private TopicRepository topicRepository;
-	
-	@Autowired
-	private CommunityRepository communityRepository;
 	
 	@Autowired
 	private AccountOperations accountOperations;
@@ -85,7 +66,29 @@ public class UserController {
 	@RequestMapping(method = POST)
 	public UserDTO create(@RequestBody @Valid UserForm form) {
 		
-		AccountUserDTO userAccountDTO = accountOperations.getUserOperations().create(form.getEmail(), form.getPassword());
+		User user = createUser(form.getEmail(), form.getPassword());
+		 
+		return new UserDTO(user);
+	}
+	
+	@Transactional
+	@ResponseStatus(HttpStatus.CREATED)
+	@RequestMapping(value = "/email" , method = POST)
+	public UserDTO create(@RequestParam("email") String email) {
+		
+		User user = createUser(email,  "password");
+		
+		Map<String, String> params = new HashMap<>();
+		params.put("${password}", RandomStringUtils.randomAlphanumeric(6));
+		
+		mailSender.send(email, "Welcome to exclusive club", "/email/welcome.html", params);
+
+		return new UserDTO(user);
+	}
+
+	private User createUser(String email, String password) {
+		
+		AccountUserDTO userAccountDTO = accountOperations.getUserOperations().create(email, password);
 		
 		User user = new User(); 
 		user.setAccountId(userAccountDTO.getId());
@@ -93,34 +96,24 @@ public class UserController {
 		user.getRoles().add(Role.USER);
 		
 		userRepository.save(user);
-		 
-		return new UserDTO(user);
+		
+		return user;
 	}
 	
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/invite", method = POST)
 	public Map<String, Integer> invite(@RequestParam("email") String email) {
 		
-		String subject = "Welcome to exclusive club";
-		
 		User user = getLoggedUser();
 		
 		if (user.getInvites() >= INVITES_LIMIT) {
 			throw new WebException(HttpStatus.PRECONDITION_FAILED, "The invites exceed limit!");
 		}
-
-		try {
-			
-			byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/email/invites.html"));
-			String body = new String(bytes);
-			
-			mailSender.send(email, subject, body);
 		
-		} catch (MessagingException e) {
-			LOG.error("Problem to invite e-mail: [ {} ] , details : {}", email,  e.getLocalizedMessage());
-		} catch (IOException e) {
-			LOG.error("Problem to find e-mail template details : {}", e.getLocalizedMessage());
-		}
+		Map<String, String> params = new HashMap<>();
+		params.put("${url}", "http://localhost:3000/#/community/user?email=" + Base64.encodeBase64String(email.getBytes()));
+		
+		mailSender.send(email, "Did you hear about Flice?", "/email/invites.html", params);
 		
 		user.setInvites(user.getInvites() + 1);
 		userRepository.save(user);
@@ -131,6 +124,7 @@ public class UserController {
 		return map;
 	}
 
+	
 	@RequestMapping(value = "/token", method = POST)
 	public void createToken(@RequestBody @Valid UserForm form, HttpServletRequest request, HttpServletResponse response) {
 		

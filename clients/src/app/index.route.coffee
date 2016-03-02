@@ -20,7 +20,15 @@ angular.module "web"
           '' :
             templateUrl : 'app/community/login/main.html'
             controller  : 'LoginController'
-      )      
+      )
+      .state('community.settings'
+        url   : '/setting/user/:id'
+        views :
+          ''  :
+            templateUrl : 'app/community/user/main.html'
+            controller  : 'FormController'
+
+      )
       .state('community.form'
         url   : '/form/:id'
         views :
