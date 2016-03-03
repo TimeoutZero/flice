@@ -102,7 +102,7 @@ public class UserController {
 	
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/invite", method = POST)
-	public Map<String, Integer> invite(@RequestParam("email") String email) {
+	public Map<String, Integer> invite(@RequestParam("email") String email, HttpServletRequest req) {
 		
 		User user = getLoggedUser();
 		
@@ -111,7 +111,7 @@ public class UserController {
 		}
 		
 		Map<String, String> params = new HashMap<>();
-		params.put("${url}", "http://localhost:3000/#/community/user?email=" + Base64.encodeBase64String(email.getBytes()));
+		params.put("${url}", req.getRequestURL() + "/#/community/user?email=" + Base64.encodeBase64String(email.getBytes()));
 		
 		mailSender.send(email, "Did you hear about Flice?", "/email/invites.html", params);
 		
