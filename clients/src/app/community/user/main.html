@@ -3,22 +3,48 @@
   <h2>Settings</h2>
   <hr>
   
-  <form novalidate>
+  <form class="form-horizontal" name="settingsForm" novalidate>
     <div class="col-md-6">
+      
       <div class="form-group">
         <label for="email">Email: </label>
-        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" disabled>
+        <input type="email" class="form-control" ng-model="settings.email" placeholder="Email" disabled>
       </div>
-      <div class="form-group">
+      
+      <div class="form-group" ng-class="{ 'has-error' : settingsForm.username.$invalid &&!settingsForm.username.$pristine }">
+
         <label for="username">Username: </label>
-        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+        <input type="text" name="username" class="form-control" ng-model="attrs.settings.username" placeholder="Username" required>
+
+        <p ng-show="settingsForms.username.$invalid && !settingsForm.username.$pristine">Enter a valid username.</p>
       </div>
-      <div class="form-group">
-        <label for="username">Description: </label>
-        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+      
+      <div class="form-group" ng-class="{ 'has-error' : settingsForm.description.$invalid &&!settingsForm.description.$pristine }">
+
+        <label for="description">Description: </label>
+        <textarea name="description" class="form-control" cols="30" rows="5" ng-model="attrs.settings.description" placeholder="Description.."></textarea>
+
+        <p ng-show="settingsForms.description.$invalid && !settingsForm.description.$pristine">Enter a valid username.</p>
       </div>
     </div>
   </form>
 
-  <div class="col-md-6"></div>
+  <div class="col-md-6">
+    
+    <div class="class-md-12">
+      <div class="form-group">
+        <input type="file" img-cropper-fileread image="cropper.source.cover" /> 
+        <canvas width="540" height="260" id="canvas" image-cropper image="cropper.source.cover" cropped-image="cropper.cropped.cover" crop-width="100" crop-height="150" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+      </div>
+    </div>
+
+   <!--  <div class="class-md-12">
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Save</button>
+    </div> -->
+            
+  </div>
+  <div class="col-md-12">
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 10px" ng-click="methods.update()">Save</button>
+
+  </div>
 </div>

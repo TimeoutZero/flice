@@ -26,7 +26,7 @@ angular.module "web"
         views :
           ''  :
             templateUrl : 'app/community/user/main.html'
-            controller  : 'FormController'
+            controller  : 'SettingController'
 
       )
       .state('community.form'

@@ -1,105 +1,103 @@
 <div class="container" >
   <form class="form-horizontal" name="communityCreateForm" novalidate>
 
-    <div class="">
+  <div class="col-md-12">
 
-      <div class="col-md-12">
+      <div class="form-group"  ng-class="{ 'has-error' : communityCreateForm.name.$invalid &&!communityCreateForm.name.$pristine }"> 
+        <label class="control-label col-md-2">Name:</label>
 
-        <div class="form-group"  ng-class="{ 'has-error' : communityCreateForm.name.$invalid &&!communityCreateForm.name.$pristine }"> 
-          <label class="control-label col-md-2">Name:</label>
+        <div class="col-md-10">
+          <input type="text" name="name" class="form-control" ng-model="community.name" placeholder="Community name.." required>
 
-          <div class="col-md-10">
-            <input type="text" name="name" class="form-control" ng-model="community.name" placeholder="Community name.." required>
-
-            <p ng-show="communityCreateForm.name.$invalid && !communityCreateForm.name.$pristine">Enter a valid name.</p>
-          </div>
-
+          <p ng-show="communityCreateForm.name.$invalid && !communityCreateForm.name.$pristine">Enter a valid name.</p>
         </div>
 
-        <div class="form-group">
-          <label class="control-label col-md-2">Description:</label>
-          <div class="col-md-10">
-            <textarea name="description" class="form-control" cols="30" rows="5" ng-model="community.description" placeholder="Description.."></textarea>
-          </div>  
-        </div>
-
-        <div class="form-group">
-          <label class="control-label col-md-2">Tags:</label>
-          <div class="col-md-10">
-            
-            <ui-select multiple ng-model="community.tags">
-              <ui-select-match placeholder="Select or search a person in the list...">{{$item.name}}</ui-select-match>
-
-              <ui-select-choices repeat="tag in (attrs.tags | filter: $select.search) track by tag.name" refresh="methods.refreshTags($select.search)" refresh-delay="1000">
-                  <span ng-bind="tag.name"></span>
-              </ui-select-choices>
-            </ui-select>
-
-          </div>
-        </div>
-
-        <div class="form-group">
-
-          <label class="control-label col-md-2">Privacy:</label>
-          <div class="col-md-2">
-
-            <div class="radio">
-              <label>
-                <input type="radio" name="Privacy" value="PUBLIC" ng-model="community.privacity" ng-checked="community.privacy == 'PUBLIC'">Public
-              </label>
-            </div>
-
-            <div class="radio">
-              <label>
-                <input type="radio" name="Privacy" value="PRIVATE" ng-model="community.privacity" ng-checked="community.privacy == 'PRIVATE'">Private
-              </label>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="form-group">
-          
-       
-        <h5>Thumb</h5>
-        <hr>
-
-        <div class="form-group col-md-12">
-          <div class="col-md-6">
-
-            <input type="file" img-cropper-fileread image="cropper.source.image" /> 
-            <canvas width="500" height="300" id="canvas" image-cropper image="cropper.source.image" cropped-image="cropper.cropped.image" crop-width="300" crop-height="300" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
-
-          </div>
-          <div class="col-md-6" align="center">
-            <div>Cropped Image (Left: {{bounds.left}} Right: {{bounds.right}} Top: {{bounds.top}} Bottom: {{bounds.bottom}})</div>
-            <div ng-show="cropper.cropped.image!=null"><img ng-src="{{cropper.cropped.image}}" /></div>
-          </div>
-        </div>
-
-        <h5>Cover</h5>
-        <hr>
-        
-        <div class="form-group col-md-12">
-          <div class="col-md-6">
-
-            <input type="file" img-cropper-fileread image="cropper.source.cover" /> 
-            <canvas width="500" height="300" id="canvas" image-cropper image="cropper.source.cover" cropped-image="cropper.cropped.cover" crop-width="1400" crop-height="250" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
-            
-          </div> 
-          <div class="col-md-6" align="center">
-           <!--  <div>Cropped Image (Left: {{bounds.left}} Right: {{bounds.right}} Top: {{bounds.top}} Bottom: {{bounds.bottom}})</div>
-            <div ng-show="cropper.cropped.cover!=null"><img ng-src="{{cropper.cropped.cover}}" /></div> -->
-          </div>
-        </div>
-       
       </div>
 
       <div class="form-group">
-        <div class="col-md-offset-11 col-md-1">
-          <button type="button" class="btn btn-primary" ng-click="methods.create()" ng-disabled="communityCreateForm.$invalid">Submit</button>
-        </div>
+        <label class="control-label col-md-2">Description:</label>
+        <div class="col-md-10">
+          <textarea name="description" class="form-control" cols="30" rows="5" ng-model="community.description" placeholder="Description.."></textarea>
+        </div>  
       </div>
- </div>
-    </form>
+
+      <div class="form-group">
+        <label class="control-label col-md-2">Tags:</label>
+        <div class="col-md-10">
+
+          <ui-select multiple ng-model="community.tags">
+          <ui-select-match placeholder="Select or search a person in the list...">{{$item.name}}</ui-select-match>
+
+          <ui-select-choices repeat="tag in (attrs.tags | filter: $select.search) track by tag.name" refresh="methods.refreshTags($select.search)" refresh-delay="1000">
+          <span ng-bind="tag.name"></span>
+        </ui-select-choices>
+      </ui-select>
+
+    </div>
   </div>
+
+  <div class="form-group">
+
+    <label class="control-label col-md-2">Privacy:</label>
+    <div class="col-md-2">
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="Privacy" value="PUBLIC" ng-model="community.privacity" ng-checked="community.privacy == 'PUBLIC'">Public
+        </label>
+      </div>
+
+      <div class="radio">
+        <label>
+          <input type="radio" name="Privacy" value="PRIVATE" ng-model="community.privacity" ng-checked="community.privacy == 'PRIVATE'">Private
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group">
+
+
+    <h5>Thumb</h5>
+    <hr>
+
+    <div class="form-group col-md-12">
+      <div class="col-md-6">
+
+        <input type="file" img-cropper-fileread image="cropper.source.image" /> 
+        <canvas width="500" height="300" id="canvas" image-cropper image="cropper.source.image" cropped-image="cropper.cropped.image" crop-width="300" crop-height="300" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+
+      </div>
+      <div class="col-md-6" align="center">
+        <div>Cropped Image (Left: {{bounds.left}} Right: {{bounds.right}} Top: {{bounds.top}} Bottom: {{bounds.bottom}})</div>
+        <div ng-show="cropper.cropped.image!=null"><img ng-src="{{cropper.cropped.image}}" /></div>
+      </div>
+    </div>
+
+    <h5>Cover</h5>
+    <hr>
+
+    <div class="form-group col-md-12">
+      <div class="col-md-6">
+
+        <input type="file" img-cropper-fileread image="cropper.source.cover" /> 
+        <canvas width="500" height="300" id="canvas" image-cropper image="cropper.source.cover" cropped-image="cropper.cropped.cover" crop-width="1400" crop-height="250" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+
+      </div> 
+      <div class="col-md-6" align="center">
+           <!--  <div>Cropped Image (Left: {{bounds.left}} Right: {{bounds.right}} Top: {{bounds.top}} Bottom: {{bounds.bottom}})</div>
+           <div ng-show="cropper.cropped.cover!=null"><img ng-src="{{cropper.cropped.cover}}" /></div> -->
+         </div>
+       </div>
+       
+     </div>
+
+     <div class="form-group">
+      <div class="col-md-offset-11 col-md-1">
+        <button type="button" class="btn btn-primary" ng-click="methods.create()" ng-disabled="communityCreateForm.$invalid">Submit</button>
+      </div>
+    </div>
+
+  </form>
+</div>
