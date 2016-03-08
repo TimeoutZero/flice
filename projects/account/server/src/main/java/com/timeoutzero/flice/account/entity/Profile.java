@@ -10,5 +10,7 @@ import lombok.Setter;
 public class Profile extends AbstractEntity {
 
 	private String name;
+	private String username;
 	private String photo;
+	
 }

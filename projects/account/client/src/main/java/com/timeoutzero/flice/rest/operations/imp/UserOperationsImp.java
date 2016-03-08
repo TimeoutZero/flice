@@ -1,5 +1,6 @@
 package com.timeoutzero.flice.rest.operations.imp;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,9 @@ public class UserOperationsImp implements UserOperations {
 	private static final String PARAMETER_IDS 		= "ids";
 	private static final String PARAMETER_EMAIL 	= "email";
 	private static final String PARAMETER_PASSWORD  = "password";
+	private static final String PARAMETER_USERNAME	= "username";
+	private static final String PARAMETER_NAME		= "name";
+	private static final String PARAMETER_PHOTO		= "photo";
 	
 	private FliceTemplate template;
 
@@ -36,7 +40,7 @@ public class UserOperationsImp implements UserOperations {
 	
 	@Override
 	public AccountUserDTO get(Long id) {
-		return template.get(ENDPOINT + "/" + id , AccountUserDTO.class);
+		return template.get(ENDPOINT + File.separator + id , AccountUserDTO.class);
 	}
 
 	@Override
@@ -65,6 +69,19 @@ public class UserOperationsImp implements UserOperations {
 		  
 		return template.post(ENDPOINT, parameters, AccountUserDTO.class);
 	}
+
+	@Override
+	public AccountUserDTO update(Long accountId, String name, String username, String photo) {
+		
+		Map<String, String> parameters = new HashMap<>();
+		parameters.put(PARAMETER_NAME	 	, name);
+		parameters.put(PARAMETER_USERNAME	, username);
+		parameters.put(PARAMETER_PHOTO		, photo);
+		
+		return template.put(ENDPOINT + File.separator + accountId , parameters, AccountUserDTO.class);
+	}
+	
+	
 
 
 

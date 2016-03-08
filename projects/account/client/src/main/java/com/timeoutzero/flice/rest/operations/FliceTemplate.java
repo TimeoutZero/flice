@@ -35,4 +35,9 @@ public class FliceTemplate extends AbstractFliceTemplate {
 	public <T> T post(String endpoint, Object content, Class<?> clazz)  {
 		return (T) template.postForEntity(this.getUrl(endpoint), this.getHttpEntity(content), clazz).getBody();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T put(String endpoint, Object content, Class<?> clazz)  {
+		return (T) template.exchange(this.getUrl(endpoint), HttpMethod.PUT, this.getHttpEntity(content), clazz);
+	}
 }

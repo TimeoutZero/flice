@@ -3,6 +3,7 @@ package com.timeoutzero.flice.core.controller;
 import static com.timeoutzero.flice.core.security.CoreSecurityContext.getLoggedUser;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +31,7 @@ import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.exception.WebException;
 import com.timeoutzero.flice.core.form.UserForm;
 import com.timeoutzero.flice.core.repository.UserRepository;
+import com.timeoutzero.flice.core.service.ImageService;
 import com.timeoutzero.flice.core.service.SmtpMailSender;
 import com.timeoutzero.flice.core.util.AuthenticatorCookieHandler;
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
@@ -53,6 +56,9 @@ public class UserController {
 	
 	@Autowired
 	private SmtpMailSender mailSender;
+	
+	@Autowired
+	private ImageService imageService;
 	
 	@Transactional(readOnly = true)
 	@Secured({ Role.USER, Role.ADMIN })
@@ -83,6 +89,25 @@ public class UserController {
 		
 		mailSender.send(email, "Welcome to exclusive club", "/email/welcome.html", params);
 
+		return new UserDTO(user);
+	}
+	
+	@Transactional
+	@Secured({ Role.USER, Role.ADMIN })
+	@RequestMapping(value = "/{id}", method = PUT)
+	public UserDTO update(
+			@PathVariable("id") Long id,
+			@RequestParam("name") String name,
+			@RequestParam("username") String username,
+			@RequestParam("photo") String photo) {
+		
+		User user = userRepository.findOne(id);
+		
+		AccountUserDTO accountUpdated = accountOperations
+				.getUserOperations()
+				.update(user.getAccountId(), name, username, imageService.write(user, photo));
+		user.setProfile(accountUpdated.getProfile());
+		
 		return new UserDTO(user);
 	}
 
@@ -131,42 +156,5 @@ public class UserController {
 		String token = accountOperations.getTokenOperations().create(form.getEmail(), form.getPassword());
 		response.addCookie(authenticatorCookieHandler.retrieveCookie(request, token));
 	}
-//	
-//	@Secured({ Role.USER, Role.ADMIN })
-//	@RequestMapping(value="/topic", method=PUT)
-//	public void followTopic(@RequestParam("topicId") Long topicId, @RequestParam("favorite") Boolean favorite){
-//		
-//		Topic topic = topicRepository.findById(topicId);
-//		UserTopic userTopic = userTopicRepository.findByUserAndTopic(getLoggedUser(), topic);
-//		
-//		if(userTopic == null){
-//			userTopic = new UserTopic();
-//		}
-//		
-//		userTopic.setFavorite(favorite);;
-//		userTopic.setUser(getLoggedUser());
-//		userTopic.setTopic(topic);
-//		
-//		userTopicRepository.save(userTopic);
-//		
-//	}
-//
-//	@Secured({ Role.USER, Role.ADMIN})
-//	@RequestMapping(value="/community", method=PUT)
-//	public void followCommunity(@RequestParam("communityId") Long communityId, @RequestParam("favorite") Boolean favorite){
-//		
-//		Community community = communityRepository.findById(communityId);
-//		UserCommunity userCommunity = userCommunityRepository.findByUserAndCommunity(getLoggedUser(), community);
-//		
-//		if(userCommunity == null){
-//			userCommunity = new UserCommunity();
-//		}
-//		
-//		userCommunity.setFavorite(favorite);;
-//		userCommunity.setUser(getLoggedUser());
-//		userCommunity.setCommunity(community);
-//		
-//		userCommunityRepository.save(userCommunity);
-//	}
-//	
+
 }

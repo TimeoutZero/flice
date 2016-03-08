@@ -129,8 +129,8 @@ public class CommunityController {
 		community = coreService.getCommunityRepository().save(community);
 		
 		community.setTags(getTags(form));
-		community.setImage(imageService.write(community, form.getImage(), TYPE.THUMB));
-		community.setCover(imageService.write(community, form.getCover(), TYPE.COVER));
+		community.setImage(imageService.write(community, TYPE.THUMB, form.getImage()));
+		community.setCover(imageService.write(community, TYPE.COVER, form.getCover()));
 
 		loggedUser.getCommunitys().add(community);
 		coreService.getUserRepository().save(loggedUser);
@@ -158,6 +158,7 @@ public class CommunityController {
 		}).collect(Collectors.toSet());
 	}
 
+	@Transactional
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{id}", method = PUT)
 	public CommunityDTO update(@PathVariable("id") Long id, @Valid @RequestBody CommunityForm form) {
@@ -168,11 +169,11 @@ public class CommunityController {
 		community.setPrivacy(form.getPrivacy());
 		
 		if (Base64.isBase64(form.getImage())) {
-			community.setImage(imageService.write(community, form.getImage(), TYPE.THUMB));
+			community.setImage(imageService.write(community, TYPE.THUMB, form.getImage()));
 		}
 		
 		if (Base64.isBase64(form.getCover())) {
-			community.setCover(imageService.write(community, form.getCover(), TYPE.COVER));
+			community.setCover(imageService.write(community, TYPE.COVER, form.getCover()));
 		}
 		
 		community.setTags(getTags(form));

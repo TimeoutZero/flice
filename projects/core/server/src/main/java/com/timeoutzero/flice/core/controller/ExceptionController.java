@@ -54,6 +54,7 @@ public class ExceptionController {
 	public ExceptionDTO resolveRuntimeException(RuntimeException exception, HttpServletResponse response) {
 		 
 		LOG.error(exception.getLocalizedMessage());
+		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return new ExceptionDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getLocalizedMessage());
 	}
 	

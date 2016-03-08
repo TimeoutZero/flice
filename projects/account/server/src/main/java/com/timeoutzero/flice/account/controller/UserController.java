@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timeoutzero.flice.account.dto.UserDTO;
+import com.timeoutzero.flice.account.entity.Profile;
 import com.timeoutzero.flice.account.entity.User;
 import com.timeoutzero.flice.account.enums.SocialMedia;
 import com.timeoutzero.flice.account.exception.AccountException;
@@ -93,6 +96,38 @@ public class UserController {
 		
 		return new UserDTO(user);
 	}
+	
+	@ResponseStatus(HttpStatus.CREATED)
+	@RequestMapping(value = "/token", method = POST)
+	public UserDTO create(@RequestParam String accessToken, @RequestParam SocialMedia media) {
+		
+		User user = userSocialMediaService.create(accessToken, media);
+		user = repository.getUserRepository().save(user);
+		
+		return new UserDTO(user);
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/{id}", method = PUT)
+	public UserDTO update(
+			@PathVariable("id") Long id,
+			@RequestParam("name") String name,
+			@RequestParam("username") String username,
+			@RequestParam("photo") String photo
+			) {
+		
+		User user = repository.getUserRepository().findOne(id);
+		
+		Profile profile = user.getProfile();
+		profile.setName(name);
+		profile.setUsername(username);
+		profile.setPhoto(photo);
+		
+		user.setProfile(profile);
+		repository.getUserRepository().save(user);
+		
+		return new UserDTO(user);
+	}
 
 	private void isValidForm(UserForm form) {
 
@@ -103,15 +138,5 @@ public class UserController {
 		if (isNotBlank(form.getEmail()) && repository.getUserRepository().existByEmail(form.getEmail())) {
 			throw new AccountException(HttpStatus.PRECONDITION_FAILED, EXCEPTION_EMAIL_ALREADY_EXIST);
 		}
-	}
-
-	@ResponseStatus(HttpStatus.CREATED)
-	@RequestMapping(value = "/token", method = POST)
-	public UserDTO create(@RequestParam String accessToken, @RequestParam SocialMedia media) {
-
-		User user = userSocialMediaService.create(accessToken, media);
-		user = repository.getUserRepository().save(user);
-
-		return new UserDTO(user);
 	}
 }
