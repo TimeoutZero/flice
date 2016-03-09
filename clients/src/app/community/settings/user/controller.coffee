@@ -1,9 +1,9 @@
-angular.module 'web'
-  .controller 'SettingController', ($scope) ->
-
+angular.module "web"
+  .controller "UserController", ($scope, UserService) ->
 
     $scope.attrs =
-      timeout : null
+      settings  : {}
+      timeout   : null
 
     $scope.methods =
 
@@ -25,6 +25,13 @@ angular.module 'web'
         if $scope.settingsForm.$valid
           console.log('ae');
 
+    do ->
 
-
+      promise = UserService.get()
+      promise.success (data) ->
+        $scope.attrs.settings.email       = data.email
+        $scope.attrs.settings.name        = data.profile.name
+        $scope.attrs.settings.username    = data.profile.username
+        $scope.attrs.settings.description = data.profile.description
+        $scope.attrs.settings.photo       = data.profile.photo
 

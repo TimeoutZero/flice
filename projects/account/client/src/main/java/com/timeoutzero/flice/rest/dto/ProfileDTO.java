@@ -11,6 +11,7 @@ public class ProfileDTO {
 
 	private String name;
 	private String username;
+	private String description;
 	private String photo;
 
 }

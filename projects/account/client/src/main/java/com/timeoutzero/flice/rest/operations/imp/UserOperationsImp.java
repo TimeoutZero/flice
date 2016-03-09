@@ -18,13 +18,14 @@ public class UserOperationsImp implements UserOperations {
 	
 	private static final String ENDPOINT = "/user";
 	
-	private static final String PARAMETER_TOKEN 	= "token";
-	private static final String PARAMETER_IDS 		= "ids";
-	private static final String PARAMETER_EMAIL 	= "email";
-	private static final String PARAMETER_PASSWORD  = "password";
-	private static final String PARAMETER_USERNAME	= "username";
-	private static final String PARAMETER_NAME		= "name";
-	private static final String PARAMETER_PHOTO		= "photo";
+	private static final String PARAMETER_TOKEN 	  = "token";
+	private static final String PARAMETER_IDS 		  = "ids";
+	private static final String PARAMETER_EMAIL 	  = "email";
+	private static final String PARAMETER_PASSWORD    = "password";
+	private static final String PARAMETER_USERNAME	  = "username";
+	private static final String PARAMETER_NAME	      = "name";
+	private static final String PARAMETER_PHOTO		  = "photo";
+	private static final String PARAMETER_DESCRIPTION = "description";
 	
 	private FliceTemplate template;
 
@@ -71,12 +72,13 @@ public class UserOperationsImp implements UserOperations {
 	}
 
 	@Override
-	public AccountUserDTO update(Long accountId, String name, String username, String photo) {
+	public AccountUserDTO update(Long accountId, String name, String username, String description, String photo) {
 		
 		Map<String, String> parameters = new HashMap<>();
-		parameters.put(PARAMETER_NAME	 	, name);
-		parameters.put(PARAMETER_USERNAME	, username);
-		parameters.put(PARAMETER_PHOTO		, photo);
+		parameters.put(PARAMETER_NAME	 		, name);
+		parameters.put(PARAMETER_USERNAME		, username);
+		parameters.put(PARAMETER_DESCRIPTION	, description);
+		parameters.put(PARAMETER_PHOTO			, photo);
 		
 		return template.put(ENDPOINT + File.separator + accountId , parameters, AccountUserDTO.class);
 	}

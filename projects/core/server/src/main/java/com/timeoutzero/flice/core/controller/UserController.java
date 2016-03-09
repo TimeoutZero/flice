@@ -64,7 +64,11 @@ public class UserController {
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/me", method = GET)
 	public UserDTO me() {
-		return new UserDTO(getLoggedUser());
+		
+		User loggedUser = getLoggedUser();
+		loggedUser.setProfile(accountOperations.getUserOperations().get(loggedUser.getAccountId()).getProfile());
+		
+		return new UserDTO(loggedUser);
 	}
 	
 	@Transactional
@@ -97,15 +101,17 @@ public class UserController {
 	@RequestMapping(value = "/{id}", method = PUT)
 	public UserDTO update(
 			@PathVariable("id") Long id,
-			@RequestParam("name") String name,
-			@RequestParam("username") String username,
-			@RequestParam("photo") String photo) {
+			@RequestParam("name") 		 String name,
+			@RequestParam("username") 	 String username,
+			@RequestParam("description") String description,
+			@RequestParam("photo") 		 String photo) {
 		
 		User user = userRepository.findOne(id);
 		
 		AccountUserDTO accountUpdated = accountOperations
 				.getUserOperations()
-				.update(user.getAccountId(), name, username, imageService.write(user, photo));
+				.update(user.getAccountId(), name, username, description, imageService.write(user, photo));
+		
 		user.setProfile(accountUpdated.getProfile());
 		
 		return new UserDTO(user);

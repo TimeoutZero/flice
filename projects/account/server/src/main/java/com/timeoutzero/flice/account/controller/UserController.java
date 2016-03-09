@@ -111,16 +111,17 @@ public class UserController {
 	@RequestMapping(value = "/{id}", method = PUT)
 	public UserDTO update(
 			@PathVariable("id") Long id,
-			@RequestParam("name") String name,
-			@RequestParam("username") String username,
-			@RequestParam("photo") String photo
-			) {
+			@RequestParam("name") 		 String name,
+			@RequestParam("username") 	 String username,
+			@RequestParam("description") String description,
+			@RequestParam("photo") 		 String photo) {
 		
 		User user = repository.getUserRepository().findOne(id);
 		
 		Profile profile = user.getProfile();
 		profile.setName(name);
 		profile.setUsername(username);
+		profile.setDescription(description);
 		profile.setPhoto(photo);
 		
 		user.setProfile(profile);

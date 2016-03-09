@@ -22,11 +22,11 @@ angular.module "web"
             controller  : 'LoginController'
       )
       .state('community.settings'
-        url   : '/user/:id/settings'
+        url   : '/user/settings'
         views :
           ''  :
             templateUrl : 'app/community/settings/user/main.html'
-            controller  : 'SettingController'
+            controller  : 'UserController'
 
       )
       .state('community.form'

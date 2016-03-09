@@ -90,9 +90,9 @@ public class UserControllerTest extends ApplicationTest {
 		when(mockAccountOperations.getUserOperations()).thenReturn(userOperationsMock);
 		
 		AccountUserDTO value = new AccountUserDTO();
-		value.setProfile(new ProfileDTO("Lucas Martins", "lucas.gmmartins", RandomStringUtils.randomAlphanumeric(6)));
+		value.setProfile(new ProfileDTO("Lucas Martins", "lucas.gmmartins", "description", RandomStringUtils.randomAlphanumeric(6)));
 		
-		when(userOperationsMock.update(anyLong(), anyString(), anyString(), anyString())).thenReturn(value);
+		when(userOperationsMock.update(anyLong(), anyString(), anyString(), anyString(), anyString())).thenReturn(value);
 		
 		User lucas = user("lucas.martins").build();
 		

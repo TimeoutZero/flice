@@ -13,11 +13,13 @@ public class UserDTO {
 
 	private Long id;
 	private Long accountId;
+	private String email;
 	private ProfileDTO profile;
 	
 	public UserDTO(User user) {
 		this.id 	  	= user.getId();
 		this.accountId	= user.getAccountId();
+		this.email		= user.getEmail();
 		this.profile  	= user.getProfile();
 	}
 }

@@ -8,9 +8,18 @@
       
       <div class="form-group">
         <label for="email">Email: </label>
-        <input type="email" class="form-control" ng-model="settings.email" placeholder="Email" disabled>
+        <input type="email" class="form-control" ng-model="attrs.settings.email" placeholder="Email" disabled>
       </div>
       
+      <div class="form-group" ng-class="{ 'has-error' : settingsForm.name.$invalid &&!settingsForm.name.$pristine }">
+
+        <label for="name">Name: </label>
+        <input type="text" name="name" class="form-control" ng-model="attrs.settings.name" placeholder="Name" required>
+
+        <p ng-show="settingsForm.name.$invalid && !settingsForm.name.$pristine">Enter a valid name.
+        </p>
+      </div>
+
       <div class="form-group" ng-class="{ 'has-error' : settingsForm.username.$invalid &&!settingsForm.username.$pristine }">
 
         <label for="username">Username: </label>
