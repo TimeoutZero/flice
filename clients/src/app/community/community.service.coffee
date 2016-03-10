@@ -14,7 +14,6 @@ angular.module 'web'
           'word' : attr
 
     list : (page) ->
-      console.log page
       $http
         url     : CORE_API + '/community'
         method  : 'GET'

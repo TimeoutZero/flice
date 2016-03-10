@@ -96,7 +96,6 @@ public class UserController {
 		return new UserDTO(user);
 	}
 	
-	@Transactional
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{id}", method = PUT)
 	public UserDTO update(
@@ -108,9 +107,11 @@ public class UserController {
 		
 		User user = userRepository.findOne(id);
 		
+		photo = Base64.isBase64(photo) ? imageService.write(user, photo) : user.getProfile().getPhoto();
+		
 		AccountUserDTO accountUpdated = accountOperations
 				.getUserOperations()
-				.update(user.getAccountId(), name, username, description, imageService.write(user, photo));
+				.update(user.getAccountId(), name, username, description, photo);
 		
 		user.setProfile(accountUpdated.getProfile());
 		

@@ -23,12 +23,19 @@ angular.module "web"
 
       update : () ->
         if $scope.settingsForm.$valid
-          console.log('ae');
+          console.log $scope.attrs.settings
+          promise = UserService.update($scope.attrs.settings)
+          promise.success (data) ->
+            $scope.attrs.settings.name        = data.profile.name
+            $scope.attrs.settings.username    = data.profile.username
+            $scope.attrs.settings.description = data.profile.description
+            $scope.attrs.settings.photo       = data.profile.photo
 
     do ->
 
       promise = UserService.get()
       promise.success (data) ->
+        $scope.attrs.settings.id          = data.id
         $scope.attrs.settings.email       = data.email
         $scope.attrs.settings.name        = data.profile.name
         $scope.attrs.settings.username    = data.profile.username
