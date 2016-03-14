@@ -30,6 +30,7 @@ import com.timeoutzero.flice.core.dto.UserDTO;
 import com.timeoutzero.flice.core.enums.Role;
 import com.timeoutzero.flice.core.exception.WebException;
 import com.timeoutzero.flice.core.form.UserForm;
+import com.timeoutzero.flice.core.form.UserUpdateForm;
 import com.timeoutzero.flice.core.repository.UserRepository;
 import com.timeoutzero.flice.core.service.ImageService;
 import com.timeoutzero.flice.core.service.SmtpMailSender;
@@ -98,20 +99,15 @@ public class UserController {
 	
 	@Secured({ Role.USER, Role.ADMIN })
 	@RequestMapping(value = "/{id}", method = PUT)
-	public UserDTO update(
-			@PathVariable("id") Long id,
-			@RequestParam("name") 		 String name,
-			@RequestParam("username") 	 String username,
-			@RequestParam("description") String description,
-			@RequestParam("photo") 		 String photo) {
-		
+	public UserDTO update(@PathVariable("id") Long id, @Valid @RequestBody UserUpdateForm form) {
+
 		User user = userRepository.findOne(id);
 		
-		photo = Base64.isBase64(photo) ? imageService.write(user, photo) : user.getProfile().getPhoto();
+		String photo =  imageService.isBase64(form.getPhoto()) ? imageService.write(user, form.getPhoto()) : user.getProfile().getPhoto();
 		
 		AccountUserDTO accountUpdated = accountOperations
 				.getUserOperations()
-				.update(user.getAccountId(), name, username, description, photo);
+				.update(user.getAccountId(), form.getName(), form.getUsername(), form.getDescription(), photo);
 		
 		user.setProfile(accountUpdated.getProfile());
 		

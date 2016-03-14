@@ -28,6 +28,7 @@ import com.timeoutzero.flice.account.entity.User;
 import com.timeoutzero.flice.account.enums.SocialMedia;
 import com.timeoutzero.flice.account.exception.AccountException;
 import com.timeoutzero.flice.account.form.UserForm;
+import com.timeoutzero.flice.account.form.UserUpdateForm;
 import com.timeoutzero.flice.account.repository.AccountRepository;
 import com.timeoutzero.flice.account.security.JwtAccount;
 import com.timeoutzero.flice.account.service.UserSocialMediaService;
@@ -84,7 +85,7 @@ public class UserController {
 
 	@RequestMapping(method = POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserDTO create(@RequestBody @Valid UserForm form) {
+	public UserDTO create(@Valid @RequestBody UserForm form) {
 		
 		isValidForm(form);
 
@@ -109,20 +110,15 @@ public class UserController {
 	
 	@Transactional
 	@RequestMapping(value = "/{id}", method = PUT)
-	public UserDTO update(
-			@PathVariable("id") Long id,
-			@RequestParam("name") 		 String name,
-			@RequestParam("username") 	 String username,
-			@RequestParam("description") String description,
-			@RequestParam("photo") 		 String photo) {
+	public UserDTO update(@PathVariable("id") Long id, @Valid @RequestBody UserUpdateForm form) {
 		
 		User user = repository.getUserRepository().findOne(id);
 		
 		Profile profile = user.getProfile();
-		profile.setName(name);
-		profile.setUsername(username);
-		profile.setDescription(description);
-		profile.setPhoto(photo);
+		profile.setName(form.getName());
+		profile.setUsername(form.getUsername());
+		profile.setDescription(form.getDescription());
+		profile.setPhoto(form.getPhoto());
 		
 		user.setProfile(profile);
 		repository.getUserRepository().save(user);

@@ -2,6 +2,16 @@
   height: 500px;
 }
 
+.settings-text-align-center {
+  text-align: center;
+
+  input {
+    margin: 0 auto;
+    text-align: left;
+  }
+
+}
+
 .setting-options {
   
   background-color : #3F4765;
@@ -38,5 +48,7 @@
 
   .settings-photo {
     text-align : center; 
+    opacity: 0.7;
+
   }
 }

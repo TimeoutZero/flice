@@ -41,7 +41,7 @@ public class ImageService {
 	public String write(User user, String base64) {
 		
 		File file = createTemporaryFile(base64);  
-		String key = "flice/account/photos/" + user.getAccountId() + FilenameUtils.getExtension(file.getName());
+		String key = "flice/account/photos/" + user.getAccountId() + "." +  FilenameUtils.getExtension(file.getName());
 
 		return saveFileAtS3(file, BUCKET_FLICE, key);
 	}
@@ -65,6 +65,10 @@ public class ImageService {
 		}
 		
 		return file;
+	}
+	
+	public boolean isBase64(String base64) {
+		return base64.contains(",") ? Base64.isBase64( base64.split(",")[1]) : false;
 	}
 
 	private String saveFileAtS3(File file, String bucket, String key) {

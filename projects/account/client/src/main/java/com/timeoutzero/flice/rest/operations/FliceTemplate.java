@@ -38,6 +38,6 @@ public class FliceTemplate extends AbstractFliceTemplate {
 	
 	@SuppressWarnings("unchecked")
 	public <T> T put(String endpoint, Object content, Class<?> clazz)  {
-		return (T) template.exchange(this.getUrl(endpoint), HttpMethod.PUT, this.getHttpEntity(content), clazz);
+		return (T) template.exchange(this.getUrl(endpoint), HttpMethod.PUT, this.getHttpEntity(content), clazz).getBody();
 	}
 }

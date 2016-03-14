@@ -7,10 +7,11 @@ angular.module 'web'
         method  : 'GET'
 
     update : (form) -> 
+      console.log form
       $http
         url     : CORE_API + '/user/' + form.id
         method  : 'PUT'
-        params    :
+        data    :
           'name'        : form.name,
           'username'    : form.username
           'description' : form.description

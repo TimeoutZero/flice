@@ -24,13 +24,23 @@
 
       <div class="col-md-12">
         
-        <div ng-show="!attrs.settings.photo && !attrs.updatePhoto" class="form-group">
-          <input type="file" img-cropper-fileread image="attrs.cropper.source.cover" /> 
-          <canvas width="450" height="330" id="canvas" image-cropper image="attrs.cropper.source.cover" cropped-image="attrs.cropper.cropped.cover" crop-width="100" crop-height="150" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+        <div ng-show="attrs.updatePhoto" class="settings-text-align-center">
+          <canvas width="450" height="330" id="canvas" image-cropper image="attrs.cropper.source.image" cropped-image="attrs.cropper.cropped.image" crop-width="100" crop-height="150" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+          
+          <div class="col-md-12 settings-text-align-center" ng-click="methods.updatePhoto()">
+            <input type="file" img-cropper-fileread image="attrs.cropper.source.image" /> 
+          </div>
+
+        </div>
+        
+        <div ng-show="attrs.settings.photo && !attrs.updatePhoto" class="settings-photo">
+          <img ng-src="{{attrs.settings.photo}}" class="img-circle" height="200" width="200" >
         </div>
 
-        <div class="settings-photo">
-          <img ng-src="{{attrs.settings.photo}}" class="img-circle" height="200" width="200" >
+        <div ng-show="!attrs.updatePhoto" class="settings-photo">
+          <div class="col-md-12 settings-text-align-center" ng-click="methods.updatePhoto()">
+            <div class="glyphicon glyphicon-plus-sign" aria-hidden="true"></div> Change photo
+          </div>
         </div>
       </div>
 
