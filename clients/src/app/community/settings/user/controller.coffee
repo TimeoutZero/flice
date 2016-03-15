@@ -19,9 +19,11 @@ angular.module "web"
             promise = UserService.checkUsername($scope.attrs.settings.username)
 
             promise.success (data) ->
-              if data.exist == true
-                $scope.settingsForm.username.$setValidity('valid', false);
-              
+              if data.exist == "true"
+                $scope.form.username.$setValidity('usernameBusy', false);
+              else 
+                $scope.form.username.$setValidity('usernameBusy', true);
+                
             promise.error () ->
               hToast.error 'Fail to get communities come later!'
         , 500         
@@ -31,7 +33,7 @@ angular.module "web"
 
       update : () ->
 
-        if $scope.settingsForm.$valid
+        if $scope.form.$valid
          if $scope.attrs.cropper?.cropped.image
             $scope.attrs.settings.photo = $scope.attrs.cropper.cropped.image
 
