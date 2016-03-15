@@ -63,7 +63,7 @@
         <div class="form-group" ng-class="{ 'has-error' : settingsForm.username.$invalid &&!settingsForm.username.$pristine }">
 
           <label for="username">Username: </label>
-          <input type="text" name="username" class="form-control" ng-model="attrs.settings.username" placeholder="Username" required>
+          <input type="text" name="username" class="form-control" ng-model="attrs.settings.username" ng-change="methods.checkUsername()" placeholder="Username" required>
 
           <p ng-show="settingsForm.username.$invalid && !settingsForm.username.$pristine">Enter a valid username.
           </p>

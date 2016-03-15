@@ -3,7 +3,8 @@
   "private": "true",
   "version": "1.0.0",
   "dependencies": {
-    "basebuild-angular": "0.12.0"
+    "basebuild-angular": "0.12.0",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "test": "gulp test"

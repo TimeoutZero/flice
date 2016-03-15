@@ -6,9 +6,18 @@ angular.module 'web'
         url     : CORE_API + '/user/me'
         method  : 'GET'
 
-    update : (form) -> 
-      console.log form
+    checkUsername : (username) ->
       $http
+        url     : CORE_API + '/user/check/username'
+        method  : 'GET'
+        params  :
+          'username' : username
+
+    update : (form) -> 
+      $http
+        feedback : 
+          message : 'User has been updated.'
+
         url     : CORE_API + '/user/' + form.id
         method  : 'PUT'
         data    :

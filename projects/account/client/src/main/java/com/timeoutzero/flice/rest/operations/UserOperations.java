@@ -1,6 +1,7 @@
 package com.timeoutzero.flice.rest.operations;
 
 import java.util.List;
+import java.util.Map;
 
 import com.timeoutzero.flice.rest.dto.AccountUserDTO;
 
@@ -15,5 +16,7 @@ public interface UserOperations {
 	AccountUserDTO get(Long id);
 	
 	List<AccountUserDTO> list(List<Long> ids);
+
+	Map<String, String> checkUsername(String username);
 	
 }

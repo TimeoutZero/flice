@@ -16,16 +16,14 @@ angular.module 'web'
     $provide.factory 'UserLoginInterceptor', [ '$q', '$injector', '$rootScope', 'hToast', ($q, $injector, $rootScope, hToast) ->
 
       'request': (config) ->
-        # console.log 'ae'
-        # hToast.success('caraiu')
         return config
 
       'requestError': (rejection)->
         hToast.success('caraiu')
         return $q.reject rejection
 
-      'response': (response)->
-        if response.config.feedback then hToast.success('Truco!!')
+      'response': (response) ->
+        if response.config.feedback then hToast.success(response.config.feedback.message)
         return response or $q.when response
 
       'responseError': (response)->

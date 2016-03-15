@@ -1,5 +1,5 @@
 angular.module "web"
-  .controller "UserController", ($scope, UserService) ->
+  .controller "UserController", ($scope, $timeout, hToast, UserService) ->
 
     $scope.attrs =
       settings  : {}
@@ -7,18 +7,23 @@ angular.module "web"
 
     $scope.methods =
 
-      verifyUsername : () ->
+      checkUsername : () ->
+        
         if $scope.attrs.timeout
           $timeout.cancel($scope.attrs.timeout)
 
         $scope.attrs.timeout = $timeout () -> 
+          
+          if $scope.attrs.settings.username
+            
+            promise = UserService.checkUsername($scope.attrs.settings.username)
 
-          promise = CommunityService.getAutocompleteByName($scope.attrs.autocompleteWord)
-
-          promise.success (data) ->
-            $scope.attrs.communities = data
-          promise.error () ->
-            hToast.error 'Fail to get communities come later!'
+            promise.success (data) ->
+              if data.exist == true
+                $scope.settingsForm.username.$setValidity('valid', false);
+              
+            promise.error () ->
+              hToast.error 'Fail to get communities come later!'
         , 500         
 
       updatePhoto : () ->

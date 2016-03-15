@@ -31,6 +31,7 @@
 		<apache.commons.collections.version>4.0</apache.commons.collections.version>
 		<lombok.version>1.16.2</lombok.version>
 		<jsonpath.version>0.9.1</jsonpath.version>
+		<jadira-usertype-version>4.0.0.GA</jadira-usertype-version>
 
 	</properties>
 
@@ -74,6 +75,18 @@
 			<artifactId>spring-social-google</artifactId>
 			<version>1.0.0.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+			<version>${jadira-usertype-version}</version>
+		</dependency>
+
 
 		<!-- TEST -->
 

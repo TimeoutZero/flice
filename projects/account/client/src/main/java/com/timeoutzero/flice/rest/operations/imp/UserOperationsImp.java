@@ -43,6 +43,15 @@ public class UserOperationsImp implements UserOperations {
 	public AccountUserDTO get(Long id) {
 		return template.get(ENDPOINT + File.separator + id , AccountUserDTO.class);
 	}
+	
+	@Override
+	public Map<String, String> checkUsername(String username) {
+		
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(ENDPOINT + File.separator + "/check/username");
+		builder.queryParam("username", username);
+		
+		return template.get(builder.build().toString(), Map.class);
+	}
 
 	@Override
 	public List<AccountUserDTO> list(List<Long> ids) {
@@ -83,8 +92,4 @@ public class UserOperationsImp implements UserOperations {
 		return template.put(ENDPOINT + File.separator + accountId , parameters, AccountUserDTO.class);
 	}
 	
-	
-
-
-
 }

@@ -6,11 +6,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -73,6 +76,17 @@ public class UserController {
 		return new UserDTO(user);
 	}
 	
+	@RequestMapping(value = "/check/username", method = GET)
+	public Map<String, String> checkUsername (@RequestParam("username") String username) {
+		
+		Boolean existByUsername = repository.getUserRepository().existByUsername(username);
+
+		Map<String, String> map = new HashMap<>();
+		map.put("exist", existByUsername.toString());
+		
+		return map;
+	}
+	
 	@RequestMapping(method = GET)
 	public List<UserDTO> list(@RequestParam List<Long> ids){
 		
@@ -119,6 +133,7 @@ public class UserController {
 		profile.setUsername(form.getUsername());
 		profile.setDescription(form.getDescription());
 		profile.setPhoto(form.getPhoto());
+		profile.setLastUpdate(DateTime.now());
 		
 		user.setProfile(profile);
 		repository.getUserRepository().save(user);

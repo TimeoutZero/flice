@@ -72,6 +72,12 @@ public class UserController {
 		return new UserDTO(loggedUser);
 	}
 	
+	@Secured({ Role.USER, Role.ADMIN })
+	@RequestMapping(value = "/check/username", method = GET)
+	public Map<String, String> checkUsername(@RequestParam("username") String username) {
+		return accountOperations.getUserOperations().checkUsername(username);
+	}
+	
 	@Transactional
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = POST)
