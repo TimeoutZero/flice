@@ -23,12 +23,26 @@ angular.module "web"
       )
       .state('community.settings'
         url   : '/user/settings'
+        redirectTo : 'community.settings.profile'
         views :
           ''  :
-            templateUrl : 'app/community/settings/user/main.html'
-            controller  : 'UserController'
-
+            templateUrl : 'app/community/settings/main.html'
       )
+      .state('community.settings.profile'
+        url   : '/profile'
+        views :
+          'container@community.settings'  :
+            templateUrl : 'app/community/settings/profile/main.html'
+            controller  : 'UserController'
+      )
+      .state('community.settings.password'
+        url   : '/password'
+        views :
+          'container@community.settings'  :
+            templateUrl : 'app/community/settings/password/main.html'
+            controller  : 'UserController'
+      )
+      
       .state('community.form'
         url   : '/form/:id'
         views :
