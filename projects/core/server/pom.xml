@@ -104,6 +104,13 @@
 			<version>${flice.account.client.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.10.61</version>
+		</dependency>
+
+
 
 		<!-- TEST -->
 
