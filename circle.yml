@@ -5,13 +5,12 @@ machine:
 
 test:
   override:
-
-    - mvn test -f projects/account/server
-    - mvn test -f projects/core/server
+    - sh ./build/scripts/build-server.sh
+ 
     # - mv projects/account/server/target/flice-account.jar $CIRCLE_ARTIFACTS/flice-account.jar
     # - mv projects/core/server/target/flice-core.jar       $CIRCLE_ARTIFACTS/flice-core.jar
 
-  pre:
-    - cp build/scripts/setttings.xml ~/.m2/settings.xml
-    - sed -i -- "s/MAVEN_FLICE_KEY/$MAVEN_FLICE_KEY/g" ~/.m2/settings.xml
-    - sed -i -- "s/MAVEN_FLICE_SECRET/$MAVEN_FLICE_SECRET/g" ~/.m2/settings.xml
+  # pre:
+  #   - cp build/scripts/setttings.xml ~/.m2/settings.xml
+  #   - sed -i -- "s/MAVEN_FLICE_KEY/$MAVEN_FLICE_KEY/g" ~/.m2/settings.xml
+  #   - sed -i -- "s/MAVEN_FLICE_SECRET/$MAVEN_FLICE_SECRET/g" ~/.m2/settings.xml
