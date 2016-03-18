@@ -23,7 +23,6 @@
 
 		<!-- UTIL -->
 		<lombok-version>1.16.2</lombok-version>
-		<orika-version>1.4.5</orika-version>
 
 	</properties>
 
@@ -105,12 +104,6 @@
 			<version>${flice.account.client.version}</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>io.redspark.holmes</groupId>
-			<artifactId>simple-file-manager</artifactId>
-			<version>1.0.3-SNAPSHOT</version>
-		</dependency>
 
 		<!-- TEST -->
 

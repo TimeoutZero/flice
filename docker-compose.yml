@@ -1,7 +1,7 @@
 ---
 
 core: 
-  image: lucasgmartins/java8
+  image: java:8
   ports:
     - "8080:8080"
     - "8000:8000"
@@ -9,6 +9,7 @@ core:
     - mysql
     - account
     - fakes3ssl:flice.s3.amazonaws.com
+  working_dir: /app/
   volumes:
     - ./projects/core/server/target/core.jar:/app/core.jar
   command: java -jar
@@ -17,19 +18,20 @@ core:
           -Dmock.s3=http://default:8082
           -Daws.access.token=fakeToken -Daws.secret.key=fakeSecretKey 
           -Dcom.amazonaws.sdk.disableCertChecking=true
-          /app/core.jar
+          core.jar
 
 account:
-  image: lucasgmartins/java8
+  image: java:8
   ports:
     - "8081:8080"
   links:
     - mysql
+  working_dir: /app/
   volumes:
     - ./projects/account/server/target/account.jar:/app/account.jar
   command: java -jar 
           -Dspring.profiles.active=DEV 
-          /app/account.jar
+          account.jar
 
 mysql:
   image: lucasgmartins/mysql

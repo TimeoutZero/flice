@@ -9,10 +9,12 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class Profile extends AbstractEntity {
 
 	private String name;

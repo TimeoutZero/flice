@@ -21,7 +21,6 @@ public class ExceptionController {
 
 	private static final String EXCEPTION_ACCESS_DENIED = "Access denied!";
 	
-	
 	@ResponseBody
 	@ExceptionHandler(value = WebException.class)
 	public ExceptionDTO webException(WebException exception, HttpServletResponse response ) {

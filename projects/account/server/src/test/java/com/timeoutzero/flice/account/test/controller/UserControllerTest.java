@@ -1,60 +1,73 @@
 package com.timeoutzero.flice.account.test.controller;
 
-import static com.timeoutzero.flice.account.builder.UserBuilder.user;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.timeoutzero.flice.account.test.Compose.product;
+import static com.timeoutzero.flice.account.test.Compose.user;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.timeoutzero.flice.account.entity.Product;
+import com.timeoutzero.flice.account.entity.User;
 import com.timeoutzero.flice.account.enums.SocialMedia;
 import com.timeoutzero.flice.account.form.UserForm;
-import com.timeoutzero.flice.account.test.BasicControllerTest;
-import com.timeoutzero.flice.account.test.ControllerBase;
+import com.timeoutzero.flice.account.security.ApplicationKeyFilter;
+import com.timeoutzero.flice.account.test.ApplicationTest;
 
-@ControllerBase("/user")
-public class UserControllerTest extends BasicControllerTest {
+public class UserControllerTest extends ApplicationTest {
 	
 	@Test
 	public void shouldCreateUser() throws Exception {
 		
-		UserForm form = new UserForm();
-		form.setEmail("lucas.gmmartins@gmail.com");
-		form.setPassword("12345");
+		Product core = product("core");
+		saveAll(core);
 		
-		MvcResult result = perform(postJson(form), status().isCreated());
+		JsonNode json = post("/user")
+				.json(new UserForm("lucas.gmmartins@gmail.com", "12345"))
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, core.getToken())
+				.expectedStatus(HttpStatus.CREATED)
+				.getJson();
 		
-		jsonAssert(result)
+		jsonAsserter(json)
 			.assertEquals("$.email", "lucas.gmmartins@gmail.com");
 	}
 
 	@Test
 	public void shouldntCreateUserWithSameEmail() throws Exception {
 
-		user("lucas.gmmartins@gmail.com");
-
-		saveAll();
-
-		UserForm form = new UserForm();
-		form.setEmail("lucas.gmmartins@gmail.com");
-		form.setPassword("12345");
+		Product core = product("core");
+		User lucas = user("lucas.gmmartins@gmail.com").build();
 		
-		MvcResult result = perform(postJson(form), status().isPreconditionFailed());
+		saveAll(core, lucas);
 
-		jsonError(result)
-			.contains("email.already.exist");
+		JsonNode json = post("/user")
+				.json(new UserForm("lucas.gmmartins@gmail.com", "12345"))
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, core.getToken())
+				.expectedStatus(HttpStatus.PRECONDITION_FAILED)
+				.getJson();
+		
+		jsonAsserter(json)
+			.assertEquals("$.message", "email.already.exist");
+
 	}
 
 	@Test
+	@Ignore
 	public void shouldCreateUserWithAccessToken() throws Exception {
 		
-		MockHttpServletRequestBuilder post = post("/token");
-		post.param("accessToken", "ACCESSTOKEN");
-		post.param("media", SocialMedia.FACEBOOK.toString());
+		Product core = product("core");
+		
+		saveAll(core); 
+		
+		JsonNode json = post("/user/token")
+			.queryParam("accessToken", "ACCESSTOKEN")
+			.queryParam("media", SocialMedia.FACEBOOK.toString())
+			.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, core.getToken())
+			.expectedStatus(HttpStatus.CREATED)
+			.getJson();
 
-		MvcResult result = perform(post, status().isCreated());
-
-		jsonAssert(result)
+		jsonAsserter(json)
 			.assertNotNull("$.email")
 			.assertNotNull("$.profile.name")
 			.assertNotNull("$.profile.photo");

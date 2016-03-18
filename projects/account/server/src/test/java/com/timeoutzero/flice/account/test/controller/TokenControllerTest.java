@@ -1,37 +1,38 @@
 package com.timeoutzero.flice.account.test.controller;
 
-import static com.timeoutzero.flice.account.builder.UserBuilder.user;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.timeoutzero.flice.account.test.Compose.user;
 
 import org.junit.Test;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
-import com.timeoutzero.flice.account.builder.UserBuilder;
-import com.timeoutzero.flice.account.test.BasicControllerTest;
-import com.timeoutzero.flice.account.test.ControllerBase;
+import com.timeoutzero.flice.account.entity.User;
+import com.timeoutzero.flice.account.security.JwtAccount;
+import com.timeoutzero.flice.account.test.ApplicationTest;
 
-@ControllerBase("/auth/token")
-public class TokenControllerTest extends BasicControllerTest {
+public class TokenControllerTest extends ApplicationTest {
+	
+	@Autowired
+	private JwtAccount jwtAccount;
 	
 	@Test
 	public void shouldCheckTokenWithEmail() throws Exception {
 		
-		UserBuilder lucas = user("lucas.gmmartins@gmai.com");
+		User lucas = user("lucas.gmmartins@gmail.com").build();
 		
-		saveAll(); 
+		saveAll(lucas); 
 		
-		MockHttpServletRequestBuilder get = get();
-		get.param("token", jwtAccount.createToken(lucas.get()));
+		get("/auth/token")
+				.queryParam("token", jwtAccount.createToken(lucas))
+				.expectedStatus(HttpStatus.OK);
 		
-		perform(get, status().isOk());
 	}
 	
 	@Test
 	public void shouldCheckInvalidToken() throws Exception {
 	
-		MockHttpServletRequestBuilder get = get();
-		get.param("token", "INVALID-TOKEN");
-		
-		perform(get, status().isUnauthorized());
+		get("/auth/token")
+			.queryParam("token", "INVALID-TOKEN")
+			.expectedStatus(HttpStatus.UNAUTHORIZED);
 	}
 }

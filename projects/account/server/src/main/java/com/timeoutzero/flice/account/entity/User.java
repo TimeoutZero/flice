@@ -11,15 +11,19 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Builder
 @ToString
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
 public class User extends AbstractEntity {
 
