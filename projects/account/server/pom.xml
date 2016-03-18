@@ -23,9 +23,6 @@
 		<!-- JAVA -->
 		<java.version>1.8</java.version>
 
-		<!-- TEST -->
-		<aleph-version>1.0.0</aleph-version>
-
 		<!-- UTIL -->
 		<apache.commons.lang.version>3.3.2</apache.commons.lang.version>
 		<apache.commons.collections.version>4.0</apache.commons.collections.version>
@@ -87,14 +84,6 @@
 			<version>${jadira-usertype-version}</version>
 		</dependency>
 
-
-		<!-- TEST -->
-
-		<dependency>
-			<groupId>Aleph</groupId>
-			<artifactId>Aleph</artifactId>
-			<version>${aleph-version}</version>
-		</dependency>
 
 		<!-- DB -->
 
