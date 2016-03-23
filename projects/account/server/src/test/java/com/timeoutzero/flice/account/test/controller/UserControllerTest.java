@@ -29,7 +29,7 @@ public class UserControllerTest extends ApplicationTest {
 				.expectedStatus(HttpStatus.CREATED)
 				.getJson();
 		
-		jsonAsserter(json)
+		jsonAsserter(json) 
 			.assertEquals("$.email", "lucas.gmmartins@gmail.com");
 	}
 

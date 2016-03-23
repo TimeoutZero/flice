@@ -21,7 +21,7 @@ public class TokenControllerTest extends ApplicationTest {
 		User lucas = user("lucas.gmmartins@gmail.com").build();
 		
 		saveAll(lucas); 
-		
+		 
 		get("/auth/token")
 				.queryParam("token", jwtAccount.createToken(lucas))
 				.expectedStatus(HttpStatus.OK);
