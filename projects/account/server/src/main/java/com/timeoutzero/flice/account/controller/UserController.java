@@ -140,6 +140,31 @@ public class UserController {
 		
 		return new UserDTO(user);
 	}
+	
+	@Transactional
+	@RequestMapping(value = "/{id}/password", method = PUT)
+	public void updatePassword(
+			@PathVariable("id") Long id,
+			@RequestParam("actualPassword") String actualPassword,
+			@RequestParam("newPassword") String newPassword,
+			@RequestParam("newPasswordConfirmation") String newPasswordConfirmation) {
+		
+		User user = repository.getUserRepository().findOne(id);
+		
+		if (!bcrypt.matches(actualPassword, user.getPassword())) {
+			throw new AccountException(HttpStatus.FORBIDDEN, "invalid.actual.password");
+		}
+		
+		if (!newPassword.equals(newPasswordConfirmation)) {
+			throw new AccountException(HttpStatus.PRECONDITION_REQUIRED, "password.not.match");
+		}
+		
+		user.setPassword(bcrypt.encode(newPassword));
+		user.setLastUpdate(DateTime.now());
+		
+		repository.getUserRepository().save(user);
+		
+	}
 
 	private void isValidForm(UserForm form) {
 

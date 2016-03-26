@@ -18,7 +18,7 @@ import com.timeoutzero.flice.account.test.ApplicationTest;
 public class UserControllerTest extends ApplicationTest {
 	
 	@Test
-	public void shouldCreateUser() throws Exception {
+	public void testShouldCreateUser() throws Exception {
 		
 		Product core = product("core");
 		saveAll(core);
@@ -32,9 +32,9 @@ public class UserControllerTest extends ApplicationTest {
 		jsonAsserter(json) 
 			.assertEquals("$.email", "lucas.gmmartins@gmail.com");
 	}
-
+ 
 	@Test
-	public void shouldntCreateUserWithSameEmail() throws Exception {
+	public void testShouldntCreateUserWithSameEmail() throws Exception {
 
 		Product core = product("core");
 		User lucas = user("lucas.gmmartins@gmail.com").build();
@@ -51,10 +51,67 @@ public class UserControllerTest extends ApplicationTest {
 			.assertEquals("$.message", "email.already.exist");
 
 	}
-
+	
 	@Test
+	public void testShouldChangePassword() throws Exception {
+		
+		Product core = product("core");
+		User lucas = user("lucas.gmmartins@gmail.com", "54321").build();
+		
+		saveAll(core, lucas);
+		
+		put("/user/%s/password", lucas.getId())
+			.queryParam("newPassword", "12345")
+			.queryParam("newPasswordConfirmation", "12345")
+			.queryParam("actualPassword", "54321")
+			.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, core.getToken())
+			.expectedStatus(HttpStatus.OK)
+			.getResponse();
+	}
+	
+	@Test
+	public void testShouldntChangePasswordActualPasswordInvalid() throws Exception {
+		
+		Product core = product("core");
+		User lucas = user("lucas.gmmartins@gmail.com", "54321").build();
+		
+		saveAll(core, lucas);
+		
+		JsonNode json = put("/user/%s/password", lucas.getId())
+			.queryParam("newPassword", "12345")
+			.queryParam("newPasswordConfirmation", "12345")
+			.queryParam("actualPassword", "-1")
+			.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, core.getToken())
+			.expectedStatus(HttpStatus.FORBIDDEN)
+			.getJson();
+		
+		jsonAsserter(json)
+			.assertEquals("$.message", "invalid.actual.password");
+	}
+	
+	@Test
+	public void testShouldntChangePasswordNewPasswordNotMatch() throws Exception {
+		
+		Product core = product("core");
+		User lucas = user("lucas.gmmartins@gmail.com", "54321").build();
+		
+		saveAll(core, lucas);
+		
+		JsonNode json = put("/user/%s/password", lucas.getId())
+				.queryParam("newPassword", "11111")
+				.queryParam("newPasswordConfirmation", "22222")
+				.queryParam("actualPassword", "54321")
+				.header(ApplicationKeyFilter.HEADER_X_FLICE_TOKEN, core.getToken())
+				.expectedStatus(HttpStatus.PRECONDITION_REQUIRED)
+				.getJson();
+		
+		jsonAsserter(json)
+			.assertEquals("$.message", "password.not.match");
+	}
+
+	@Test 
 	@Ignore
-	public void shouldCreateUserWithAccessToken() throws Exception {
+	public void testShouldCreateUserWithAccessToken() throws Exception {
 		
 		Product core = product("core");
 		

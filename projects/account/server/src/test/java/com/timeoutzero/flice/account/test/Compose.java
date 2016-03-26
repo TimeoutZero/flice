@@ -13,6 +13,10 @@ public class Compose {
 	}
 
 	public static User.UserBuilder user(String email) {
-		return User.builder().email(email).password(new BCryptPasswordEncoder().encode("12345"));
+		return User.builder().email(email).password(new BCryptPasswordEncoder(5).encode("12345"));
+	}
+	
+	public static User.UserBuilder user(String email, String password) {
+		return User.builder().email(email).password(new BCryptPasswordEncoder(5).encode(password));
 	}
 }
