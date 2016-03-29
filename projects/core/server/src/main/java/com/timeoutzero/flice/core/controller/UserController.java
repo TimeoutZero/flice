@@ -119,6 +119,16 @@ public class UserController {
 		
 		return new UserDTO(user);
 	}
+	
+	@Transactional
+	@RequestMapping(value = "/password", method = PUT)
+	public void updatePassword(
+			@RequestParam("actualPassword") String actualPassword,
+			@RequestParam("newPassword") String newPassword,
+			@RequestParam("newPasswordConfirmation") String newPasswordConfirmation) {
+		
+		accountOperations.getUserOperations().updatePassword(getLoggedUser().getAccountId(), actualPassword, newPassword, newPasswordConfirmation);
+	}
 
 	private User createUser(String email, String password) {
 		
@@ -144,8 +154,12 @@ public class UserController {
 			throw new WebException(HttpStatus.PRECONDITION_FAILED, "The invites exceed limit!");
 		}
 		
+		StringBuilder urlBuilder = new StringBuilder(String.format("%s://%s:%d", req.getScheme(), req.getServerName(), req.getServerPort()));
+		urlBuilder.append("/#/community/user?email=");
+		urlBuilder.append(Base64.encodeBase64String(email.getBytes()));
+		
 		Map<String, String> params = new HashMap<>();
-		params.put("${url}", req.getRequestURL() + "/#/community/user?email=" + Base64.encodeBase64String(email.getBytes()));
+		params.put("${url}", urlBuilder.toString());
 		
 		mailSender.send(email, "Did you hear about Flice?", "/email/invites.html", params);
 		

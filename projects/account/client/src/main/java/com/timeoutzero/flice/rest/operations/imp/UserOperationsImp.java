@@ -91,5 +91,17 @@ public class UserOperationsImp implements UserOperations {
 		
 		return template.put(ENDPOINT + File.separator + accountId , parameters, AccountUserDTO.class);
 	}
+
+	@Override
+	public void updatePassword(Long accountId, String actualPassword, String newPassword, String newPasswordConfirmation) {
+		
+		Map<String, String> parameters = new HashMap<>();
+		parameters.put("actualPassword", actualPassword);
+		parameters.put("newPassword", newPassword);
+		parameters.put("newPasswordConfirmation", newPasswordConfirmation);
+		 
+		String endpoint = ENDPOINT + File.separator + accountId + "/password";
+		template.put(endpoint, parameters, String.class);
+	}
 	
 }

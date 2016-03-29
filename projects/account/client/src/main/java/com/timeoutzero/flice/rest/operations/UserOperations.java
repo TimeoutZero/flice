@@ -13,6 +13,8 @@ public interface UserOperations {
 	
 	AccountUserDTO update(Long accountId, String name, String username, String description, String photo);
 	
+	void updatePassword(Long accountId, String actualPassword, String newPassword, String newPasswordConfirmation);
+	
 	AccountUserDTO get(Long id);
 	
 	List<AccountUserDTO> list(List<Long> ids);

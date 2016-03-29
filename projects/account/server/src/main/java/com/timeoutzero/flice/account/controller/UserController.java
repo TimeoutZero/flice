@@ -31,6 +31,7 @@ import com.timeoutzero.flice.account.entity.User;
 import com.timeoutzero.flice.account.enums.SocialMedia;
 import com.timeoutzero.flice.account.exception.AccountException;
 import com.timeoutzero.flice.account.form.UserForm;
+import com.timeoutzero.flice.account.form.UserPasswordForm;
 import com.timeoutzero.flice.account.form.UserUpdateForm;
 import com.timeoutzero.flice.account.repository.AccountRepository;
 import com.timeoutzero.flice.account.security.JwtAccount;
@@ -144,22 +145,19 @@ public class UserController {
 	@Transactional
 	@RequestMapping(value = "/{id}/password", method = PUT)
 	public void updatePassword(
-			@PathVariable("id") Long id,
-			@RequestParam("actualPassword") String actualPassword,
-			@RequestParam("newPassword") String newPassword,
-			@RequestParam("newPasswordConfirmation") String newPasswordConfirmation) {
+			@PathVariable("id") Long id, @Valid @RequestBody UserPasswordForm form ) {
 		
 		User user = repository.getUserRepository().findOne(id);
 		
-		if (!bcrypt.matches(actualPassword, user.getPassword())) {
+		if (!bcrypt.matches(form.getActualPassword(), user.getPassword())) {
 			throw new AccountException(HttpStatus.FORBIDDEN, "invalid.actual.password");
 		}
 		
-		if (!newPassword.equals(newPasswordConfirmation)) {
+		if (!form.getNewPassword().equals(form.getNewPasswordConfirmation())) {
 			throw new AccountException(HttpStatus.PRECONDITION_REQUIRED, "password.not.match");
 		}
 		
-		user.setPassword(bcrypt.encode(newPassword));
+		user.setPassword(bcrypt.encode(form.getNewPassword()));
 		user.setLastUpdate(DateTime.now());
 		
 		repository.getUserRepository().save(user);

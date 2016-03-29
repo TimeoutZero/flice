@@ -7,17 +7,20 @@
         
         <div class="form-group">
             <label for="New password">New password: </label>
-            <input type="password" class="form-control" ng-model="passwordForm.newPassword" required>
+            <input type="password" class="form-control" ng-model="attrs.passwordForm.newPassword" required>
         </div>        
         
         <div class="form-group">
             <label for="Confirm password">Confirm password: </label>
-            <input type="password" class="form-control" ng-model="passwordForm.confirmPassword" required>
+            <input type="password" class="form-control" ng-model="attrs.passwordForm.newPasswordConfirmation" required>
+
+            <span 
+                ng-show="form.newPasswordConfirmation.$error.passwordDifferentOfConfirmation" class="glyphicon glyphicon-remove" style="color : #C70000" aria-hidden="true"></span>
         </div>
         
         <div class="form-group">
             <label for="Actual password">Actual password: </label>
-            <input type="password" class="form-control" ng-model="passwordForm.actualPassword" required>
+            <input type="password" class="form-control" ng-model="attrs.passwordForm.actualPassword" required>
         </div>
         
         <div class="form-group">

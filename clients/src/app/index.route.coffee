@@ -40,7 +40,7 @@ angular.module "web"
         views :
           'container@community.settings'  :
             templateUrl : 'app/community/settings/password/main.html'
-            controller  : 'UserController'
+            controller  : 'PasswordController'
       )
       
       .state('community.form'
