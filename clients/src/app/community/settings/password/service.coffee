@@ -3,8 +3,6 @@ angular.module 'web'
 
     update : (form) ->
 
-      console.log form
-
       $http
         feedback : 
           message : 'Password has been updated.'

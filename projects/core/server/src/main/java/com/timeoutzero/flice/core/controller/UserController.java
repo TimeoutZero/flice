@@ -91,14 +91,17 @@ public class UserController {
 	@Transactional
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/email" , method = POST)
-	public UserDTO create(@RequestParam("email") String email) {
+	public UserDTO create(@RequestParam("email") String encodedEmail) {
 		
-		User user = createUser(email,  "password");
+		String email = new String(Base64.decodeBase64(encodedEmail));
+		String randomPasswordGenerated = RandomStringUtils.randomAlphanumeric(6);
+		
+		User user = createUser(email, randomPasswordGenerated); 
 		
 		Map<String, String> params = new HashMap<>();
-		params.put("${password}", RandomStringUtils.randomAlphanumeric(6));
+		params.put("${password}", randomPasswordGenerated);
 		
-		mailSender.send(email, "Welcome to exclusive club", "/email/welcome.html", params);
+		mailSender.send(encodedEmail, "Welcome to exclusive club", "/email/welcome.html", params);
 
 		return new UserDTO(user);
 	}
@@ -172,7 +175,6 @@ public class UserController {
 		return map;
 	}
 
-	
 	@RequestMapping(value = "/token", method = POST)
 	public void createToken(@RequestBody @Valid UserForm form, HttpServletRequest request, HttpServletResponse response) {
 		

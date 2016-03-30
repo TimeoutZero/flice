@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.timeoutzero.flice.core.ApplicationTest;
 import com.timeoutzero.flice.core.RequestBuilder;
@@ -65,13 +66,19 @@ public class UserControllerTest extends ApplicationTest {
 		
 		UserOperations userOperationsMock = mock(UserOperations.class);
 	
+		String email = "thediafrit@yahoo.com";
+		AccountUserDTO account = new AccountUserDTO();
+		account.setEmail(email);
+
 		when(mockAccountOperations.getUserOperations()).thenReturn(userOperationsMock);
-		when(userOperationsMock.create(anyString(), anyString())).thenReturn(new AccountUserDTO());
+		when(userOperationsMock.create(anyString(), anyString())).thenReturn(account);
 		
-		RequestBuilder post = post("/user/email");
-		post.queryParam("email", "thediafrit@yahoo.com");
+		JsonNode json = post("/user/email")
+				.queryParam("email", Base64.encodeAsString(email.getBytes()))
+				.expectedStatus(HttpStatus.CREATED).getJson();
 		
-		post.expectedStatus(HttpStatus.CREATED).getJson();
+		jsonAsserter(json)
+			.assertEquals("$.email", email);
 		
 		verify(mockMailSender, times(1)).send(anyString(), anyString(), anyString(), anyMap());
 		
